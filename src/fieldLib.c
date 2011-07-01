@@ -2,6 +2,8 @@
 
 // FIXME: traverse through the array elements (print pos, prev, next pos)
 // FIXME: split files
+// FIXME: add 2nd dimention
+// FIXME: add obj type (physic, gfx(txt output) ) as a member of baseObj
 
 #include <stdio.h>
 #include <deque>
@@ -29,7 +31,7 @@ public:
     string str()
     {
         stringstream ss;
-        ss << "<idx:" << strData() << " neighbors " << strNeighbors() << ">";
+        ss << "<idx:" << strData() << " " << strNeighbors() << ">";
         return ss.str();
     }
 
@@ -41,20 +43,9 @@ public:
 
     string strNeighbors() {
         stringstream ss;
+        ss << "(" <<  ((x_prev == NULL) ? "-" : x_prev->strData()) << ", " <<
+                      ((x_next == NULL) ? "-" : x_next->strData()) << ")";
 
-        ss << "(";
-        if (x_prev == NULL) {
-            ss << "-";
-        } else {
-            ss << x_prev->strData();
-        }
-        ss << ", ";
-        if (x_next == NULL) {
-            ss << "-";
-        } else {
-            ss << x_next->strData();
-        }
-        ss << ")";
         return ss.str();
     }
 };
