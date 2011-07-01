@@ -1,7 +1,5 @@
 /* fieldLib.cpp */
 
-// FIXME: merge anchor and object because the object has an fixed position in the field
-// FIXME: fill prev and next
 // FIXME: traverse through the array elements (print pos, prev, next pos)
 // FIXME: split files
 
@@ -11,46 +9,7 @@ using namespace std;
 
 
 class baseObj;
-class baseObjAnchor;
 class baseObjField;
-
-
-class baseObjAnchor
-{
-public:
-    baseObj *obj;
-    int pos_x;
-
-    baseObjAnchor() : pos_x(-1), obj(NULL) {};
-    
-};
-
-
-class baseObjField
-{
-public:
-    int size_x;
-    deque<baseObjAnchor> anchor;
-
-    baseObjField(int size) {
-        size_x = size;
-        
-        baseObjAnchor defaultAnchor;
-        anchor.resize(size, defaultAnchor);
-        
-        initAnchors();
-    };
-
-    int initAnchors() {
-        for (int i = 0; i < anchor.size(); i++)
-        {
-            anchor[i].pos_x = i;
-        }
-    
-    };
-
-};
-
 
 
 /*
@@ -59,11 +18,56 @@ public:
 class baseObj
 {
 public:
-    // root
-    baseObjAnchor *root;
-    // neighbours
+    int pos_x;
+    // neighbors
     baseObj *x_prev, *x_next;
+
+    baseObj() : pos_x(-1), x_prev(NULL), x_next(NULL) {};
 };
+
+
+/*
+ * baseObjField
+ */
+class baseObjField
+{
+public:
+    int size_x;
+    deque<baseObj> objs;
+
+    baseObjField(int size) {
+        size_x = size;
+        
+        baseObj defaultObj;
+        objs.resize(size, defaultObj);
+        
+        initObj();
+    };
+
+    int initObj() {
+        for (int x = 0; x < objs.size(); x++)
+        {
+            // set position information
+            objs[x].pos_x = x;
+            // set neighbors
+            // FIXME: set a reference to a static dummy object instead of NULL
+            if (x == 0) {
+                objs[x].x_prev = NULL;
+            } else {
+                objs[x].x_prev = &(objs[x-1]);
+            }
+            if (x == objs.size()-1) {
+                objs[x].x_next = NULL;
+            } else {
+                objs[x].x_next = &(objs[x+1]);
+            }
+        }
+    };
+
+};
+
+
+
 
 
 
@@ -74,8 +78,10 @@ int main(void)
 {
     baseObjField field(10);
 
-    for(int x = 0; x < field.anchor.size(); x++) {
-        printf("position: (x: %d, %d)\n", x, field.anchor[x].pos_x);
+    for(int x = 0; x < field.objs.size(); x++) {
+        printf("position: (x: %d, idx: %d - neighbors: %d, %d)\n", x, field.objs[x].pos_x, 
+               (field.objs[x].x_prev == NULL) ? -1 : field.objs[x].x_prev->pos_x,
+               (field.objs[x].x_next == NULL) ? -1 : field.objs[x].x_next->pos_x);
     }
     return 0;
 
