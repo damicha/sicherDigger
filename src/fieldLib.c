@@ -5,6 +5,8 @@
 
 #include <stdio.h>
 #include <deque>
+#include <string>
+#include <sstream>
 using namespace std;
 
 
@@ -23,6 +25,38 @@ public:
     baseObj *x_prev, *x_next;
 
     baseObj() : pos_x(-1), x_prev(NULL), x_next(NULL) {};
+
+    string str()
+    {
+        stringstream ss;
+        ss << "<idx:" << strData() << " neighbors " << strNeighbors() << ">";
+        return ss.str();
+    }
+
+    string strData() {
+        stringstream ss;
+        ss << pos_x;
+        return ss.str();
+    }
+
+    string strNeighbors() {
+        stringstream ss;
+
+        ss << "(";
+        if (x_prev == NULL) {
+            ss << "-";
+        } else {
+            ss << x_prev->strData();
+        }
+        ss << ", ";
+        if (x_next == NULL) {
+            ss << "-";
+        } else {
+            ss << x_next->strData();
+        }
+        ss << ")";
+        return ss.str();
+    }
 };
 
 
@@ -38,7 +72,7 @@ public:
     baseObjField(int size) {
         size_x = size;
         
-        baseObj defaultObj;
+       baseObj defaultObj;
         objs.resize(size, defaultObj);
         
         initObj();
@@ -79,9 +113,7 @@ int main(void)
     baseObjField field(10);
 
     for(int x = 0; x < field.objs.size(); x++) {
-        printf("position: (x: %d, idx: %d - neighbors: %d, %d)\n", x, field.objs[x].pos_x, 
-               (field.objs[x].x_prev == NULL) ? -1 : field.objs[x].x_prev->pos_x,
-               (field.objs[x].x_next == NULL) ? -1 : field.objs[x].x_next->pos_x);
+        printf("position: %d, data: %s\n", x, field.objs[x].str().c_str()); 
     }
     return 0;
 
