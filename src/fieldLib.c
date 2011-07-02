@@ -1,6 +1,5 @@
 /* fieldLib.cpp */
 
-// FIXME: improve txt output
 // FIXME: split files
 // FIXME: add obj type (physic, gfx(txt output) ) as a member of baseObj
 
@@ -33,28 +32,26 @@ public:
     string str()
     {
         stringstream ss;
-        ss << "<idx:" << strData() << " " << strNeighbors() << ">";
+        ss << "<idx:" << strData() << ", neighbors: " << strNeighbors() << ">";
         return ss.str();
     }
 
     string strDataEmpty() {
-        stringstream ss;
-        ss << "<-, ->";
-        return ss.str();
+        return stringstream("[-, -]").str();
     }
     
     string strData() {
         stringstream ss;
-        ss << "<" << pos_y << ", " << pos_x << ">";
+        ss << "[" << pos_x << ", " << pos_y << "]";
         return ss.str();
     }
 
     string strNeighbors() {
         stringstream ss;
-        ss << "(y:" <<  ((y_prev == NULL) ? strDataEmpty() : y_prev->strData()) << ", " <<
-                        ((y_next == NULL) ? strDataEmpty() : y_next->strData()) << ", " <<
-               "x:" <<  ((x_prev == NULL) ? strDataEmpty() : x_prev->strData()) << ", " <<
-                        ((x_next == NULL) ? strDataEmpty() : x_next->strData()) << ")";
+        ss << "x--:" <<  ((x_prev == NULL) ? strDataEmpty() : x_prev->strData()) << ", " <<
+              "x++:" <<  ((x_next == NULL) ? strDataEmpty() : x_next->strData()) << ", " <<
+              "y--:" <<  ((y_prev == NULL) ? strDataEmpty() : y_prev->strData()) << ", " <<
+              "y++:" <<  ((y_next == NULL) ? strDataEmpty() : y_next->strData());
 
         return ss.str();
     }
@@ -90,6 +87,7 @@ public:
                 // set position information
                 objs[y*size_x + x].pos_x = x;
                 objs[y*size_x + x].pos_y = y;
+
                 // set neighbors
                 if (x == 0) {
                     objs[y*size_x + x].x_prev = NULL;
@@ -130,7 +128,7 @@ int main(void)
     baseObjField field(5, 5);
 
     for(int i = 0; i < field.objs.size(); i++) {
-        printf("position: %d, data: %s\n", i, field.objs[i].str().c_str()); 
+        printf("position: %2d, data: %s\n", i, field.objs[i].str().c_str()); 
     }
     return 0;
 
