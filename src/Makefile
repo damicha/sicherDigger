@@ -6,7 +6,7 @@
 
 CC = g++
 CFLAGS = -g -O2 
-OBJECTS = fieldLib.o baseObj.o
+OBJECTS = fieldLib.o baseObj.o baseObjField.o
 
 all: fieldLib
 
