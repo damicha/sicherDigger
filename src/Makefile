@@ -7,17 +7,23 @@
 CC = g++
 CFLAGS = -g -O2 
 OBJECTS = fieldLib.o baseObj.o baseObjField.o
+INCLUDES = $(wildcard *.h)
 
 all: fieldLib
-
+    
 fieldLib: $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) -o $@
+
+%.o: %.cpp $(INCLUDES)
+	$(CC) $(CFLAGS) -c $<
+
+
+doxygen:
+	doxygen
 
 clean:
 	rm -f $(OBJECTS)
 	rm -f fieldLib
-
-#%.o: %.c
-#	$(CC) $(CFLAGS) -c $<
+	rm -rf html/ latex/
 
 
