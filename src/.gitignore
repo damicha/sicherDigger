@@ -1,0 +1,9 @@
+# main binary
+fieldLib
+
+# object files
+*.o
+
+# generated documentation
+html/
+latex/
