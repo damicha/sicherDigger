@@ -14,7 +14,9 @@ using namespace std;
 string baseObj::str()
 {
     stringstream ss;
-    ss << "<idx:" << strData() << ", neighbors: " << strNeighbors() << ">";
+    ss << "<idx:" << strData() << ", " <<
+          "type:" << strType() << ", " <<
+          "neighbors: " << strNeighbors() << ">";
     return ss.str();
 }
 
@@ -47,5 +49,30 @@ string baseObj::strNeighbors()
     return ss.str();
 }
 
+/* get the type as a string */
+string baseObj::strType()
+{
+    switch (type)
+    {
+        case empty:     return string("  empty");
+        case sand:      return string("   sand");
+        case wall:      return string("   wall");
+        case stone:     return string("  stone");
+        case unknown:   return string("unknown");
+    }
+}
+
+/* get the type as a short string */
+string baseObj::strTypeShort()
+{
+    switch (type)
+    {
+        case empty:     return string(" ");
+        case sand:      return string(".");
+        case wall:      return string("W");
+        case stone:     return string("O");
+        case unknown:   return string("?");
+    }
+}
 
 
