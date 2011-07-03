@@ -20,6 +20,9 @@ int main(void)
     for(int i = 0; i < field.objs.size(); i++) {
         printf("position: %2d, data: %s\n", i, field.objs[i].str().c_str()); 
     }
+    field.str(baseObjField::list);
+    field.str(baseObjField::array);
+
     return 0;
 
 /* error handling */
