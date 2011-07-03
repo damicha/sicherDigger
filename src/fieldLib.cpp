@@ -3,6 +3,8 @@
 // FIXME: split files
 // FIXME: add obj type (physic, gfx(txt output) ) as a member of baseObj
 
+#include "baseObj.h"
+
 #include <stdio.h>
 #include <deque>
 #include <string>
@@ -10,52 +12,8 @@
 using namespace std;
 
 
-class baseObj;
 class baseObjField;
 
-
-/*
- * baseObj
- */
-class baseObj
-{
-public:
-    int pos_x, pos_y;
-    // neighbors
-    baseObj *x_prev, *x_next;
-    baseObj *y_prev, *y_next;
-
-    baseObj() : pos_x(-1),
-                x_prev(NULL), x_next(NULL),
-                y_prev(NULL), y_next(NULL) {};
-
-    string str()
-    {
-        stringstream ss;
-        ss << "<idx:" << strData() << ", neighbors: " << strNeighbors() << ">";
-        return ss.str();
-    }
-
-    string strDataEmpty() {
-        return stringstream("[-, -]").str();
-    }
-    
-    string strData() {
-        stringstream ss;
-        ss << "[" << pos_x << ", " << pos_y << "]";
-        return ss.str();
-    }
-
-    string strNeighbors() {
-        stringstream ss;
-        ss << "x--:" <<  ((x_prev == NULL) ? strDataEmpty() : x_prev->strData()) << ", " <<
-              "x++:" <<  ((x_next == NULL) ? strDataEmpty() : x_next->strData()) << ", " <<
-              "y--:" <<  ((y_prev == NULL) ? strDataEmpty() : y_prev->strData()) << ", " <<
-              "y++:" <<  ((y_next == NULL) ? strDataEmpty() : y_next->strData());
-
-        return ss.str();
-    }
-};
 
 
 /*

@@ -6,7 +6,7 @@
 
 CC = g++
 CFLAGS = -g -O2 
-OBJECTS = fieldLib.o # baseObj.o
+OBJECTS = fieldLib.o baseObj.o
 
 all: fieldLib
 
@@ -14,8 +14,8 @@ fieldLib: $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) -o $@
 
 clean:
-	rm $(OBJECTS)
-	rm fieldLib
+	rm -f $(OBJECTS)
+	rm -f fieldLib
 
 #%.o: %.c
 #	$(CC) $(CFLAGS) -c $<
