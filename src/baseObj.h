@@ -3,6 +3,9 @@
 #ifndef _BASEOBJ_H_
 #define _BASEOBJ_H_
 
+#include "baseMaterial.h"
+#include "materials.h"
+
 #include <stdio.h>
 #include <string>
 #include <sstream>
@@ -16,6 +19,8 @@ class baseObj;
  */
 class baseObj
 {
+public:
+
     /* define object types */
     typedef enum
     {
@@ -38,12 +43,36 @@ public:
     int pos_x, pos_y;
     /* object type */
     objType_t type;
+    baseMaterial *m;    /*!< the object material. A virtual class is used */
 
 public:
     /* constructor */
     baseObj() : pos_x(-1), pos_y(-1), type(unknown),
                 x_prev(NULL), x_next(NULL),
                 y_prev(NULL), y_next(NULL) {};
+
+    /*! \brief  create a material object
+     *  \todo   use copy contructor
+     */
+    baseMaterial *createMaterial(objType_t type)
+    {
+        switch(type)
+        {
+            case wall:  m = (materialWall  *)new materialWall();  break;
+            case sand:  m = (materialSand  *)new materialSand();  break;
+            case empty: m = (materialEmpty *)new materialEmpty(); break;
+            case stone: m = (materialStone *)new materialStone(); break;
+        }
+
+        return m;
+    }
+
+    void deleteMaterial()
+    {
+        if (m != NULL) {
+            delete m;
+        }
+    }
 
     /*
      * functions to get the object data as a string 
