@@ -5,10 +5,10 @@
  * 
  * \author  damicha of defect
  * \date    2011 
+ *
+ * \todo add obj type (physic, gfx(txt output) ) as a member of baseObj
+ * \todo add a configuration class 
  */
-
-// FIXME: add obj type (physic, gfx(txt output) ) as a member of baseObj
-// FIXME: add a configuration class
 
 #ifndef _BASEOBJFIELD_H_
 #define _BASEOBJFIELD_H_
@@ -74,6 +74,21 @@ public:
         
         // do final field object initialization
         initObj();
+
+        // create materials (Walls and Sand)
+        for (int y = 0; y < size_y; y++)
+        {
+            for (int x = 0; x < size_x; x++)
+            {
+                if (x == 0 || x == size_x - 1 ||
+                    y == 0 || y == size_y - 1)
+                {
+                    objs[y*size_x + x].createMaterial(baseObj::wall);
+                } else {
+                    objs[y*size_x + x].createMaterial(baseObj::sand);
+                }
+            }
+        }
     };
 
     /*!
@@ -131,7 +146,7 @@ public:
         {
             for (int x = 0; x < size_x; x++)
             {
-                printf("%s ", objs[y*size_x + x].strTypeShort().c_str());
+                printf("%c ", objs[y*size_x + x].m->symbol);
             }
             printf("\n");
         }
