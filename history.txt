@@ -1,0 +1,43 @@
+===============================================================================
+=
+= project:  sicherDigger
+= author:   damicha of defect, 2011
+=
+= file:
+=  history.txt
+=
+= description:
+=  The development history of the project sicherDigger
+=
+===============================================================================
+
+
+  0.1pre - text output
+================
+
+* materials.h
+ - The material classes baseMaterial and the derived classes materialWall,
+   materialSand, materialStone and materialEmpty were defined
+
+* baseObj.h, baseObj.cpp:
+ - ...
+
+* baseField.h, baseField.cpp:
+ - ...
+
+
+* == TODOs ==
+
+* field configuration
+
+* game engine
+ - define the physics
+
+* control engine
+ - capture user inputs
+
+* text ouput engine
+ - display the field
+
+* common:
+ - use github to store the sources
