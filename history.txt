@@ -25,6 +25,8 @@
 * baseField.h, baseField.cpp:
  - ...
 
+* txtEngine.h: text ouput engine
+ - basic drawing of the object field
 
 * == TODOs ==
 
@@ -36,8 +38,6 @@
 * control engine
  - capture user inputs
 
-* text ouput engine
- - display the field
 
 * common:
  - use github to store the sources
