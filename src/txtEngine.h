@@ -35,6 +35,7 @@ public:
 
 /* ======== functions ======== */
 public:
+
     /*!
      * \brief   Print the content of the object field to the console
      * \param   field       Reference to the object field to print
@@ -42,21 +43,34 @@ public:
      */
     void draw(const baseObjField &field, const drawType_t drawtype = redraw)
     {
-        /* set cursor position
-         * help: http://www.linuxselfhelp.com/howtos/Bash-Prompt/Bash-Prompt-HOWTO-6.html (Cursor Movement)
-         */
+        // set the cursor to its start position if required
         if (drawtype == redraw) {
-            // Move the cursor N lines up: \033[<N>A
-            printf("\033[%dA", field.size_y+2);
+            moveCursorLinesUp(getHeaderHigh() + getFieldHigh(field) + getFooterHigh());
         }
-#if 0
-        printf("\033[%d;%dH", 3, 3);
-        printf("x<--\n");
-#endif
-        // print header
-        printf("==== Header ====\n");
-       
-        // draw field
+      
+        // draw the object field
+        drawHeader();
+        drawField(field);
+        drawFooter();
+    }
+
+    /*!
+     * \param   y   Number of lines to move up.
+     */
+    void moveCursorLinesUp(int y) {
+        /* set cursor position
+         * help: http://www.linuxselfhelp.com/howtos/Bash-Prompt/Bash-Prompt-HOWTO-6.html
+         *       (Cursor Movement)
+         */
+        printf("\033[%dA", y);
+    }
+
+    /*!
+     * \brief   Print the content of the object field to the console
+     * \param   field       Reference to the object field to print
+     */
+    void drawField(const baseObjField &field)
+    {
         for (int y = 0; y < field.size_y; y++)
         {
             for (int x = 0; x < field.size_x; x++)
@@ -65,9 +79,40 @@ public:
             }
             printf("\n");
         }
+    }
+    /*!
+     * \brief   Get the high in lines of the field's text output
+     * \param   field       Reference to the object field to print
+     */
+    int getFieldHigh(const baseObjField &field) {
+        return field.size_y;
+    }
 
-        // print footer
+
+    /*!
+     * \brief   Print the header
+     */
+    void drawHeader() {
+        printf("==== Header ====\n");
+    }
+    /*!
+     * \brief   Get the high in lines of the header's text output
+     */
+    int getHeaderHigh() {
+        return 1;
+    }
+
+    /*!
+     * \brief   Print the footer
+     */
+    void drawFooter() {
         printf("==== Footer ====\n");
+    }
+    /*!
+     * \brief   Get the high in lines of the footer's text output
+     */
+    int getFooterHigh() {
+        return 1;
     }
 
 
