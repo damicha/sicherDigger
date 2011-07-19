@@ -19,9 +19,6 @@
 using namespace std;
 
 
-/*!
- * \class txtEngine
- */
 class txtEngine
 {
 public:
