@@ -1,4 +1,4 @@
-/*!
+/***************************************************************************//**
  * \file    materials.h
  * \brief   Material definition classes; derivated from the virtual class
  *          baseMaterial.
@@ -6,7 +6,7 @@
  * \author  damicha of defect
  * \date    2011 
  *
- */
+ ******************************************************************************/
 
 #ifndef _MATERIALS_H_
 #define _MATIRIALS_H_
