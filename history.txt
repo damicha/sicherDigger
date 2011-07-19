@@ -28,9 +28,14 @@
 * txtEngine.h: text ouput engine
  - basic drawing of the object field
 
+* timeEngine.h: wait for configurable trigger events
+ - uses the system functions gettimeofday() and usleep()
+
+
 * == TODOs ==
 
 * field configuration
+ - config file (header file) -> cfg engine -> field
 
 * game engine
  - define the physics
