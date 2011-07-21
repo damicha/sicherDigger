@@ -38,7 +38,11 @@ public:
      * \param   field       Reference to the object field to print
      * \param   drawtype    Set draw mode
      */
-    void draw(const baseObjField &field, const drawType_t drawtype = redraw)
+
+    // FIXME: 2 draw functions: draw, redraw
+    void draw(const baseObjField &field,
+              const drawType_t drawtype = redraw,
+              const char *str = NULL)
     {
         // set the cursor to its start position if required
         if (drawtype == redraw) {
@@ -46,7 +50,7 @@ public:
         }
       
         // draw the object field
-        drawHeader();
+        drawHeader(str);
         drawField(field);
         drawFooter();
     }
@@ -54,7 +58,7 @@ public:
     /*!
      * \param   y   Number of lines to move up.
      */
-    void moveCursorLinesUp(int y) {
+    static void moveCursorLinesUp(int y) {
         /* set cursor position
          * help: http://www.linuxselfhelp.com/howtos/Bash-Prompt/Bash-Prompt-HOWTO-6.html
          *       (Cursor Movement)
@@ -89,8 +93,8 @@ public:
     /*!
      * \brief   Print the header
      */
-    void drawHeader() {
-        printf("==== Header ====\n");
+    void drawHeader(const char *str = NULL) {
+        printf("==== Header (%s) ====\n", (str != NULL) ? str : "-");
     }
     /*!
      * \brief   Get the high in lines of the header's text output
