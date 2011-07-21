@@ -16,6 +16,7 @@
 
 #include "baseObjField.h"
 #include "baseObj.h"
+#include "config.h"
 
 #include <deque>
 #include <string>
@@ -46,12 +47,9 @@ public:
 
 /* ======== class attributes ======== */
 public:
-    /*! size of the field dimension x */
-    int size_x;
-    /*! size of the field dimension y */
-    int size_y;
-    /*! field objects */
-    deque<baseObj> objs;
+    int size_x;     /*!< size of the field dimension x */
+    int size_y;     /*!< size of the field dimension y */
+    deque<baseObj> objs;    /*!< field objects */
 
 
 /* ======== class init functions ======== */
@@ -86,6 +84,41 @@ public:
                     objs[y*size_x + x].createMaterial(baseObj::wall);
                 } else {
                     objs[y*size_x + x].createMaterial(baseObj::sand);
+                }
+          }
+        }
+    };
+
+
+    /*!
+     * \brief   Constructor
+     * \details Initializes the field with the given configuration.
+     * \param   cfg configuration
+     */
+    baseObjField(config cfg)
+    {
+        // set dimensions
+        this->size_x = cfg.size_x;
+        this->size_y = cfg.size_y;
+        
+        // initialze field with an empty default object
+        baseObj defaultObj;
+        objs.resize(size_x * size_y, defaultObj);
+        
+        // do final field object initialization
+        initObj();
+
+        // create materials
+        // FIXME move material conversion to a material class or somewhere else
+        for (int y = 0; y < size_y; y++)
+        {
+            for (int x = 0; x < size_x; x++)
+            {
+                switch (cfg.data[y*size_x + x]) {
+                    case '#': objs[y*size_x + x].createMaterial(baseObj::wall); break;
+                    case '.': objs[y*size_x + x].createMaterial(baseObj::sand); break;
+                    case ' ': objs[y*size_x + x].createMaterial(baseObj::empty); break;
+                    case 'O': objs[y*size_x + x].createMaterial(baseObj::stone); break;
                 }
             }
         }
