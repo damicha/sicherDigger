@@ -95,7 +95,7 @@ public:
      * \details Initializes the field with the given configuration.
      * \param   cfg configuration
      */
-    baseObjField(config cfg)
+    baseObjField(const config &cfg)
     {
         // set dimensions
         this->size_x = cfg.size_x;

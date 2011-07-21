@@ -63,10 +63,8 @@ public:
      * \brief   Constructor
      */
     ~config() {
-        printf("%s\n", __func__);
         /* destroy the configuration array */
-        // FIXME: delete doesn't work
-//        delete this->data;
+        delete this->data;
     }
     
 
