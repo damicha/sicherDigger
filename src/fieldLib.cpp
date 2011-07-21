@@ -13,6 +13,7 @@
 #include "baseObj.h"
 #include "baseObjField.h"
 
+#include "config.h"
 #include "txtEngine.h"
 #include "timeEngine.h"
 
@@ -23,6 +24,21 @@ using namespace std;
 
 
 
+// example configuration 
+#define X_SIZE 8
+#define Y_SIZE 8
+char field_a[X_SIZE*Y_SIZE] =
+{
+    '#', '#', '#', '#', '#', '#', '#', '#',
+    '#', 'O', 'O', 'O', 'O', 'O', 'O', '#',
+    '#', 'O', 'O', '.', ' ', '.', ' ', '#',
+    '#', 'O', '.', 'O', ' ', ' ', ' ', '#',
+    '#', '.', '.', '.', 'O', ' ', ' ', '#',
+    '#', '.', '.', '.', ' ', 'O', ' ', '#',
+    '#', '.', '.', '.', ' ', ' ', 'O', '#',
+    '#', '#', '#', '#', '#', '#', '#', '#',
+};
+
 
 
 /*
@@ -31,8 +47,9 @@ using namespace std;
 int main(void)
 {
 
-
-    baseObjField field(24, 16);
+    config cfg("field_a", X_SIZE, Y_SIZE, field_a);
+    //baseObjField field(24, 16);
+    baseObjField field(cfg);
 
     txtEngine txt;
     timeEngine time(250000);    // 250 ms trigger value
