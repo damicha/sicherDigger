@@ -16,6 +16,8 @@
 #ifndef _TIMEENGINE_H_
 #define _TIMEENGINE_H_
 
+#include "txtEngine.h"
+
 #include <sys/time.h>
 #include <stdint.h>
 using namespace std;
@@ -83,16 +85,29 @@ public:
         /* calculate the waiting time until the next trigger event */
         uint32_t sleep_time = trigger_interval - (uint32_t)(last_time - start_time) % trigger_interval; 
 
-#if 0
+#if 1
         printf("start_time, last_time: %u, %u\n"
-               "consumed time (overall, since last trigger event), left time: %d, %d, %d\n",
+               "consumed time (overall, since last trigger event), left time: %d, %d, %d\n"
+               "next trigger time: %d\n",
                start_time, last_time,
                (uint32_t)(last_time - start_time),
-               (uint32_t)(last_time - start_time) % trigger_interval, sleep_time);
+               (uint32_t)(last_time - start_time) % trigger_interval, sleep_time,
+               (uint32_t)((last_time - start_time) / trigger_interval + 1) * trigger_interval);
+
+        txtEngine::moveCursorLinesUp(3);
+
 #endif
         /* sleep */
         usleep(sleep_time);
     }
+
+    /*!
+     * \brief  Get the time of the last trigger event.
+     */
+    uint64_t getTriggerTime() {
+        return last_time - start_time;
+    }
+
 
 };
 
