@@ -31,11 +31,11 @@
 * timeEngine.h: wait for configurable trigger events
  - uses the system functions gettimeofday() and usleep()
 
+* config.h: field configuration
+ - a simple char array is used to set the default values of an objField
 
 * == TODOs ==
 
-* field configuration
- - config file (header file) -> cfg engine -> field
 
 * game engine
  - define the physics
