@@ -32,25 +32,20 @@ int main(void)
 {
 
 
-    baseObjField field(12, 8);
+    baseObjField field(24, 16);
 
     txtEngine txt;
-    timeEngine time(250000);
+    timeEngine time(250000);    // 250 ms trigger value
 
     txt.draw(field, txtEngine::firstdraw);
     for (int i = 0; i < 20; i++)
     {
+        char str[256];
+
         time.wait4Trigger();
 
-        // get the current time
-        timeval start, end;
-        gettimeofday(&start, 0);
-        double start_t = start.tv_sec + 1e-6*start.tv_usec;
-
-        usleep(10000);
-
-
-//        txt.draw(field);
+        snprintf(str, 256, "%.2f", time.getTriggerTime()/1000000.0);
+        txt.draw(field, txtEngine::redraw, str);
         // wait until 0.25 seconds are gone
 #if 0
         while(1) {
@@ -75,7 +70,7 @@ int main(void)
 //    field.str(baseObjField::list);
     field.str(baseObjField::array);
 #endif
-    
+    printf("\n\n\n");
     return 0;
 
 /* error handling */
