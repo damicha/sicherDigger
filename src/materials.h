@@ -9,7 +9,7 @@
  ******************************************************************************/
 
 #ifndef _MATERIALS_H_
-#define _MATIRIALS_H_
+#define _MATERIALS_H_
 
 #include "baseMaterial.h"
 
