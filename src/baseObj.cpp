@@ -15,7 +15,7 @@ string baseObj::str()
 {
     stringstream ss;
     ss << "<idx:" << strData() << ", " <<
-          "type:" << strType() << ", " <<
+          "type:" << m->getName() << ", " <<
           "neighbors: " << strNeighbors() << ">";
     return ss.str();
 }
@@ -50,9 +50,11 @@ string baseObj::strNeighbors()
 }
 
 /* get the type as a string */
+// FIXME use getName of the baseMaterial class
+#if 0
 string baseObj::strType()
 {
-    switch (type)
+    switch (m->type)
     {
         case empty:     return string("  empty");
         case sand:      return string("   sand");
@@ -61,8 +63,11 @@ string baseObj::strType()
         case unknown:   return string("unknown");
     }
 }
+#endif
 
+#if 0
 /* get the type as a short string */
+// FIXME use getSymbol of the baseMaterial class
 string baseObj::strTypeShort()
 {
     switch (type)
@@ -74,5 +79,5 @@ string baseObj::strTypeShort()
         case unknown:   return string("?");
     }
 }
-
+#endif
 

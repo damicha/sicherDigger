@@ -11,7 +11,6 @@
 #include <sstream>
 using namespace std;
 
-
 class baseObj;
 
 /*
@@ -21,6 +20,7 @@ class baseObj
 {
 public:
 
+#if 0
     /* define object types */
     typedef enum
     {
@@ -30,7 +30,7 @@ public:
         stone,
         unknown
     } objType_t; 
-
+#endif
 
     /*
      * object data
@@ -42,26 +42,28 @@ public:
     /* position in field */
     int pos_x, pos_y;
     /* object type */
+#if 0
     objType_t type;
+#endif    
     baseMaterial *m;    /*!< the object material. A virtual class is used */
 
 public:
     /* constructor */
-    baseObj() : pos_x(-1), pos_y(-1), type(unknown),
+    baseObj() : pos_x(-1), pos_y(-1), // type(unknown),
                 x_prev(NULL), x_next(NULL),
                 y_prev(NULL), y_next(NULL) {};
 
     /*! \brief  create a material object
      *  \todo   use copy contructor
      */
-    baseMaterial *createMaterial(objType_t type)
+    baseMaterial *createMaterial(baseMaterialConfig::materialType_t type)
     {
         switch(type)
         {
-            case wall:  m = (materialWall  *)new materialWall();  break;
-            case sand:  m = (materialSand  *)new materialSand();  break;
-            case empty: m = (materialEmpty *)new materialEmpty(); break;
-            case stone: m = (materialStone *)new materialStone(); break;
+            case baseMaterialConfig::wall:  m = (materialWall  *)new materialWall();  break;
+            case baseMaterialConfig::sand:  m = (materialSand  *)new materialSand();  break;
+            case baseMaterialConfig::empty: m = (materialEmpty *)new materialEmpty(); break;
+            case baseMaterialConfig::stone: m = (materialStone *)new materialStone(); break;
         }
 
         return m;
@@ -86,10 +88,12 @@ public:
     string strData();
     /* get the object data of the neighbors as a string */
     string strNeighbors();
+#if 0
     /* get the type as a string */
     string strType();
     /* get the type as a short string */
     string strTypeShort();
+#endif
 };
 
 
