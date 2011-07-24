@@ -20,24 +20,12 @@
 #include <stdio.h>
 #include <sys/time.h>
 #include <stdlib.h>
+
+/* load configurations */
+#include "configData.h"
+
 using namespace std;
 
-
-
-// example configuration 
-#define X_SIZE 8
-#define Y_SIZE 8
-char field_a[X_SIZE*Y_SIZE] =
-{
-    '#', '#', '#', '#', '#', '#', '#', '#',
-    '#', 'O', 'O', 'O', 'O', 'O', 'O', '#',
-    '#', 'O', 'O', '.', ' ', '.', ' ', '#',
-    '#', 'O', '.', 'O', ' ', ' ', ' ', '#',
-    '#', '.', '.', '.', 'O', ' ', ' ', '#',
-    '#', '.', '.', '.', ' ', 'O', ' ', '#',
-    '#', '.', '.', '.', ' ', ' ', 'O', '#',
-    '#', '#', '#', '#', '#', '#', '#', '#',
-};
 
 
 
@@ -47,7 +35,7 @@ char field_a[X_SIZE*Y_SIZE] =
 int main(void)
 {
 
-    config cfg("field_a", X_SIZE, Y_SIZE, field_a);
+    config cfg(field_a);
     //baseObjField field(24, 16);
     baseObjField field(cfg);
 
@@ -55,7 +43,7 @@ int main(void)
     timeEngine time(250000);    // 250 ms trigger value
 
     txt.draw(field, txtEngine::firstdraw);
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < 10; i++)
     {
         char str[256];
 
@@ -80,14 +68,13 @@ int main(void)
 //                          end.tv_sec - start.tv_sec + 1e-6*(end.tv_usec - start.tv_usec));
     }
 
-#if 0
-    for(int i = 0; i < field.objs.size(); i++) {
-        printf("position: %2d, data: %s\n", i, field.objs[i].str().c_str()); 
-    }
-//    field.str(baseObjField::list);
+    printf("\n\n\n");
+
+#if 1
+    field.str(baseObjField::list);
     field.str(baseObjField::array);
 #endif
-    printf("\n\n\n");
+
     return 0;
 
 /* error handling */
