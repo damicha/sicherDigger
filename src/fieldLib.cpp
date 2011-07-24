@@ -16,6 +16,7 @@
 #include "config.h"
 #include "textEngine.h"
 #include "timeEngine.h"
+#include "physicsEngine.h"
 
 #include <stdio.h>
 #include <sys/time.h>
@@ -41,6 +42,8 @@ int main(void)
 
     textEngine txt;
     timeEngine time(250000);    // 250 ms trigger value
+//    timeEngine time(500000);    // 500 ms trigger value
+    physicsEngine phy;
 
     txt.draw(field, textEngine::firstdraw);
     for (int i = 0; i < 10; i++)
@@ -49,10 +52,14 @@ int main(void)
 
         time.wait4Trigger();
 
+        phy.run(field);
+
         snprintf(str, 256, "%.2f", time.getTriggerTime()/1000000.0);
         txt.draw(field, textEngine::redraw, str);
     }
     printf("\n\n\n");
+
+    printf("iterations: %d\n", phy.getIterNum());
 
 #if 1
 //    field.str(baseObjField::list);
