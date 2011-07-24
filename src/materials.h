@@ -32,6 +32,7 @@ public:
     materialWall() {
         name = string("Wall");
         symbol = '#';
+        setType(wall);
     }
 };
 
@@ -49,6 +50,7 @@ public:
     materialSand() {
         name = string("Sand");
         symbol = '.';
+        setType(sand);
     };
 };
 
@@ -66,6 +68,7 @@ public:
     materialEmpty() {
         name = string("Empty");
         symbol = ' ';
+        setType(empty);
     };
 };
 
@@ -83,6 +86,7 @@ public:
     materialStone() {
         name = string("Stone");
         symbol = 'O';
+        setType(stone);
     };
 };
 
