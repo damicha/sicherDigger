@@ -25,14 +25,16 @@
 * baseField.h, baseField.cpp:
  - ...
 
-* txtEngine.h: text ouput engine
+* textEngine.h: text ouput engine
  - basic drawing of the object field
 
 * timeEngine.h: wait for configurable trigger events
  - uses the system functions gettimeofday() and usleep()
 
-* config.h: field configuration
+* config.h: field configuration class
  - a simple char array is used to set the default values of an objField
+
+* configData.h: field configurations
 
 * == TODOs ==
 
