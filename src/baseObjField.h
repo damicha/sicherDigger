@@ -81,9 +81,9 @@ public:
                 if (x == 0 || x == size_x - 1 ||
                     y == 0 || y == size_y - 1)
                 {
-                    objs[y*size_x + x].createMaterial(baseObj::wall);
+                    objs[y*size_x + x].createMaterial(baseMaterialConfig::wall);
                 } else {
-                    objs[y*size_x + x].createMaterial(baseObj::sand);
+                    objs[y*size_x + x].createMaterial(baseMaterialConfig::sand);
                 }
           }
         }
@@ -115,10 +115,10 @@ public:
             for (int x = 0; x < size_x; x++)
             {
                 switch (cfg.data[y*size_x + x]) {
-                    case '#': objs[y*size_x + x].createMaterial(baseObj::wall); break;
-                    case '.': objs[y*size_x + x].createMaterial(baseObj::sand); break;
-                    case ' ': objs[y*size_x + x].createMaterial(baseObj::empty); break;
-                    case 'O': objs[y*size_x + x].createMaterial(baseObj::stone); break;
+                    case '#': objs[y*size_x + x].createMaterial(baseMaterialConfig::wall); break;
+                    case '.': objs[y*size_x + x].createMaterial(baseMaterialConfig::sand); break;
+                    case ' ': objs[y*size_x + x].createMaterial(baseMaterialConfig::empty); break;
+                    case 'O': objs[y*size_x + x].createMaterial(baseMaterialConfig::stone); break;
                 }
             }
         }
