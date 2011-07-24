@@ -1,4 +1,4 @@
-/***************************************************************************//**
+/*! ****************************************************************************
  * \file    timeEngine.h
  * \class   timeEngine
  * \brief   Provides common time and trigger functions.
@@ -16,7 +16,7 @@
 #ifndef _TIMEENGINE_H_
 #define _TIMEENGINE_H_
 
-#include "txtEngine.h"
+#include "textEngine.h"
 
 #include <sys/time.h>
 #include <stdint.h>
@@ -94,7 +94,7 @@ public:
                (uint32_t)(last_time - start_time) % trigger_interval, sleep_time,
                (uint32_t)((last_time - start_time) / trigger_interval + 1) * trigger_interval);
 
-        txtEngine::moveCursorLinesUp(3);
+        textEngine::moveCursorLinesUp(3);
 
 #endif
         /* sleep */
