@@ -1,6 +1,5 @@
 /*!
  * \file    config.h
- * \class   config 
  * \brief   Stores the configuration for the field as an array of characters
  * 
  * \author  damicha of defect
@@ -12,10 +11,12 @@
 
 #include <string>
 
+#include <string.h>
+
 using namespace std;
 
 /*
- * config
+ * \class config
  */
 class config
 {
@@ -25,6 +26,7 @@ public:
     int size_y;     /*!< size of the field dimension y */
     string name;    /*!< name od the configuration */
     char *data;     /*!< character array that contains the configuration */
+
 
 /* ======== class init functions ======== */
 public:
@@ -36,8 +38,8 @@ public:
      * \param   cfg character array with the configuration
      */
     config(const string &name,
-                 int size_x, int size_y,
-                 const char *data)
+           int size_x, int size_y,
+           const char *data)
     {
         /* set configuration name */
         this->name = name;
@@ -59,8 +61,28 @@ public:
         }
     }
 
+    
     /*!
-     * \brief   Constructor
+     * \brief   Copy Constructor
+     */
+    config(const config &cfg)
+    {
+        /* set configuration name */
+        this->name = cfg.name;
+        /* set dimensions */
+        this->size_x = cfg.size_x;
+        this->size_y = cfg.size_y;
+
+        /* copy the configuration array */
+        this->data = new char[this->size_x*this->size_y];
+
+        /* copy */
+        memcpy(this->data, cfg.data, sizeof(char) * this->size_x * this->size_y);
+    }
+
+
+    /*!
+     * \brief   Destructor
      */
     ~config() {
         /* destroy the configuration array */
