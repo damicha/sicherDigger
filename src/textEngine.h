@@ -1,6 +1,6 @@
 /*!
- * \file    txtEngine.h
- * \class   txtEngine 
+ * \file    textEngine.h
+ * \class   textEngine 
  * \brief   Displays the field objects as text on the console
  * 
  * \author  damicha of defect
@@ -8,8 +8,8 @@
  *
  */
 
-#ifndef _TXTENGINE_H_
-#define _TXTENGINE_H_
+#ifndef _TEXTENGINE_H_
+#define _TEXTENGINE_H_
 
 #include "baseObjField.h"
 
@@ -19,7 +19,7 @@
 using namespace std;
 
 
-class txtEngine
+class textEngine
 {
 public:
     /*!
