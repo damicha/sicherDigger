@@ -44,7 +44,8 @@ public:
     /* object type */
 #if 0
     objType_t type;
-#endif    
+#endif
+    // FIXME: add object layer: (baseObj.obj: obj.m, obj...)
     baseMaterial *m;    /*!< the object material. A virtual class is used */
 
 public:
