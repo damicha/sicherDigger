@@ -80,6 +80,11 @@ public:
     string name;      /*!< material name */
     char   symbol;    /*!< short symbol as material identification */
                       /* FIXME: define symbols */
+    int done;       /*!< 1 if material was already used by physics engine: 
+                     * FIXME: move to a physics class
+                     * FIXME: use a own data type
+                     * FIXME: don't use done. use blocked by current, next, prev ..
+                     */
 
 public:
     /*!
