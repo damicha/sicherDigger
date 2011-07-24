@@ -1,6 +1,5 @@
 /*!
  * \file    baseMaterial.h
- * \class   baseMaterial 
  * \brief   virtual class to define the interface of the used materials
  * 
  * \author  damicha of defect
@@ -13,14 +12,68 @@
 #define _BASEMATERIAL_H_
 
 #include <string>
+#include <stdio.h> 
 
 using namespace std;
 
+/*
+ * \class baseMaterialConfig
+ */
+class baseMaterialConfig
+{
+/* ======== class datatypes ======== */    
+public:
+    /*!
+     * \enum material types
+     */
+    typedef enum
+    {
+        empty,
+        sand,
+        wall,
+        stone,
+        unknown
+    } materialType_t;
+
+
+/* ======== class attributes ======== */
+private:
+    materialType_t type;
+
+
+/* ======== class initialisation functions ======== */
+public:
+    /*!
+     * \brief   Constructor
+     */
+    baseMaterialConfig(const materialType_t type = unknown) : type(type) {}
+
+
+    /*!
+     * \brief   Set the material type.
+     * \param   material type of the class
+     */
+    void setType(materialType_t type) {
+        this->type = type;
+    }
+    
+    
+    /*!
+     * \brief   Get the material type.
+     * \return  material type of the class
+     */
+    materialType_t getType() {
+        return type;
+    }
+
+
+};
+
 
 /*
- * baseMaterial
+ * \class baseMaterial
  */
-class baseMaterial
+class baseMaterial : public baseMaterialConfig
 {
 /* ======== class attributes ======== */    
 public:
@@ -32,8 +85,11 @@ public:
     /*!
      * \brief   virtual constructor
      * \details Set default values to the constant class attributes.
+     * \todo    FIXME how to call the constructor of baseMaterialConfig ?
      */
-    baseMaterial() : name("unknown"), symbol('?') {};
+    baseMaterial() : name("unknown"), symbol('?') {
+        setType(unknown);        
+    };
 
 
 /* ======== class string functions ======== */
