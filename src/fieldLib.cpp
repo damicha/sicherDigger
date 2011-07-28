@@ -11,7 +11,7 @@
 // FIXME: add obj type (physic, gfx(txt output) ) as a member of baseObj
 
 #include "baseObj.h"
-#include "baseObjField.h"
+#include "objField.h"
 
 #include "config.h"
 #include "textEngine.h"
@@ -37,8 +37,8 @@ int main(void)
 {
 
     config cfg(field_a);
-    //baseObjField field(24, 16);
-    baseObjField field(cfg);
+    //objField field(24, 16);
+    objField field(cfg);
 
     textEngine txt;
     timeEngine time(250000);    // 250 ms trigger value
@@ -62,8 +62,8 @@ int main(void)
     printf("iterations: %d\n", phy.getIterNum());
 
 #if 1
-//    field.str(baseObjField::list);
-    field.str(baseObjField::array);
+//    field.str(objField::list);
+    field.str(objField::array);
 #endif
 
     return 0;

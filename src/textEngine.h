@@ -11,7 +11,7 @@
 #ifndef _TEXTENGINE_H_
 #define _TEXTENGINE_H_
 
-#include "baseObjField.h"
+#include "objField.h"
 
 #include <stdio.h>
 #include <string>
@@ -40,7 +40,7 @@ public:
      */
 
     // FIXME: 2 draw functions: draw, redraw
-    void draw(const baseObjField &field,
+    void draw(const objField &field,
               const drawType_t drawtype = redraw,
               const char *str = NULL)
     {
@@ -70,7 +70,7 @@ public:
      * \brief   Print the content of the object field to the console
      * \param   field       Reference to the object field to print
      */
-    void drawField(const baseObjField &field)
+    void drawField(const objField &field)
     {
         for (int y = 0; y < field.size_y; y++)
         {
@@ -85,7 +85,7 @@ public:
      * \brief   Get the high in lines of the field's text output
      * \param   field       Reference to the object field to print
      */
-    int getFieldHigh(const baseObjField &field) {
+    int getFieldHigh(const objField &field) {
         return field.size_y;
     }
 

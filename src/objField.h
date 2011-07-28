@@ -1,6 +1,6 @@
 /*!
- * \file    baseObjField.h
- * \class   baseObjField 
+ * \file    objField.h
+ * \class   objField 
  * \brief   handels a 2 dimensional field of class baseObj objects
  * 
  * \author  damicha of defect
@@ -10,11 +10,10 @@
  * \todo add a configuration class 
  */
 
-#ifndef _BASEOBJFIELD_H_
-#define _BASEOBJFIELD_H_
+#ifndef _OBJFIELD_H_
+#define _OBJFIELD_H_
 
 
-#include "baseObjField.h"
 #include "baseObj.h"
 #include "config.h"
 
@@ -24,13 +23,13 @@
 using namespace std;
 
 
-class baseObjField;
+class objField;
 
 
 /*
- * baseObjField
+ * objField
  */
-class baseObjField
+class objField
 {
 
 /* ======== class types ======== */
@@ -60,7 +59,7 @@ public:
      * \param   size_x field size of the dimension x
      * \param   size_y field size of the dimension y
      */
-    baseObjField(int size_x, int size_y)
+    objField(int size_x, int size_y)
     {
         // set dimensions
         this->size_x = size_x;
@@ -95,7 +94,7 @@ public:
      * \details Initializes the field with the given configuration.
      * \param   cfg configuration
      */
-    baseObjField(const config &cfg)
+    objField(const config &cfg)
     {
         // set dimensions
         this->size_x = cfg.size_x;

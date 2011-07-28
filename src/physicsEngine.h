@@ -13,7 +13,7 @@
 
 #include "baseMaterial.h"
 #include "materials.h"
-#include "baseObjField.h"
+#include "objField.h"
 
 #include "stdio.h"
 
@@ -50,7 +50,7 @@ public:
     /*!
      * \brief   Do one iterration on the object field.
      */
-    void run(baseObjField &field)
+    void run(objField &field)
     {
 
         /* clear dones */

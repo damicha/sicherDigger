@@ -1,9 +1,9 @@
-/* baseObjField.cpp */
+/* objField.cpp */
 
 // FIXME: add obj type (physic, gfx(txt output) ) as a member of baseObj
 
 #include "baseObj.h"
-#include "baseObjField.h"
+#include "objField.h"
 
 #include <deque>
 #include <string>
@@ -12,7 +12,7 @@ using namespace std;
 
 
 /* initialize the field objects */
-void baseObjField::initObj()
+void objField::initObj()
 {
 
     /* initialize all field objects */
