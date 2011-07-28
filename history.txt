@@ -19,10 +19,10 @@
  - The material classes baseMaterial and the derived classes materialWall,
    materialSand, materialStone and materialEmpty were defined
 
-* baseObj.h, baseObj.cpp:
+* objField.h, objField.cpp:
  - ...
 
-* baseField.h, baseField.cpp:
+* objFieldEntry.h, objFieldEntry.cpp:
  - ...
 
 * textEngine.h: text ouput engine

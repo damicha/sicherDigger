@@ -8,9 +8,9 @@
  *
  ******************************************************************************/
 
-// FIXME: add obj type (physic, gfx(txt output) ) as a member of baseObj
+// FIXME: add obj type (physic, gfx(txt output) ) as a member of objFieldEntry
 
-#include "baseObj.h"
+#include "objFieldEntry.h"
 #include "objField.h"
 
 #include "config.h"

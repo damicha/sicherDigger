@@ -1,8 +1,6 @@
 /* objField.cpp */
 
-// FIXME: add obj type (physic, gfx(txt output) ) as a member of baseObj
-
-#include "baseObj.h"
+#include "objFieldEntry.h"
 #include "objField.h"
 
 #include <deque>

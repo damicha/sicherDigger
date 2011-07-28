@@ -69,12 +69,12 @@ public:
         {
             for (int x = 0; x < field.size_x; x++)
             {
-                baseObj *obj = &(field.objs[y*field.size_x + x]);
+                objFieldEntry *obj = &(field.objs[y*field.size_x + x]);
 
                 /* a stone falls down if the field under it is free */
                 if (obj->m->getType() == baseMaterialConfig::stone &&
                     field.objs[y*field.size_x + x].m->done != 1) {
-                    baseObj *obj_y_next = obj->y_next;
+                    objFieldEntry *obj_y_next = obj->y_next;
 
                     if (obj_y_next != NULL &&
                         obj_y_next->m->getType() == baseMaterialConfig::empty)

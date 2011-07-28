@@ -1,7 +1,7 @@
-/* file: baseObj.h */
+/* file: objFieldEntry.h */
 
-#ifndef _BASEOBJ_H_
-#define _BASEOBJ_H_
+#ifndef _OBJFIELDENTRY_H_
+#define _OBJFIELDENTRY_H_
 
 #include "baseMaterial.h"
 #include "materials.h"
@@ -11,48 +11,36 @@
 #include <sstream>
 using namespace std;
 
-class baseObj;
+class objFieldEntry;
 
 /*
- * baseObj
+ * objFieldEntry
  */
-class baseObj
+class objFieldEntry
 {
 public:
-
-#if 0
-    /* define object types */
-    typedef enum
-    {
-        empty,
-        sand,
-        wall,
-        stone,
-        unknown
-    } objType_t; 
-#endif
 
     /*
      * object data
      */
 public:
     /* neighbor objects */
-    baseObj *x_prev, *x_next;
-    baseObj *y_prev, *y_next;
+    objFieldEntry *x_prev, *x_next;
+    objFieldEntry *y_prev, *y_next;
     /* position in field */
     int pos_x, pos_y;
     /* object type */
 #if 0
     objType_t type;
 #endif
-    // FIXME: add object layer: (baseObj.obj: obj.m, obj...)
+    // FIXME: add object layer: (objFieldEntry.obj: obj.m, obj...)
     baseMaterial *m;    /*!< the object material. A virtual class is used */
 
 public:
     /* constructor */
-    baseObj() : pos_x(-1), pos_y(-1), // type(unknown),
-                x_prev(NULL), x_next(NULL),
-                y_prev(NULL), y_next(NULL) {};
+    objFieldEntry() : pos_x(-1), pos_y(-1),
+                      x_prev(NULL), x_next(NULL),
+                      y_prev(NULL), y_next(NULL) {};
 
     /*! \brief  create a material object
      *  \todo   use copy contructor

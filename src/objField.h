@@ -1,12 +1,12 @@
 /*!
  * \file    objField.h
  * \class   objField 
- * \brief   handels a 2 dimensional field of class baseObj objects
+ * \brief   handels a 2 dimensional field of class objFieldEntry objects
  * 
  * \author  damicha of defect
  * \date    2011 
  *
- * \todo add obj type (physic, gfx(txt output) ) as a member of baseObj
+ * \todo add obj type (physic, gfx(txt output) ) as a member of objFieldEntry->obj
  * \todo add a configuration class 
  */
 
@@ -14,7 +14,7 @@
 #define _OBJFIELD_H_
 
 
-#include "baseObj.h"
+#include "objFieldEntry.h"
 #include "config.h"
 
 #include <deque>
@@ -48,7 +48,7 @@ public:
 public:
     int size_x;     /*!< size of the field dimension x */
     int size_y;     /*!< size of the field dimension y */
-    deque<baseObj> objs;    /*!< field objects */
+    deque<objFieldEntry> objs;    /*!< field objects FIXME: use a simple array */
 
 
 /* ======== class init functions ======== */
@@ -66,7 +66,7 @@ public:
         this->size_y = size_y;
         
         // initialze field with an empty default object
-        baseObj defaultObj;
+        objFieldEntry defaultObj;
         objs.resize(size_x * size_y, defaultObj);
         
         // do final field object initialization
@@ -101,7 +101,7 @@ public:
         this->size_y = cfg.size_y;
         
         // initialze field with an empty default object
-        baseObj defaultObj;
+        objFieldEntry defaultObj;
         objs.resize(size_x * size_y, defaultObj);
         
         // do final field object initialization
