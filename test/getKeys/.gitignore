@@ -1,5 +1,5 @@
 # main binary
-getKeys
+getKey
 
 # object files
 *.o
