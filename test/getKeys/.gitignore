@@ -1,0 +1,6 @@
+# main binary
+getKeys
+
+# object files
+*.o
+
