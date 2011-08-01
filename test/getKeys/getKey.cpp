@@ -11,31 +11,39 @@
 
 #include <stdio.h>
 #include <ncurses.h>
+#include <unistd.h>
 
 /*
  * main
+ * FIXME improve description
+ * use cursor keys
+ * do something useful (add, sub, ...)
  */
 int main(void)
 {
     initscr();          /* Start curses mode          */
     printw("Hello World !!!");  /* Print Hello World          */
     refresh();          /* Print it on to the real screen */
-    getch();            /* Wait for user input */
 
     int c;
 
     /* configure */
-    noecho();
+    noecho();           // getchar() doesn't echo the get character
+    nodelay(stdscr, true);          // getchar()'s no blocking mode
     cbreak();
     //keypad();
 
-
-    while (1)
+    // get the first key in the input buffer and discard all other
+    while (c != 'q')
     {
-        c = getch();   
+        c = getch();    // get first entry (key) of the input buffer    
+        flushinp();     // flush all other keys from input buffer
 
-        printf ("The char %c has the ASCII code %d\n", (char)c&0xff, c);
-   //     sleep(1);
+        if (c != ERR) {
+            printw("The char %c has the ASCII code %d\n", (char)c&0xff, c);
+            refresh();
+        }
+        sleep(1);
 
     }
 
