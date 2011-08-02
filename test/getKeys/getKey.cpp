@@ -1,13 +1,13 @@
-/* poly.cpp */
-/* damicha of defect (2011) */
-
-/* FIXME: Test how to store objects of inherent classes of a virtual class in an array of type of
- * the virtual class.
- * -> Don't store the objects directly.
- * -> Store only pointer of the objects.
- * -> Create and destroy the objects by the class functions !!
- */
-
+/*! ****************************************************************************
+ *
+ * \file    getKey.cpp
+ * \brief   The ncurses library is used to get key from the input buffer and
+ *          to print text to the console (output buffer).
+ *
+ * \author  damicha of defect
+ * \date    2011
+ *
+ ******************************************************************************/
 
 #include <stdio.h>
 #include <ncurses.h>
@@ -21,66 +21,71 @@
  */
 int main(void)
 {
-    initscr();          /* Start curses mode          */
-    printw("Hello World !!!");  /* Print Hello World          */
-    refresh();          /* Print it on to the real screen */
+    /* start curses mode */
+    initscr();         
+    /* print the welcome message */
+    printw("Welcome\n");
+    printw("Press keys:\n");
+    printw("  Up    - to increase the value\n");
+    printw("  Down  - to decrease the value\n");
+    printw("  Left  - to halve the value\n");
+    printw("  Right - to double the value\n");
+    printw("  r     - to reset the value\n");
+    printw("  q     - to quit\n");
+    /* Print it on to the real screen */
+    refresh();
 
-    int c;
+    
 
-    /* configure */
-    noecho();           // getchar() doesn't echo the get character
-    nodelay(stdscr, true);          // getchar()'s no blocking mode
-    cbreak();
-    //keypad();
+    /* configure the behavor of the getchar() function */
+    noecho();               // getchar() doesn't echo the get character
+    nodelay(stdscr, true);  // getchar()'s non blocking mode
+    cbreak();               // disable the buffer of typed characters until a
+                            // "\n" or "\r" is typed
+    keypad(stdscr, true);   // enable the keypad to get its keys
 
-    // get the first key in the input buffer and discard all other
-    while (c != 'q')
+    int c;                  // character to read
+    int exit = false;        // exit flag
+#define A_RESET_VALUE 1024
+    long long a = A_RESET_VALUE;    // accumulator
+    while (exit == false)
     {
+        /* get the first key in the input buffer and discard all other */
         c = getch();    // get first entry (key) of the input buffer    
         flushinp();     // flush all other keys from input buffer
 
-        if (c != ERR) {
-            printw("The char %c has the ASCII code %d\n", (char)c&0xff, c);
-            refresh();
+        if (c != ERR)
+        {
+
+            /* check got key and calculate new accumulator */
+            switch (c)
+            {
+                case 'q':       exit = true;        break;
+                case 'r':       a = A_RESET_VALUE;  break;
+                case KEY_UP:    a++;                break;
+                case KEY_DOWN:  a--;                break;
+                case KEY_LEFT:  a /= 2;             break;
+                case KEY_RIGHT: a *= 2;             break;
+            }
+
+
         }
-        sleep(1);
+
+        /* generate output */
+        move(10, 0);             // move cursor position to (row, col)
+        printw("The char %c has the ASCII code %3d (0x%02x)\n",
+               (char)c&0xff, c, c);
+        printw("\n");
+        printw("Value A: %24lld (0x%016llx)\n", a, a);
+        refresh();
+        
+        /* sleep for 250 ms seconds */
+        usleep(250*1000);
 
     }
 
-    endwin();           /* End curses mode        */
-    return 0;
-
-
-
-
-#if 0
-    char c;
-    puts ("Enter text. Include a dot ('.') in a sentence to exit:");
-    do {
-        c=getchar();
-        putchar (c);
-    } while (c != '.');
-
-    bool exit = false; 
-    while(!exit) 
-    { 
-        if( kbhit() ) // Nur wenn auch eine Taste gedrückt ist 
-        {   
-            char c = getch(); // Muss auf keine Eingabe warten, Taste ist bereits gedrückt 
-            switch(c) 
-            { 
-                case "x": exit = true; break; // Verarbeite Eingabe
-                default: break;
-            } 
-        } 
-        // Geschwindigkeitsregler 
-        sleep(10); 
-    }
-
-#endif
-
-
-
+    /* End curses mode */
+    endwin();
     return 0;
 }
 
