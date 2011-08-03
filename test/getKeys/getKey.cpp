@@ -4,6 +4,12 @@
  * \brief   The ncurses library is used to get key from the input buffer and
  *          to print text to the console (output buffer).
  *
+ * \details It seems that it's not possible to disable the autorepeat function
+ *          of the keyboard. The only way that I found is the "xset -r" command.
+ *          But this command disables the autorepeat function of an singe key or
+ *          at all in the whole system. It seems that it's also not possible
+ *          to get key press or key release events from linux. This sux.
+ *
  * \author  damicha of defect
  * \date    2011
  *
@@ -15,9 +21,6 @@
 
 /*
  * main
- * FIXME improve description
- * use cursor keys
- * do something useful (add, sub, ...)
  */
 int main(void)
 {
@@ -44,6 +47,7 @@ int main(void)
                             // "\n" or "\r" is typed
     keypad(stdscr, true);   // enable the keypad to get its keys
 
+
     int c;                  // character to read
     int exit = false;        // exit flag
 #define A_RESET_VALUE 1024
@@ -57,7 +61,7 @@ int main(void)
         if (c != ERR)
         {
 
-            /* check got key and calculate new accumulator */
+            /* check got key and calculate the new accumulator value */
             switch (c)
             {
                 case 'q':       exit = true;        break;
@@ -79,8 +83,8 @@ int main(void)
         printw("Value A: %24lld (0x%016llx)\n", a, a);
         refresh();
         
-        /* sleep for 250 ms seconds */
-        usleep(250*1000);
+        /* sleep for 25 ms seconds */
+        usleep(25*1000);
 
     }
 
