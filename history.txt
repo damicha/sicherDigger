@@ -36,14 +36,16 @@
 
 * configData.h: field configurations
 
-* physicsEngine.h: game physic engine
- - simple stone movement (it'S falling down) was added
+* physicsEngine.h, physicsEngine.cpp: game physic engine
+ - simple stone movement (it's falling down) was added
 
 * == TODOs ==
 
+* physicsEngine.h, physicsEngine.cpp: game physic engine
+ - add physics engine for obj types, empty, sand, wall, diamond
 
-* game engine
- - define the physics
+* object:
+ - add an object layer 
 
 * control engine
  - capture user inputs
