@@ -1,4 +1,11 @@
-/* objField.cpp */
+/*!
+ * \file    objField.cpp
+ * \brief   Implementation of the class objField.
+ * 
+ * \author  damicha of defect
+ * \date    2011 
+ *
+ */
 
 #include "objFieldEntry.h"
 #include "objField.h"
