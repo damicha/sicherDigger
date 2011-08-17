@@ -1,6 +1,5 @@
 /*!
  * \file    objField.h
- * \class   objField 
  * \brief   handels a 2 dimensional field of class objFieldEntry objects
  * 
  * \author  damicha of defect
@@ -26,8 +25,8 @@ using namespace std;
 class objField;
 
 
-/*
- * objField
+/*!
+ * \class   objField 
  */
 class objField
 {
