@@ -1,7 +1,11 @@
 /* file: objFieldEntry.cpp */
 
-// FIXME: add obj type (physic, gfx(txt output) ) as a member of objFieldEntry->obj
-// FIXME: use doxygen comments
+/* FIXME:
+ *  add obj type (physic, gfx(txt output) ) as a member of objFieldEntry->obj
+ *  use doxygen comments
+ *  needed object structure (add an extra object layer!):
+ *   - objField->objFieldEntries[x,y]->Object->(.material, .state)
+
 
 #include "objFieldEntry.h"
 
