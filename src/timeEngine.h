@@ -39,7 +39,8 @@ private:
 public:
     /*!
      * \brief   constructor
-     * \param   trigger_interval   Trigger interval in us.
+     * \param   trigger_interval   Trigger interval in us. Default value is
+     *                             1000000 (1 second).
      */
     timeEngine(uint32_t trigger_interval = 1000000) {
         setStartTime();
