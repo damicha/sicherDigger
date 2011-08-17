@@ -9,7 +9,7 @@
 #-------------------------------------------------------------------------------
 CC = g++
 CFLAGS = -g -O2 
-OBJECTS = fieldLib.o objFieldEntry.o objField.o
+OBJECTS = fieldLib.o objFieldEntry.o objField.o physicsEngine.o
 INCLUDES = $(wildcard *.h)
 
 #-------------------------------------------------------------------------------
