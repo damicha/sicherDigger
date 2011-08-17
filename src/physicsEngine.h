@@ -1,11 +1,11 @@
-/*! ****************************************************************************
+/*!
  * \file    phyicsEngine.h
  * \brief   Implements the physics of the world.
  *
  * \author  damicha of defect
  * \date    2011
  *
- ******************************************************************************/
+ */
 
 
 #ifndef _PHYSICSENGINE_H_
@@ -40,7 +40,7 @@ public:
     }
 
     /*!
-     * \brief   Reset the number of iterrations.
+     * \brief   Reset the number of iterations.
      */
     void resetIterNum(void) {
         iter_num = 0;
@@ -48,7 +48,12 @@ public:
 
 
     /*!
-     * \brief   Do one iterration on the object field.
+     * \brief   Do one iteration on the object field.
+     * \param field
+     *  Object field with the objects to modify/move.
+     *
+     * FIXME: create a subfunction for each material
+     * FIXME: add mechanism to lock source and destination field
      */
     void run(objField &field)
     {
@@ -80,7 +85,7 @@ public:
                         obj_y_next->m->getType() == baseMaterialConfig::empty)
                     {
                         // change object types
-                        // FIXME: done change object types: move objects!
+                        // FIXME: don't change object types: move objects!
                         baseMaterial *m1 = obj->m;
                         baseMaterial *m2 = obj_y_next->m;
                         obj->m          = m2;
@@ -96,7 +101,7 @@ public:
 
 
     /*!
-     * \brief   Get the number of iterrations since last reset.
+     * \brief   Get the number of iterations since last reset.
      */
     int getIterNum(void) {
         return iter_num;
