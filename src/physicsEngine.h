@@ -1,6 +1,6 @@
 /*!
- * \file    phyicsEngine.h
- * \brief   Implements the physics of the world.
+ * \file    physicsEngine.h
+ * \brief   Class definition.
  *
  * \author  damicha of defect
  * \date    2011
@@ -46,66 +46,23 @@ public:
         iter_num = 0;
     }
 
-
-    /*!
-     * \brief   Do one iteration on the object field.
-     * \param field
-     *  Object field with the objects to modify/move.
-     *
-     * FIXME: create a subfunction for each material
-     * FIXME: add mechanism to lock source and destination field
-     */
-    void run(objField &field)
-    {
-
-        /* clear dones */
-        for (int y = 0; y < field.size_y; y++)
-        {
-            for (int x = 0; x < field.size_x; x++)
-            {
-                field.objs[y*field.size_x + x].m->done = 0;
-
-            }
-        }
-
-        iter_num++;
-
-        for (int y = 0; y < field.size_y; y++)
-        {
-            for (int x = 0; x < field.size_x; x++)
-            {
-                objFieldEntry *obj = &(field.objs[y*field.size_x + x]);
-
-                /* a stone falls down if the field under it is free */
-                if (obj->m->getType() == baseMaterialConfig::stone &&
-                    field.objs[y*field.size_x + x].m->done != 1) {
-                    objFieldEntry *obj_y_next = obj->y_next;
-
-                    if (obj_y_next != NULL &&
-                        obj_y_next->m->getType() == baseMaterialConfig::empty)
-                    {
-                        // change object types
-                        // FIXME: don't change object types: move objects!
-                        baseMaterial *m1 = obj->m;
-                        baseMaterial *m2 = obj_y_next->m;
-                        obj->m          = m2;
-                        obj_y_next->m   = m1;
-                    }
-                    obj_y_next->m->done = 1;
-                }
-                obj->m->done = 1;
-
-            }    
-        }
-    }
-
-
     /*!
      * \brief   Get the number of iterations since last reset.
+     * \return  Number of done iterations.
      */
     int getIterNum(void) {
         return iter_num;
     }
+
+    /*!
+     * \brief   Do one iteration on the object field.
+     */
+    void run(objField &field);
+
+    /*!
+     * \brief   Stone physics
+     */
+    void stonePhysics(objField &field, objFieldEntry *obj);
 
 
 };
