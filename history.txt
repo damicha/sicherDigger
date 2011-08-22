@@ -15,9 +15,17 @@
   0.1pre - text output
 ================
 
-* materials.h
- - The material classes baseMaterial and the derived classes materialWall,
-   materialSand, materialStone and materialEmpty were defined
+* baseDataObjectType.h
+ - The base data object type class baseDataObjectType and its configuration
+   class baseDataObjectTypeConfig
+
+* dataObjectTypes.h
+ - The data object type classes dotWall, dotSand, dotStone and dotEmpty derived
+   from class baseDataObjectType.
+
+* dataObject.h, dataObject.cpp
+ - data object class that contains the type of the object and some members that
+   defines the state of class' instance.
 
 * objField.h, objField.cpp:
  - ...
@@ -44,12 +52,8 @@
 * physicsEngine.h, physicsEngine.cpp: game physic engine
  - add physics engine for obj types, empty, sand, wall, diamond
 
-* object:
- - add an object layer 
-
 * control engine
  - capture user inputs
-
 
 * common:
  - use github to store the sources
