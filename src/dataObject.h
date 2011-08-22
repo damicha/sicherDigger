@@ -28,6 +28,7 @@ class dataObject
 
 /* ======== class attributes ======== */
 private:
+public:
     // FIXME: use class name objectType <- is a virtual class!
     baseMaterial *type;  //!< object type FIXME: rename class baseMaterial to baseType
 
@@ -40,6 +41,14 @@ public:
     {
         // FIXME use new materialXYZ() copied from objFieldEntry.h
         type = createMaterial(objType);
+    }
+    
+    /*!
+     * \brief   Destructor
+     */
+    ~dataObject()
+    {
+        deleteMaterial(type);
     }
 
     baseMaterial *createMaterial(baseMaterialConfig::materialType_t type)
