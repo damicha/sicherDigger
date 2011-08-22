@@ -71,7 +71,7 @@ public:
         // do final field object initialization
         initObj();
 
-        // create materials (Walls and Sand)
+        // create materials (sand surrounded with walls)
         for (int y = 0; y < size_y; y++)
         {
             for (int x = 0; x < size_x; x++)
@@ -79,11 +79,11 @@ public:
                 if (x == 0 || x == size_x - 1 ||
                     y == 0 || y == size_y - 1)
                 {
-                    objs[y*size_x + x].createMaterial(baseMaterialConfig::wall);
+                    objs[y*size_x + x].createDataObject(baseMaterialConfig::wall);
                 } else {
-                    objs[y*size_x + x].createMaterial(baseMaterialConfig::sand);
+                    objs[y*size_x + x].createDataObject(baseMaterialConfig::sand);
                 }
-          }
+            }
         }
     };
 
@@ -113,10 +113,10 @@ public:
             for (int x = 0; x < size_x; x++)
             {
                 switch (cfg.data[y*size_x + x]) {
-                    case '#': objs[y*size_x + x].createMaterial(baseMaterialConfig::wall); break;
-                    case '.': objs[y*size_x + x].createMaterial(baseMaterialConfig::sand); break;
-                    case ' ': objs[y*size_x + x].createMaterial(baseMaterialConfig::empty); break;
-                    case 'O': objs[y*size_x + x].createMaterial(baseMaterialConfig::stone); break;
+                    case '#': objs[y*size_x + x].createDataObject(baseMaterialConfig::wall); break;
+                    case '.': objs[y*size_x + x].createDataObject(baseMaterialConfig::sand); break;
+                    case ' ': objs[y*size_x + x].createDataObject(baseMaterialConfig::empty); break;
+                    case 'O': objs[y*size_x + x].createDataObject(baseMaterialConfig::stone); break;
                 }
             }
         }
@@ -177,7 +177,7 @@ public:
         {
             for (int x = 0; x < size_x; x++)
             {
-                printf("%c ", objs[y*size_x + x].m->symbol);
+                printf("%c ", objs[y*size_x + x].data->type->symbol);
             }
             printf("\n");
         }
