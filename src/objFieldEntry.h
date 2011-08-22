@@ -5,6 +5,7 @@
 
 #include "baseMaterial.h"
 #include "materials.h"
+#include "dataObject.h"
 
 #include <stdio.h>
 #include <string>
@@ -29,12 +30,10 @@ public:
     objFieldEntry *y_prev, *y_next;
     /* position in field */
     int pos_x, pos_y;
-    /* object type */
-#if 0
-    objType_t type;
-#endif
     // FIXME: add object layer: (objFieldEntry.obj: obj.m, obj...)
     baseMaterial *m;    /*!< the object material. A virtual class is used */
+
+    dataObject *data;   //!< Data field that contains properties and states
 
 public:
     /* constructor */
@@ -44,6 +43,7 @@ public:
 
     /*! \brief  create a material object
      *  \todo   use copy contructor
+     * FIXME: move to dataObject class
      */
     baseMaterial *createMaterial(baseMaterialConfig::materialType_t type)
     {
