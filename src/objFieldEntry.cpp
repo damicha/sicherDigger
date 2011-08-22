@@ -5,7 +5,7 @@
  *  use doxygen comments
  *  needed object structure (add an extra object layer!):
  *   - objField->objFieldEntries[x,y]->Object->(.material, .state)
-
+ */
 
 #include "objFieldEntry.h"
 
