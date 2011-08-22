@@ -76,7 +76,7 @@ public:
         {
             for (int x = 0; x < field.size_x; x++)
             {
-                printf("%c ", field.objs[y*field.size_x + x].m->symbol);
+                printf("%c ", field.objs[y*field.size_x + x].data->type->symbol);
             }
             printf("\n");
         }
