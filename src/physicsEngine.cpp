@@ -9,8 +9,7 @@
 
 #include "physicsEngine.h"
 
-#include "baseMaterial.h"
-#include "materials.h"
+#include "baseDataObjectType.h"
 #include "objField.h"
 
 #include "stdio.h"
@@ -51,7 +50,7 @@ void physicsEngine::run(objField &field)
             /* call physics functions as a function of the object type */
             switch (obj->data->type->getType())
             {
-                case baseMaterialConfig::stone:
+                case baseDataObjectType::stone:
                     stonePhysics(field, obj);
                     break;
                 default:
@@ -75,14 +74,14 @@ void physicsEngine::stonePhysics(objField &field, objFieldEntry *obj)
     if (obj->data->done != 1) {
         objFieldEntry *obj_y_next = obj->y_next;
 
-        if (obj_y_next && obj_y_next->data->type->getType() == baseMaterialConfig::empty)
+        if (obj_y_next && obj_y_next->data->type->getType() == baseDataObjectType::empty)
         {
             // change object types
             // FIXME: don't switch object types: move/switch objects!
-            baseMaterial *m1 = obj->data->type;
-            baseMaterial *m2 = obj_y_next->data->type;
-            obj->data->type         = m2;
-            obj_y_next->data->type  = m1;
+            baseDataObjectType *t1 = obj->data->type;
+            baseDataObjectType *t2 = obj_y_next->data->type;
+            obj->data->type         = t2;
+            obj_y_next->data->type  = t1;
         }
         obj_y_next->data->done = 1;
     }

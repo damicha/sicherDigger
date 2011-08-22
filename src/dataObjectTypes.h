@@ -1,17 +1,17 @@
 /***************************************************************************//**
- * \file    materials.h
- * \brief   Material definition classes; derivated from the virtual class
- *          baseMaterial.
+ * \file    dataObjectTypes.h
+ * \brief   Declarations of Data object type classes; derivated from the
+ *  virtual class  baseDataObjectType.
  * 
  * \author  damicha of defect
  * \date    2011 
  *
  ******************************************************************************/
 
-#ifndef _MATERIALS_H_
-#define _MATERIALS_H_
+#ifndef _DATA_OBJECT_TYPES_H_
+#define _DATA_OBJECT_TYPES_H_
 
-#include "baseMaterial.h"
+#include "baseDataObjectType.h"
 
 #include <string>
 
@@ -19,9 +19,10 @@ using namespace std;
 
 
 /*!
- * \class   materialWall 
+ * \class   dotWall
+ * \brief   Declaration of the data object type class: wall. 
  */
-class materialWall : public baseMaterial
+class dotWall : public baseDataObjectType
 {
 
 public:
@@ -29,7 +30,7 @@ public:
      * \brief   constructor
      * \details Define constant class attributes.
      */
-    materialWall() {
+    dotWall() {
         name = string("Wall");
         symbol = '#';
         setType(wall);
@@ -38,16 +39,17 @@ public:
 
 
 /*!
- * \class   materialSand
+ * \class   dotSand
+ * \brief   Declaration of the data object type class: sand.
  */
-class materialSand : public baseMaterial
+class dotSand : public baseDataObjectType
 {
 public:
     /*!
      * \brief   constructor
      * \details Define constant class attributes.
      */
-    materialSand() {
+    dotSand() {
         name = string("Sand");
         symbol = '.';
         setType(sand);
@@ -56,16 +58,17 @@ public:
 
 
 /*!
- * \class   materialEmpty
+ * \class   dotEmpty
+ * \brief   Declaration of the data object type class: empty.
  */
-class materialEmpty : public baseMaterial
+class dotEmpty : public baseDataObjectType
 {
 public:
     /*!
      * \brief   constructor
      * \details Define constant class attributes.
      */
-    materialEmpty() {
+    dotEmpty() {
         name = string("Empty");
         symbol = ' ';
         setType(empty);
@@ -74,16 +77,17 @@ public:
 
 
 /*!
- * \class   materialStone 
+ * \class   dotStone 
+ * \brief   Declaration of the data object type class: stone.
  */
-class materialStone : public baseMaterial
+class dotStone : public baseDataObjectType
 {
 public:
     /*!
      * \brief   constructor
      * \details Define constant class attributes.
      */
-    materialStone() {
+    dotStone() {
         name = string("Stone");
         symbol = 'O';
         setType(stone);

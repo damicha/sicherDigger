@@ -8,11 +8,11 @@
  */
 
 
-#ifndef _PHYSICSENGINE_H_
-#define _PHYSICSENGINE_H_
+#ifndef _PHYSICS_ENGINE_H_
+#define _PHYSICS_ENGINE_H_
 
-#include "baseMaterial.h"
-#include "materials.h"
+#include "baseDataObjectType.h"
+#include "dataObjectTypes.h"
 #include "objField.h"
 
 #include "stdio.h"

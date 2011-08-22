@@ -10,11 +10,11 @@
 
 // FIXME: add physics properties/states (create a class or add to baseType)
 
-#ifndef _DATAOBJECT_H_
-#define _DATAOBJECT_H_
+#ifndef _DATA_OBJECT_H_
+#define _DATA_OBJECT_H_
 
-#include "baseMaterial.h"
-#include "materials.h"
+#include "baseDataObjectType.h"
+#include "dataObjectTypes.h"
 
 #include <stdio.h> 
 
@@ -30,7 +30,7 @@ class dataObject
 private:
 public:
     // FIXME: use class name objectType <- is a virtual class!
-    baseMaterial *type;  //!< object type FIXME: rename class baseMaterial to baseType
+    baseDataObjectType *type;   //!< object type FIXME: rename class baseMaterial to baseType
     int done;       /*!< 1 if material was already used by physics engine: 
                      * FIXME: move to a physics class (maybe)
                      * FIXME: use a own data type
@@ -42,10 +42,10 @@ public:
     /*!
      * \brief   Constructor
      */
-    dataObject(const baseMaterial::materialType_t objType = baseMaterial::unknown)
+    dataObject(const baseDataObjectType::dataObjectType_t objType = baseDataObjectType::unknown)
     {
         // FIXME use new materialXYZ() copied from objFieldEntry.h
-        type = createMaterial(objType);
+        type = createDataObjectType(objType);
         done = 0;
     }
     
@@ -54,26 +54,27 @@ public:
      */
     ~dataObject()
     {
-        deleteMaterial(type);
+        deleteDataObjectType(type);
     }
 
-    baseMaterial *createMaterial(baseMaterialConfig::materialType_t type)
+    // FIXME move to baseDataObjectType
+    baseDataObjectType *createDataObjectType(baseDataObjectType::dataObjectType_t type)
     {
-        baseMaterial *t;
+        baseDataObjectType *t;
 
         switch(type)
         {
-            case baseMaterialConfig::wall:  t = (materialWall  *)new materialWall();  break;
-            case baseMaterialConfig::sand:  t = (materialSand  *)new materialSand();  break;
-            case baseMaterialConfig::empty: t = (materialEmpty *)new materialEmpty(); break;
-            case baseMaterialConfig::stone: t = (materialStone *)new materialStone(); break;
-            default:                        t = new baseMaterial(); break;
+            case baseDataObjectType::wall:  t = (dotWall  *)new dotWall();  break;
+            case baseDataObjectType::sand:  t = (dotSand  *)new dotSand();  break;
+            case baseDataObjectType::empty: t = (dotEmpty *)new dotEmpty(); break;
+            case baseDataObjectType::stone: t = (dotStone *)new dotStone(); break;
+            default:                        t = new baseDataObjectType(); break;
         }
 
         return t;
     }
 
-    void deleteMaterial(baseMaterial *t)
+    void deleteDataObjectType(baseDataObjectType *t)
     {
         if (t != NULL) {
             delete t;

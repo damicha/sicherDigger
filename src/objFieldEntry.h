@@ -1,10 +1,11 @@
-/* file: objFieldEntry.h */
+/* file: objFieldEntry.h
+ * FIXME add doxygen header/comments
+*/
 
-#ifndef _OBJFIELDENTRY_H_
-#define _OBJFIELDENTRY_H_
+#ifndef _OBJ_FIELD_ENTRY_H_
+#define _OBJ_FIELD_ENTRY_H_
 
-#include "baseMaterial.h"
-#include "materials.h"
+#include "dataObjectTypes.h"
 #include "dataObject.h"
 
 #include <stdio.h>
@@ -47,7 +48,7 @@ public:
     /*!
      *\brief  create a data object
      */
-    void createDataObject(baseMaterialConfig::materialType_t type)
+    void createDataObject(baseDataObjectType::dataObjectType_t type)
     {
 
         data = new dataObject(type);

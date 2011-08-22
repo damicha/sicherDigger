@@ -13,6 +13,7 @@
 #define _OBJFIELD_H_
 
 
+#include "baseDataObjectType.h"
 #include "objFieldEntry.h"
 #include "config.h"
 
@@ -79,9 +80,9 @@ public:
                 if (x == 0 || x == size_x - 1 ||
                     y == 0 || y == size_y - 1)
                 {
-                    objs[y*size_x + x].createDataObject(baseMaterialConfig::wall);
+                    objs[y*size_x + x].createDataObject(baseDataObjectType::wall);
                 } else {
-                    objs[y*size_x + x].createDataObject(baseMaterialConfig::sand);
+                    objs[y*size_x + x].createDataObject(baseDataObjectType::sand);
                 }
             }
         }
@@ -113,10 +114,10 @@ public:
             for (int x = 0; x < size_x; x++)
             {
                 switch (cfg.data[y*size_x + x]) {
-                    case '#': objs[y*size_x + x].createDataObject(baseMaterialConfig::wall); break;
-                    case '.': objs[y*size_x + x].createDataObject(baseMaterialConfig::sand); break;
-                    case ' ': objs[y*size_x + x].createDataObject(baseMaterialConfig::empty); break;
-                    case 'O': objs[y*size_x + x].createDataObject(baseMaterialConfig::stone); break;
+                    case '#': objs[y*size_x + x].createDataObject(baseDataObjectType::wall); break;
+                    case '.': objs[y*size_x + x].createDataObject(baseDataObjectType::sand); break;
+                    case ' ': objs[y*size_x + x].createDataObject(baseDataObjectType::empty); break;
+                    case 'O': objs[y*size_x + x].createDataObject(baseDataObjectType::stone); break;
                 }
             }
         }
