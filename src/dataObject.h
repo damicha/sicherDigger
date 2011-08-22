@@ -31,6 +31,11 @@ private:
 public:
     // FIXME: use class name objectType <- is a virtual class!
     baseMaterial *type;  //!< object type FIXME: rename class baseMaterial to baseType
+    int done;       /*!< 1 if material was already used by physics engine: 
+                     * FIXME: move to a physics class (maybe)
+                     * FIXME: use a own data type
+                     * FIXME: don't use done. use blocked by current, next, prev ..
+                     */
 
 /* ======== class initialisation functions ======== */
 public:
@@ -41,6 +46,7 @@ public:
     {
         // FIXME use new materialXYZ() copied from objFieldEntry.h
         type = createMaterial(objType);
+        done = 0;
     }
     
     /*!
