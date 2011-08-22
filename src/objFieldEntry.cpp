@@ -19,7 +19,7 @@ string objFieldEntry::str()
 {
     stringstream ss;
     ss << "<idx:" << strData() << ", " <<
-          "type:" << m->getName() << ", " <<
+          "type:" << data->type->getName() << ", " <<
           "neighbors: " << strNeighbors() << ">";
     return ss.str();
 }
