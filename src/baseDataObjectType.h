@@ -7,6 +7,8 @@
  * \date    2011 
  *
  * \todo    define data object type symbols
+ *  FIXME implement config and base data class and derived classes in a
+ *        way that the config and base data class constructors are not called
  */
 
 #ifndef _BASE_DATA_OBJECT_TYPE_H_
@@ -14,6 +16,8 @@
 
 #include <string>
 #include <stdio.h> 
+
+//#include "dataObjectTypes.h"
 
 using namespace std;
 
@@ -47,7 +51,9 @@ public:
     /*!
      * \brief   Constructor
      */
-    baseDataObjectConfig(const dataObjectType_t type = unknown) : type(type) {}
+    baseDataObjectConfig(const dataObjectType_t type = unknown) : type(type) {
+//        printf("%s\n", __func__);
+    }
 
 
     /*!
@@ -84,13 +90,25 @@ public:
 
 public:
     /*!
-     * \brief   default constructor of an virtual class
+     * \brief   Default constructor
      * \details Set default values to the constant class attributes.
-     * \todo    FIXME how to call the constructor of baseDataBaseConfig ?
+     * \todo    make function virtual. create a unknown class
      */
     baseDataObjectType() : name("unknown"), symbol('?') {
-        setType(unknown);        
+        setType(unknown);
+//        printf("%s: %s\n", __func__, getName().c_str());
     };
+
+    /*!
+     * \brief   Create a data object type object as a function of its type.
+     */
+    static baseDataObjectType *createDataObjectType(dataObjectType_t type);
+
+    /*!
+     * \brief   Delete a data object type object
+     */
+    static void deleteDataObjectType(baseDataObjectType *t);
+
 
 
 /* ======== class string functions ======== */

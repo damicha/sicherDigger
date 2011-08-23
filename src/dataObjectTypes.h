@@ -34,6 +34,7 @@ public:
         name = string("Wall");
         symbol = '#';
         setType(wall);
+//        printf("%s: %s\n", __func__, getName().c_str());
     }
 };
 

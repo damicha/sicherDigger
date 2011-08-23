@@ -44,8 +44,7 @@ public:
      */
     dataObject(const baseDataObjectType::dataObjectType_t objType = baseDataObjectType::unknown)
     {
-        // FIXME use new materialXYZ() copied from objFieldEntry.h
-        type = createDataObjectType(objType);
+        type = baseDataObjectType::createDataObjectType(objType);
         done = 0;
     }
     
@@ -54,34 +53,8 @@ public:
      */
     ~dataObject()
     {
-        deleteDataObjectType(type);
+        delete type;
     }
-
-    // FIXME move to baseDataObjectType
-    baseDataObjectType *createDataObjectType(baseDataObjectType::dataObjectType_t type)
-    {
-        baseDataObjectType *t;
-
-        switch(type)
-        {
-            case baseDataObjectType::wall:  t = (dotWall  *)new dotWall();  break;
-            case baseDataObjectType::sand:  t = (dotSand  *)new dotSand();  break;
-            case baseDataObjectType::empty: t = (dotEmpty *)new dotEmpty(); break;
-            case baseDataObjectType::stone: t = (dotStone *)new dotStone(); break;
-            default:                        t = new baseDataObjectType(); break;
-        }
-
-        return t;
-    }
-
-    void deleteDataObjectType(baseDataObjectType *t)
-    {
-        if (t != NULL) {
-            delete t;
-        }
-    }
-
-
 };
 
 
