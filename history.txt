@@ -15,45 +15,47 @@
   0.1pre - text output
 ================
 
-* baseDataObjectType.h
- - The base data object type class baseDataObjectType and its configuration
-   class baseDataObjectTypeConfig
+* baseDataObjectType.h, baseDataObjectType.cpp
+  - The base data object type class baseDataObjectType and its configuration
+    class baseDataObjectTypeConfig
+  - function to create a object of a derived baseDataObjectType class as a function
+    of the required object type.
 
 * dataObjectTypes.h
- - The data object type classes dotWall, dotSand, dotStone and dotEmpty derived
-   from class baseDataObjectType.
+  - The data object type classes dotWall, dotSand, dotStone and dotEmpty derived
+    from class baseDataObjectType.
 
 * dataObject.h, dataObject.cpp
- - data object class that contains the type of the object and some members that
-   defines the state of class' instance.
+  - data object class that contains the type of the object and some members that
+    defines the state of class' instance.
 
 * objField.h, objField.cpp:
- - ...
+  - ...
 
 * objFieldEntry.h, objFieldEntry.cpp:
- - ...
+  - ...
 
 * textEngine.h: text ouput engine
- - basic drawing of the object field
+  - basic drawing of the object field
 
 * timeEngine.h: wait for configurable trigger events
- - uses the system functions gettimeofday() and usleep()
+  - uses the system functions gettimeofday() and usleep()
 
 * config.h: field configuration class
- - a simple char array is used to set the default values of an objField
+  - a simple char array is used to set the default values of an objField
 
 * configData.h: field configurations
 
 * physicsEngine.h, physicsEngine.cpp: game physic engine
- - simple stone movement (it's falling down) was added
+  - simple stone movement (it's falling down) was added
 
 * == TODOs ==
 
 * physicsEngine.h, physicsEngine.cpp: game physic engine
- - add physics engine for obj types, empty, sand, wall, diamond
+  - add physics engine for obj types, empty, sand, wall, diamond
 
 * control engine
- - capture user inputs
+  - capture user inputs
 
 * common:
  - use github to store the sources
