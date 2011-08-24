@@ -16,8 +16,8 @@
 ================
 
 * baseDataObjectType.h, baseDataObjectType.cpp
-  - The base data object type class baseDataObjectType and its configuration
-    class baseDataObjectTypeConfig
+  - The base data object type class baseDataObjectType for derived data object
+    types (stone, wall, sand, ...)
   - function to create a object of a derived baseDataObjectType class as a function
     of the required object type.
 
@@ -37,6 +37,7 @@
 
 * textEngine.h: text ouput engine
   - basic drawing of the object field
+  - maps data object type to an specified character
 
 * timeEngine.h: wait for configurable trigger events
   - uses the system functions gettimeofday() and usleep()
