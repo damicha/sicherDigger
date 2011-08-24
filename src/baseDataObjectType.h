@@ -1,15 +1,15 @@
+/******************************************************************************/
 /*!
  * \file    baseDataObjectType.h
- * \brief   Virtual class to define the interface of the used data object types
- *  and to define the data object config class.
+ * \brief   Class used as basis class to define the interface of the used data
+ *  object types.
  * 
  * \author  damicha of defect
  * \date    2011 
  *
- * \todo    define data object type symbols
- *  FIXME implement config and base data class and derived classes in a
- *        way that the config and base data class constructors are not called
- */
+ * \todo    FIXME define data object type symbols
+ *
+ ******************************************************************************/
 
 #ifndef _BASE_DATA_OBJECT_TYPE_H_
 #define _BASE_DATA_OBJECT_TYPE_H_
@@ -17,14 +17,12 @@
 #include <string>
 #include <stdio.h> 
 
-//#include "dataObjectTypes.h"
-
 using namespace std;
 
 /*
- * \class baseDataObjectConfig
+ * \class baseDataObjectType
  */
-class baseDataObjectConfig
+class baseDataObjectType
 {
 /* ======== class datatypes ======== */    
 public:
@@ -42,51 +40,11 @@ public:
 
 
 /* ======== class attributes ======== */
-private:
-    dataObjectType_t type;
-
-
-/* ======== class initialisation functions ======== */
-public:
-    /*!
-     * \brief   Constructor
-     */
-    baseDataObjectConfig(const dataObjectType_t type = unknown) : type(type) {
-//        printf("%s\n", __func__);
-    }
-
-
-    /*!
-     * \brief   Set the data object type.
-     * \param   Type of the data object.
-     */
-    void setType(dataObjectType_t type) {
-        this->type = type;
-    }
-    
-    
-    /*!
-     * \brief   Get the data object type.
-     * \return  Data object type of the class.
-     */
-    dataObjectType_t getType() {
-        return type;
-    }
-
-
-};
-
-
-/*
- * \class baseDataObjectType
- */
-class baseDataObjectType : public baseDataObjectConfig
-{
-/* ======== class attributes ======== */    
-public:
-    string name;      /*!< data type name */
+protected:
+    dataObjectType_t type;  //!< data type
+    string name;            //!< data type name
     char   symbol;    /*!< short symbol as data type identification */
-                      /* FIXME: define symbols */
+                      /* FIXME: move to txt engine */
 
 public:
     /*!
@@ -114,6 +72,22 @@ public:
 /* ======== class string functions ======== */
 public:
 
+    /*!
+     * \brief   Set the data object type.
+     * \param   Type of the data object.
+     */
+    void setType(dataObjectType_t type) {
+        this->type = type;
+    }
+    /*!
+     * \brief   Get the data object type.
+     * \return  Data object type of the class.
+     */
+    dataObjectType_t getType() {
+        return type;
+    }
+    
+    
     /*!
      * \brief   Get the objects data type name.
      * \return  Data type name as a string object.
