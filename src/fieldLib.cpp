@@ -42,7 +42,6 @@ int main(void)
 
     textEngine txt;
     timeEngine time(250000);    // 250 ms trigger value
-//    timeEngine time(500000);    // 500 ms trigger value
     physicsEngine phy;
 
     txt.draw(field, textEngine::firstdraw);
@@ -61,9 +60,9 @@ int main(void)
 
     printf("iterations: %d\n", phy.getIterNum());
 
-#if 1
-//    field.str(objField::list);
-    field.str(objField::array);
+#if 0
+    field.str(objField::list);
+//    field.str(objField::array);
 #endif
 
     return 0;
