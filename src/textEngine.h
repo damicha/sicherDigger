@@ -1,3 +1,4 @@
+/******************************************************************************/
 /*!
  * \file    textEngine.h
  * \class   textEngine 
@@ -6,12 +7,13 @@
  * \author  damicha of defect
  * \date    2011 
  *
- */
+ ******************************************************************************/
 
-#ifndef _TEXTENGINE_H_
-#define _TEXTENGINE_H_
+#ifndef _TEXT_ENGINE_H_
+#define _TEXT_ENGINE_H_
 
 #include "objField.h"
+#include "baseDataObjectType.h"
 
 #include <stdio.h>
 #include <string>
@@ -55,6 +57,7 @@ public:
         drawFooter();
     }
 
+
     /*!
      * \param   y   Number of lines to move up.
      */
@@ -66,6 +69,7 @@ public:
         printf("\033[%dA", y);
     }
 
+
     /*!
      * \brief   Print the content of the object field to the console
      * \param   field       Reference to the object field to print
@@ -76,11 +80,32 @@ public:
         {
             for (int x = 0; x < field.size_x; x++)
             {
-                printf("%c ", field.objs[y*field.size_x + x].data->type->symbol);
+                char c = getSymbol(field.objs[y*field.size_x + x].data->type);
+                printf("%c ", c);
             }
             printf("\n");
         }
     }
+
+
+    /*!
+     * \brief   Gets a character to print that presents the type of the data object.
+     * \param   t   Address of data object.
+     */
+    char getSymbol(baseDataObjectType *t)
+    {
+        switch (t->getType())
+        {
+            case baseDataObjectType::empty: return ' '; 
+            case baseDataObjectType::sand:  return '.';
+            case baseDataObjectType::wall:  return '#';
+            case baseDataObjectType::stone: return 'O';
+            case baseDataObjectType::unknown:
+            default:                    return '?';
+        }
+    }
+
+
     /*!
      * \brief   Get the high in lines of the field's text output
      * \param   field       Reference to the object field to print
