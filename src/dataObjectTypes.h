@@ -1,4 +1,5 @@
-/***************************************************************************//**
+/******************************************************************************/
+/*!
  * \file    dataObjectTypes.h
  * \brief   Declarations of Data object type classes; derivated from the
  *  virtual class  baseDataObjectType.
