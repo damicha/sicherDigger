@@ -43,8 +43,8 @@ public:
 protected:
     dataObjectType_t type;  //!< data type
     string name;            //!< data type name
-    char   symbol;    /*!< short symbol as data type identification */
-                      /* FIXME: move to txt engine */
+//    char   symbol;    /*!< short symbol as data type identification */
+//                      /* FIXME: move to txt engine */
 
 public:
     /*!
@@ -52,7 +52,7 @@ public:
      * \details Set default values to the constant class attributes.
      * \todo    make function virtual. create a unknown class
      */
-    baseDataObjectType() : name("unknown"), symbol('?') {
+    baseDataObjectType() : name("unknown") {
         setType(unknown);
 //        printf("%s: %s\n", __func__, getName().c_str());
     };
@@ -94,12 +94,6 @@ public:
      */
     string getName() {return name; };
     
-    /*!
-     * \brief   Get the objects data type symbol.
-     * \return  Data type symbol as a character.
-     */
-    char getSymbol() {return symbol; };
-
 };
 
 

@@ -33,7 +33,6 @@ public:
      */
     dotWall() {
         name = string("Wall");
-        symbol = '#';
         setType(wall);
 //        printf("%s: %s\n", __func__, getName().c_str());
     }
@@ -53,7 +52,6 @@ public:
      */
     dotSand() {
         name = string("Sand");
-        symbol = '.';
         setType(sand);
     };
 };
@@ -72,7 +70,6 @@ public:
      */
     dotEmpty() {
         name = string("Empty");
-        symbol = ' ';
         setType(empty);
     };
 };
@@ -91,7 +88,6 @@ public:
      */
     dotStone() {
         name = string("Stone");
-        symbol = 'O';
         setType(stone);
     };
 };
