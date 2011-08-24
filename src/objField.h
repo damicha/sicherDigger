@@ -172,13 +172,15 @@ public:
     string strArray()
     {
         string s;
+        
+        // FIXME use textEngine
 
         printf("Field dimensions: (x: %d, y: %d)\n", size_x, size_y);
         for (int y = 0; y < size_y; y++)
         {
             for (int x = 0; x < size_x; x++)
             {
-                printf("%c ", objs[y*size_x + x].data->type->symbol);
+        //        printf("%c ", objs[y*size_x + x].data->type->symbol);
             }
             printf("\n");
         }
