@@ -100,6 +100,7 @@ public:
             case baseDataObjectType::sand:  return '.';
             case baseDataObjectType::wall:  return '#';
             case baseDataObjectType::stone: return 'O';
+            case baseDataObjectType::player:return '8';
             case baseDataObjectType::unknown:
             default:                    return '?';
         }
