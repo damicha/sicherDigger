@@ -27,6 +27,7 @@ baseDataObjectType *baseDataObjectType::createDataObjectType(dataObjectType_t ty
         case sand:  t = (dotSand  *)new dotSand();  break;
         case empty: t = (dotEmpty *)new dotEmpty(); break;
         case stone: t = (dotStone *)new dotStone(); break;
+        case player:t = (dotStone *)new dotPlayer(); break;
         default:    t = new baseDataObjectType();   break;
     }
     return t;

@@ -35,6 +35,7 @@ public:
         sand,
         wall,
         stone,
+        player,
         unknown
     } dataObjectType_t;
 
