@@ -47,7 +47,7 @@ public:
         this->size_x = size_x;
         this->size_y = size_y;
 
-        /* copy the configuration array */
+        /* create configuration array */
         this->data = new char[size_x*size_y];
 
         /* check and copy */
@@ -86,7 +86,7 @@ public:
      */
     ~config() {
         /* destroy the configuration array */
-        delete this->data;
+        delete [] data;
     }
     
 
