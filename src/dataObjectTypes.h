@@ -2,7 +2,7 @@
 /*!
  * \file    dataObjectTypes.h
  * \brief   Declarations of Data object type classes; derivated from the
- *  virtual class  baseDataObjectType.
+ *  class baseDataObjectType.
  * 
  * \author  damicha of defect
  * \date    2011 
@@ -89,6 +89,24 @@ public:
     dotStone() {
         name = string("Stone");
         setType(stone);
+    };
+};
+
+
+/*!
+ * \class   dotPlayer
+ * \brief   Declaration of the data object type class: player.
+ */
+class dotPlayer : public baseDataObjectType
+{
+public:
+    /*!
+     * \brief   constructor
+     * \details Define constant class attributes.
+     */
+    dotPlayer() {
+        name = string("Player");
+        setType(player);
     };
 };
 
