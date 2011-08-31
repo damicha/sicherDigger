@@ -37,7 +37,7 @@ int main(void)
 {
 
     config cfg(field_a);
-    //objField field(24, 16);
+//    objField field(24, 16);
     objField field(cfg);
 
     textEngine txt;
