@@ -57,12 +57,18 @@ public:
     /*!
      * \brief   Do one iteration on the object field.
      */
-    void run(objField &field);
+    void run(objField &field, int x);
 
     /*!
      * \brief   Stone physics
      */
     void stonePhysics(objField &field, objFieldEntry *obj);
+    
+    /*!
+     * \brief   Player physics
+     */
+    void playerPhysics(objField &field, objFieldEntry *obj,
+                       int x, int y);
 
 
 };
