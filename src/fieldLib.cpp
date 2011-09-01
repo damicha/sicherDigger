@@ -42,16 +42,17 @@ int main(void)
 
     textEngine txt;
     timeEngine time(250000);    // 250 ms trigger value
+//    timeEngine time(500000);    // trigger value
     physicsEngine phy;
 
     txt.draw(field, textEngine::firstdraw);
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 24; i++)
     {
         char str[256];
 
         time.wait4Trigger();
 
-        phy.run(field);
+        phy.run(field, (i % 12) < 6 ? -1: 1);
 
         snprintf(str, 256, "%.2f", time.getTriggerTime()/1000000.0);
         txt.draw(field, textEngine::redraw, str);
