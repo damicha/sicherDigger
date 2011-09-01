@@ -12,6 +12,12 @@
 ===============================================================================
 
 
+next:
+ - move player object data
+ - player object -> improve player object class
+ - templates
+
+
   0.1pre - text output
 ================
 
@@ -30,7 +36,7 @@
     defines the state of class' instance.
 
 * objField.h, objField.cpp:
-  - ...
+  - creates and initializes an object field from a configuration array
 
 * objFieldEntry.h, objFieldEntry.cpp:
   - ...
