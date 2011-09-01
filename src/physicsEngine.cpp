@@ -10,6 +10,7 @@
 #include "physicsEngine.h"
 
 #include "baseDataObjectType.h"
+#include "dataObject.h"
 #include "objField.h"
 
 #include "stdio.h"
@@ -24,8 +25,9 @@ using namespace std;
  *
  * FIXME: create a subfunction for each material
  * FIXME: add mechanism to lock source and destination field
+ * FIXME: add player movement
  */
-void physicsEngine::run(objField &field)
+void physicsEngine::run(objField &field, int mx)
 {
 
     /* clear dones */
@@ -41,6 +43,13 @@ void physicsEngine::run(objField &field)
 
     iter_num++;
 
+    /* move player */
+    // FIXME: obj switches from player object to another object !
+    // FIXME: update plInfi.obj
+ //   playerPhysics(field, field.plInfo.obj, mx, 0);
+   
+
+    /* run physics on the other field objects */
     for (int y = 0; y < field.size_y; y++)
     {
         for (int x = 0; x < field.size_x; x++)
@@ -52,6 +61,10 @@ void physicsEngine::run(objField &field)
             {
                 case baseDataObjectType::stone:
                     stonePhysics(field, obj);
+                    break;
+                case baseDataObjectType::player:
+                    // do nothing, because the player should already be moved
+                   playerPhysics(field, obj, mx, 0);
                     break;
                 default:
                     break;
@@ -78,14 +91,75 @@ void physicsEngine::stonePhysics(objField &field, objFieldEntry *obj)
         {
             // change object types
             // FIXME: don't switch object types: move/switch objects!
-            baseDataObjectType *t1 = obj->data->type;
-            baseDataObjectType *t2 = obj_y_next->data->type;
-            obj->data->type         = t2;
-            obj_y_next->data->type  = t1;
+            dataObject  *do1 = obj->data;
+            dataObject  *do2 = obj_y_next->data;
+            obj->data           = do2;
+            obj_y_next->data    = do1;
+            obj_y_next->data->done = 1;
         }
-        obj_y_next->data->done = 1;
     }
     obj->data->done = 1;
+
+};
+
+
+/*!
+ * \brief   Player physics
+ * \param   field   object field
+ * \param   obj     selected object
+ * FIXME add player commands: move left, right, up, down, push..., pull ...
+ * FIXME eat sand
+ */
+void physicsEngine::playerPhysics(objField &field, objFieldEntry *obj,
+                                  int x, int y)
+{
+//    printf("                            switch 0\n");
+    /* a player can move if no item blocks its way */
+    if (obj->data->done != 1) {
+
+//        printf("                            switch 1\n");
+        if      (x ==  1)
+        {
+//            printf("                            switch 2a\n");
+            objFieldEntry *obj_x_next = obj->x_next;
+            if (obj_x_next &&
+                obj_x_next->data->type->getType() != baseDataObjectType::stone &&
+                obj_x_next->data->type->getType() != baseDataObjectType::wall)
+            {
+                // FIXME: don't switch object types: move objects!
+                dataObject  *do1 = obj->data;
+                dataObject  *do2 = obj_x_next->data;
+                obj->data           = do2;
+                obj_x_next->data    = do1;
+                obj_x_next->data->done = 1;
+            }
+            obj->data->done = 1;
+        }
+        else if (x == -1)
+        {
+//            printf("                            switch 2b\n");
+            objFieldEntry *obj_x_prev = obj->x_prev;
+            if (obj_x_prev &&
+                obj_x_prev->data->type->getType() != baseDataObjectType::stone &&
+                obj_x_prev->data->type->getType() != baseDataObjectType::wall)
+            {
+                // FIXME: don't switch object types: move objects!
+                dataObject  *do1 = obj->data;
+                dataObject  *do2 = obj_x_prev->data;
+                /* eat sand - FIXME: always eat */
+                if (do2->type->getType() == baseDataObjectType::sand) {
+                    delete do2;
+                    do2 = new dataObject(baseDataObjectType::empty);
+                }
+                obj->data           = do2;
+                obj_x_prev->data    = do1;
+                obj_x_prev->data->done = 1;
+//                printf("                            switch 3\n");
+            }
+            obj->data->done = 1;
+        }
+
+    }
 
 };
 
