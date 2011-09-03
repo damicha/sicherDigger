@@ -1,3 +1,4 @@
+/******************************************************************************/
 /*!
  * \file    objField.h
  * \brief   handels a 2 dimensional field of class objFieldEntry objects
@@ -7,10 +8,13 @@
  *
  * \todo add obj type (physic, gfx(txt output) ) as a member of objFieldEntry->obj
  * \todo add a configuration class 
- */
+ *
+ ******************************************************************************/
 
-#ifndef _OBJFIELD_H_
-#define _OBJFIELD_H_
+// FIXME: in general do only function declarations -> move implementation to *.cpp file
+
+#ifndef _OBJ_FIELD_H_
+#define _OBJ_FIELD_H_
 
 
 #include "baseDataObjectType.h"
@@ -42,7 +46,7 @@ public:
         list,       //!< print the whole field content as a list
         array       //!< print the field contnet as a formated 2d array
     } stringOutputFormat_t;
-
+#if 0
     /*!
      * \struct  player object info
      */
@@ -50,15 +54,15 @@ public:
         objFieldEntry *obj;     /*!< reference to the player object */
         int x, y;               /*!< current position in the object field */
     } playerObjectInfo_t;
-
+#endif
 
 
 /* ======== class attributes ======== */
 public:
     int size_x;     /*!< size of the field dimension x */
     int size_y;     /*!< size of the field dimension y */
-    objFieldEntry       *objs;   /*!< pointer to an array of the field objects */
-    playerObjectInfo_t  plInfo;  /*!< infos about the player object */
+    objFieldEntry   *entries;   /*!< reference to an array of the object field entries */
+    objFieldEntry   *pl_entry;  /*!< reference to the object field entry that stores the player data */
 
 /* ======== class init functions ======== */
 public:
@@ -68,14 +72,14 @@ public:
      * \param   size_x field size of the dimension x
      * \param   size_y field size of the dimension y
      */
-    objField(int size_x, int size_y) : objs(NULL)
+    objField(int size_x, int size_y) : entries(NULL), pl_entry(NULL)
     {
         /* set dimensions */
         this->size_x = size_x;
         this->size_y = size_y;
         
         /* get memory for the field entries */
-        objs = new objFieldEntry[size_x*size_y];
+        entries = new objFieldEntry[size_x*size_y];
 
         /* do final field object initialization */
         initObj();
@@ -90,16 +94,14 @@ public:
                 if (x == 1 && y == 1)
                 {
                     /* set player position/object */
-                    objs[y*size_x + x].createDataObject(baseDataObjectType::player);
-                    plInfo.obj  = &objs[y*size_x + x];
-                    plInfo.x    = x;
-                    plInfo.y    = y;
+                    entries[y*size_x + x].createDataObject(baseDataObjectType::player);
+                    pl_entry  = &entries[y*size_x + x];
                 } else if (x == 0 || x == size_x - 1 ||
                            y == 0 || y == size_y - 1)
                 {
-                    objs[y*size_x + x].createDataObject(baseDataObjectType::wall);
+                    entries[y*size_x + x].createDataObject(baseDataObjectType::wall);
                 } else {
-                    objs[y*size_x + x].createDataObject(baseDataObjectType::sand);
+                    entries[y*size_x + x].createDataObject(baseDataObjectType::sand);
                 }
             }
         }
@@ -118,7 +120,7 @@ public:
         this->size_y = cfg.size_y;
         
         /* get memory for the field entries */
-        objs = new objFieldEntry[size_x*size_y];
+        entries = new objFieldEntry[size_x*size_y];
         
         /* do final field object initialization */
         initObj();
@@ -133,26 +135,24 @@ public:
                 switch (cfg.data[y*size_x + x])
                 {
                     case '#':
-                        objs[y*size_x + x].createDataObject(baseDataObjectType::wall);
+                        entries[y*size_x + x].createDataObject(baseDataObjectType::wall);
                         break;
                     case '.':
-                        objs[y*size_x + x].createDataObject(baseDataObjectType::sand);
+                        entries[y*size_x + x].createDataObject(baseDataObjectType::sand);
                         break;
                     case ' ':
-                        objs[y*size_x + x].createDataObject(baseDataObjectType::empty);
+                        entries[y*size_x + x].createDataObject(baseDataObjectType::empty);
                         break;
                     case 'O':
-                        objs[y*size_x + x].createDataObject(baseDataObjectType::stone);
+                        entries[y*size_x + x].createDataObject(baseDataObjectType::stone);
                         break;
                     case '8':
                         /* set player position/object */
-                        objs[y*size_x + x].createDataObject(baseDataObjectType::player);
-                        plInfo.obj  = &objs[y*size_x + x];
-                        plInfo.x    = x;
-                        plInfo.y    = y;
+                        entries[y*size_x + x].createDataObject(baseDataObjectType::player);
+                        pl_entry = &entries[y*size_x + x];
                         break;
                     default:
-                        objs[y*size_x + x].createDataObject(baseDataObjectType::unknown);
+                        entries[y*size_x + x].createDataObject(baseDataObjectType::unknown);
                         break;
                 }
             }
@@ -163,7 +163,7 @@ public:
      * \brief   Destructor
      */
     ~objField() {
-        delete [] objs;   
+        delete [] entries;   
     }
 
 
@@ -201,7 +201,7 @@ public:
 
         printf("Field dimensions: (x: %d, y: %d) - %d\n", size_x, size_y, s.max_size());
         for(int i = 0; i < size_x*size_y; i++) {
-            printf("position: %2d, data: %s\n", i, objs[i].str().c_str());
+            printf("position: %2d, data: %s\n", i, entries[i].str().c_str());
         }
         return s;
     }
