@@ -80,7 +80,7 @@ public:
         {
             for (int x = 0; x < field.size_x; x++)
             {
-                char c = getSymbol(field.objs[y*field.size_x + x].data->type);
+                char c = getSymbol(field.entries[y*field.size_x + x].data->type);
                 printf("%c ", c);
             }
             printf("\n");
