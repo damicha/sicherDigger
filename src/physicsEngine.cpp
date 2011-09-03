@@ -1,3 +1,4 @@
+/******************************************************************************/
 /*!
  * \file    physicsEngine.cpp
  * \brief   Implements the physics of the world.
@@ -5,7 +6,7 @@
  * \author  damicha of defect
  * \date    2011
  *
- */
+ ******************************************************************************/
 
 #include "physicsEngine.h"
 
@@ -23,7 +24,6 @@ using namespace std;
  * \param field
  *          Object field with the objects to modify/move.
  *
- * FIXME: create a subfunction for each material
  * FIXME: add mechanism to lock source and destination field
  * FIXME: add player movement
  */
@@ -36,36 +36,34 @@ void physicsEngine::run(objField &field, int mx)
         for (int x = 0; x < field.size_x; x++)
         {
             // FIXME remove done from data
-            field.objs[y*field.size_x + x].data->done = 0;
-
+            field.entries[y*field.size_x + x].data->done = 0;
         }
     }
 
     iter_num++;
 
-    /* move player */
-    // FIXME: obj switches from player object to another object !
-    // FIXME: update plInfi.obj
-    objFieldEntry *obj_new;
-    obj_new = playerPhysics(field, field.plInfo.obj, mx, 0);
-    field.plInfo.obj = obj_new; 
+    /* move player first */
+    {
+        objFieldEntry *pl_entry_new;
+        pl_entry_new = playerPhysics(field.pl_entry, mx, 0);
+        field.pl_entry = pl_entry_new; 
+    }
 
     /* run physics on the other field objects */
     for (int y = 0; y < field.size_y; y++)
     {
         for (int x = 0; x < field.size_x; x++)
         {
-            objFieldEntry *obj = &(field.objs[y*field.size_x + x]);
+            objFieldEntry *entry = &(field.entries[y*field.size_x + x]);
 
-            /* call physics functions as a function of the object type */
-            switch (obj->data->type->getType())
+            /* call physics functions as a function of the type of the entry data */
+            switch (entry->data->type->getType())
             {
                 case baseDataObjectType::stone:
-                    stonePhysics(field, obj);
+                    stonePhysics(entry);
                     break;
                 case baseDataObjectType::player:
                     // do nothing, because the player should already be moved
-            //       playerPhysics(field, obj, mx, 0);
                     break;
                 default:
                     break;
@@ -78,99 +76,105 @@ void physicsEngine::run(objField &field, int mx)
 
 /*!
  * \brief   Stone physics
- * \param   field   object field
- * \param   obj     selected object
+ * \param e       
+ *          Selected object. The stone to handle.
  */
-void physicsEngine::stonePhysics(objField &field, objFieldEntry *obj)
+void physicsEngine::stonePhysics(objFieldEntry *e)
 {
     /* a stone falls down if the field under it is free */
-    //if (field.objs[y*field.size_x + x].data->done != 1) {
-    if (obj->data->done != 1) {
-        objFieldEntry *obj_y_next = obj->y_next;
+    if (e->data->done != 1) {
 
-        if (obj_y_next && obj_y_next->data->type->getType() == baseDataObjectType::empty)
+        /* set stone object to done */
+        e->data->done = 1;
+
+        /* get entry that it under the stone */
+        objFieldEntry *e_y_next = e->y_next;
+
+        /* if it's empty */
+        if (e_y_next &&
+            e_y_next->data->done != 1 &&
+            e_y_next->data->type->getType() == baseDataObjectType::empty)
         {
-            // change object types
-            // FIXME: don't switch object types: move/switch objects!
-            dataObject  *do1 = obj->data;
-            dataObject  *do2 = obj_y_next->data;
-            obj->data           = do2;
-            obj_y_next->data    = do1;
-            obj_y_next->data->done = 1;
+            /* let stone fall by switching stone and empty data of the 
+               field entries */
+            dataObject  *do_src     = e->data;
+            dataObject  *do_dest    = e_y_next->data;
+            do_src->done    = 1;        // set stone object done
+            do_dest->done   = 1;        // set empty object done
+            /* switch */
+            e->data         = do_dest;
+            e_y_next->data  = do_src;
         }
     }
-    obj->data->done = 1;
 
 };
 
 
 /*!
  * \brief   Player physics
- * \param   field   object field
- * \param   obj     selected object
+ * \param e
+ *          selected object
  * \return  address of the new object field entry that carries the player
  * FIXME add player commands: move left, right, up, down, push..., pull ...
- * FIXME eat sand
+ * FIXME cleanup like in stonePhysics
  */
 objFieldEntry *
-physicsEngine::playerPhysics(objField &field, objFieldEntry *obj,
-                             int x, int y)
+physicsEngine::playerPhysics(objFieldEntry *e, int x, int y)
 {
-    objFieldEntry *obj_new = obj;   // new player object field entry
+    /* set default value for the new player object field entry */
+    objFieldEntry *pl_entry_new = e;
 
-//    printf("                            switch 0\n");
-    /* a player can move if no item blocks its way */
-    if (obj->data->done != 1) {
+    /* a player can move if no items block its way */
+    if (e->data->done != 1)
+    {
 
-//        printf("                            switch 1\n");
         if      (x ==  1)
         {
-//            printf("                            switch 2a\n");
-            objFieldEntry *obj_x_next = obj->x_next;
-            if (obj_x_next &&
-                obj_x_next->data->type->getType() != baseDataObjectType::stone &&
-                obj_x_next->data->type->getType() != baseDataObjectType::wall)
+            objFieldEntry *e_x_next = e->x_next;
+            if (e_x_next &&
+                e_x_next->data->done != 1 &&
+                e_x_next->data->type->getType() != baseDataObjectType::stone &&
+                e_x_next->data->type->getType() != baseDataObjectType::wall)
             {
                 // FIXME: don't switch object types: move objects!
-                dataObject  *do1 = obj->data;
-                dataObject  *do2 = obj_x_next->data;
-                obj->data           = do2;
-                obj_x_next->data    = do1;
-                obj_x_next->data->done = 1;
+                dataObject  *do1 = e->data;
+                dataObject  *do2 = e_x_next->data;
+                e->data           = do2;
+                e_x_next->data    = do1;
+                e_x_next->data->done = 1;
 
-                obj_new = obj_x_next;
+                pl_entry_new = e_x_next;
             }
-            obj->data->done = 1;
+            e->data->done = 1;
         }
         else if (x == -1)
         {
-//            printf("                            switch 2b\n");
-            objFieldEntry *obj_x_prev = obj->x_prev;
-            if (obj_x_prev &&
-                obj_x_prev->data->type->getType() != baseDataObjectType::stone &&
-                obj_x_prev->data->type->getType() != baseDataObjectType::wall)
+            objFieldEntry *e_x_prev = e->x_prev;
+            if (e_x_prev &&
+                e_x_prev->data->done != 1 &&
+                e_x_prev->data->type->getType() != baseDataObjectType::stone &&
+                e_x_prev->data->type->getType() != baseDataObjectType::wall)
             {
                 // FIXME: don't switch object types: move objects!
-                dataObject  *do1 = obj->data;
-                dataObject  *do2 = obj_x_prev->data;
-                /* eat sand - FIXME: always eat */
+                dataObject  *do1 = e->data;
+                dataObject  *do2 = e_x_prev->data;
+                /* eat sand */
                 if (do2->type->getType() == baseDataObjectType::sand) {
                     delete do2;
                     do2 = new dataObject(baseDataObjectType::empty);
                 }
-                obj->data           = do2;
-                obj_x_prev->data    = do1;
-                obj_x_prev->data->done = 1;
-//                printf("                            switch 3\n");
+                e->data           = do2;
+                e_x_prev->data    = do1;
+                e_x_prev->data->done = 1;
                 
-                obj_new = obj_x_prev;
+                pl_entry_new = e_x_prev;
             }
-            obj->data->done = 1;
+            e->data->done = 1;
         }
 
     }
 
-    return obj_new; 
+    return pl_entry_new; 
 
 };
 

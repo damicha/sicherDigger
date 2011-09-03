@@ -1,3 +1,4 @@
+/******************************************************************************/
 /*!
  * \file    physicsEngine.h
  * \brief   Class definition.
@@ -5,7 +6,7 @@
  * \author  damicha of defect
  * \date    2011
  *
- */
+ ******************************************************************************/
 
 
 #ifndef _PHYSICS_ENGINE_H_
@@ -62,13 +63,12 @@ public:
     /*!
      * \brief   Stone physics
      */
-    void stonePhysics(objField &field, objFieldEntry *obj);
+    void stonePhysics(objFieldEntry *e);
     
     /*!
      * \brief   Player physics
      */
-    objFieldEntry *playerPhysics(objField &field, objFieldEntry *obj,
-                                 int x, int y);
+    objFieldEntry *playerPhysics(objFieldEntry *e, int x, int y);
 
 
 };
