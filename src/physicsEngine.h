@@ -67,8 +67,8 @@ public:
     /*!
      * \brief   Player physics
      */
-    void playerPhysics(objField &field, objFieldEntry *obj,
-                       int x, int y);
+    objFieldEntry *playerPhysics(objField &field, objFieldEntry *obj,
+                                 int x, int y);
 
 
 };

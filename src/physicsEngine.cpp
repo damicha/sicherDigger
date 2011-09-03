@@ -46,8 +46,9 @@ void physicsEngine::run(objField &field, int mx)
     /* move player */
     // FIXME: obj switches from player object to another object !
     // FIXME: update plInfi.obj
- //   playerPhysics(field, field.plInfo.obj, mx, 0);
-   
+    objFieldEntry *obj_new;
+    obj_new = playerPhysics(field, field.plInfo.obj, mx, 0);
+    field.plInfo.obj = obj_new; 
 
     /* run physics on the other field objects */
     for (int y = 0; y < field.size_y; y++)
@@ -64,7 +65,7 @@ void physicsEngine::run(objField &field, int mx)
                     break;
                 case baseDataObjectType::player:
                     // do nothing, because the player should already be moved
-                   playerPhysics(field, obj, mx, 0);
+            //       playerPhysics(field, obj, mx, 0);
                     break;
                 default:
                     break;
@@ -107,12 +108,16 @@ void physicsEngine::stonePhysics(objField &field, objFieldEntry *obj)
  * \brief   Player physics
  * \param   field   object field
  * \param   obj     selected object
+ * \return  address of the new object field entry that carries the player
  * FIXME add player commands: move left, right, up, down, push..., pull ...
  * FIXME eat sand
  */
-void physicsEngine::playerPhysics(objField &field, objFieldEntry *obj,
-                                  int x, int y)
+objFieldEntry *
+physicsEngine::playerPhysics(objField &field, objFieldEntry *obj,
+                             int x, int y)
 {
+    objFieldEntry *obj_new = obj;   // new player object field entry
+
 //    printf("                            switch 0\n");
     /* a player can move if no item blocks its way */
     if (obj->data->done != 1) {
@@ -132,6 +137,8 @@ void physicsEngine::playerPhysics(objField &field, objFieldEntry *obj,
                 obj->data           = do2;
                 obj_x_next->data    = do1;
                 obj_x_next->data->done = 1;
+
+                obj_new = obj_x_next;
             }
             obj->data->done = 1;
         }
@@ -155,11 +162,15 @@ void physicsEngine::playerPhysics(objField &field, objFieldEntry *obj,
                 obj_x_prev->data    = do1;
                 obj_x_prev->data->done = 1;
 //                printf("                            switch 3\n");
+                
+                obj_new = obj_x_prev;
             }
             obj->data->done = 1;
         }
 
     }
+
+    return obj_new; 
 
 };
 
