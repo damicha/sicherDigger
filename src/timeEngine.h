@@ -13,8 +13,8 @@
  ******************************************************************************/
 
 
-#ifndef _TIMEENGINE_H_
-#define _TIMEENGINE_H_
+#ifndef _TIME_ENGINE_H_
+#define _TIME_ENGINE_H_
 
 #include "textEngine.h"
 
@@ -112,4 +112,4 @@ public:
 
 };
 
-#endif // _TIMEENGINE_H_
+#endif // _TIME_ENGINE_H_

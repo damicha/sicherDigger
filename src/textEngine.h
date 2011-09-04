@@ -1,7 +1,6 @@
 /******************************************************************************/
 /*!
  * \file    textEngine.h
- * \class   textEngine 
  * \brief   Displays the field objects as text on the console
  * 
  * \author  damicha of defect
@@ -21,8 +20,12 @@
 using namespace std;
 
 
+/*!
+ * \class   textEngine 
+ */
 class textEngine
 {
+/* ======== class types ======== */    
 public:
     /*!
      * \enum output type
@@ -37,8 +40,10 @@ public:
 
     /*!
      * \brief   Print the content of the object field to the console
-     * \param   field       Reference to the object field to print
-     * \param   drawtype    Set draw mode
+     * \param   field
+     *  Reference to the object field to print
+     * \param   drawtype
+     *  Set draw mode
      */
 
     // FIXME: 2 draw functions: draw, redraw
@@ -59,7 +64,8 @@ public:
 
 
     /*!
-     * \param   y   Number of lines to move up.
+     * \param   y
+     *  Number of lines to move up.
      */
     static void moveCursorLinesUp(int y) {
         /* set cursor position
@@ -72,7 +78,8 @@ public:
 
     /*!
      * \brief   Print the content of the object field to the console
-     * \param   field       Reference to the object field to print
+     * \param   field
+     *  Reference to the object field to print
      */
     void drawField(const objField &field)
     {
@@ -90,7 +97,8 @@ public:
 
     /*!
      * \brief   Gets a character to print that presents the type of the data object.
-     * \param   t   Address of data object.
+     * \param   t
+     *  Address of data object.
      */
     char getSymbol(baseDataObjectType *t)
     {
@@ -109,7 +117,8 @@ public:
 
     /*!
      * \brief   Get the high in lines of the field's text output
-     * \param   field       Reference to the object field to print
+     * \param   field
+     *  Reference to the object field to print
      */
     int getFieldHigh(const objField &field) {
         return field.size_y;
