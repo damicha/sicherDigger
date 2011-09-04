@@ -26,6 +26,18 @@ using namespace std;
  */
 class physicsEngine
 {
+/* ======== class types ======== */    
+public:
+    /*!
+     * \enum Object movement type. Used for player movement
+     */
+    typedef enum {
+        mtLeft,
+        mtRight,
+        mtUp,
+        mtDown
+    } movement_t;
+
 /* ======== class attributes ======== */    
 private:
     int iter_num;    /*!< The number of proceeded iterations. */
@@ -58,7 +70,7 @@ public:
     /*!
      * \brief   Do one iteration on the object field.
      */
-    void run(objField &field, int x);
+    void run(objField &field, movement_t m_pl);
 
     /*!
      * \brief   Stone physics
@@ -68,7 +80,7 @@ public:
     /*!
      * \brief   Player physics
      */
-    objFieldEntry *playerPhysics(objFieldEntry *e, int x, int y);
+    objFieldEntry *playerPhysics(objFieldEntry *e, movement_t m);
 
 
 };

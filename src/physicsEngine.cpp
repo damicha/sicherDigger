@@ -27,7 +27,7 @@ using namespace std;
  * FIXME: add mechanism to lock source and destination field
  * FIXME: add player movement
  */
-void physicsEngine::run(objField &field, int mx)
+void physicsEngine::run(objField &field, movement_t m_pl)
 {
 
     /* clear dones */
@@ -45,7 +45,7 @@ void physicsEngine::run(objField &field, int mx)
     /* move player first */
     {
         objFieldEntry *pl_entry_new;
-        pl_entry_new = playerPhysics(field.pl_entry, mx, 0);
+        pl_entry_new = playerPhysics(field.pl_entry, m_pl);
         field.pl_entry = pl_entry_new; 
     }
 
@@ -124,11 +124,10 @@ void physicsEngine::stonePhysics(objFieldEntry *e)
  *  - a player can move if no items block its way
  *
  * FIXME add player commands: move left, right, up, down, push..., pull ...
- * FIXME cleanup like in stonePhysics
- * FIXME add usefull subfunction
+ * FIXME add usefull subfunction (check, move)
  */
 objFieldEntry *
-physicsEngine::playerPhysics(objFieldEntry *e, int x, int y)
+physicsEngine::playerPhysics(objFieldEntry *e, movement_t m)
 {
     /* set default value for the new player object field entry */
     objFieldEntry *pl_entry_new = e;
@@ -141,66 +140,74 @@ physicsEngine::playerPhysics(objFieldEntry *e, int x, int y)
     /* set player object to done */
     e->data->done = 1;
 
-    /* move right */
-    if      (x ==  1)
+    /* move player */
+    switch (m)
     {
-        /* get the entry that is on the right side of the player */
-        objFieldEntry *e_x_next = e->x_next;
-
-        /* move the player if it is not blocked */
-        if (e_x_next &&
-            e_x_next->data->done != 1 &&
-            e_x_next->data->type->getType() != baseDataObjectType::stone &&
-            e_x_next->data->type->getType() != baseDataObjectType::wall)
+        /* move to right */
+        case mtRight:
         {
-            /* move player by switching the object field entry data */
-            dataObject  *do_src     = e->data;
-            dataObject  *do_dest    = e_x_next->data;
-            /* eat sand */
-            if (do_dest->type->getType() == baseDataObjectType::sand) {
-                delete do_dest;
-                do_dest = new dataObject(baseDataObjectType::empty);
+            /* get the entry that is on the right side of the player */
+            objFieldEntry *e_x_next = e->x_next;
+
+            /* move the player if it is not blocked */
+            if (e_x_next &&
+                e_x_next->data->done != 1 &&
+                e_x_next->data->type->getType() != baseDataObjectType::stone &&
+                e_x_next->data->type->getType() != baseDataObjectType::wall)
+            {
+                /* move player by switching the object field entry data */
+                dataObject  *do_src     = e->data;
+                dataObject  *do_dest    = e_x_next->data;
+                /* eat sand */
+                if (do_dest->type->getType() == baseDataObjectType::sand) {
+                    delete do_dest;
+                    do_dest = new dataObject(baseDataObjectType::empty);
+                }
+                do_dest->done   = 1;        // set other object done
+                /* switch */
+                e->data           = do_dest;
+                e_x_next->data    = do_src;
+
+                /* update the address of the object field entry that contains
+                 * the player data */
+                pl_entry_new = e_x_next;
             }
-            do_dest->done   = 1;        // set other object done
-            /* switch */
-            e->data           = do_dest;
-            e_x_next->data    = do_src;
-
-            /* update the address of the object field entry that contains
-             * the player data */
-            pl_entry_new = e_x_next;
+            break;
         }
-    }
-    /* move left */
-    else if (x == -1)
-    {
-        /* get the entry that is on the left side of the player */
-        objFieldEntry *e_x_prev = e->x_prev;
 
-        /* move the player if it is not blocked */
-        if (e_x_prev &&
-            e_x_prev->data->done != 1 &&
-            e_x_prev->data->type->getType() != baseDataObjectType::stone &&
-            e_x_prev->data->type->getType() != baseDataObjectType::wall)
+        /* move to left */
+        case mtLeft:
         {
-            /* move player by switching the object field entry data */
-            dataObject  *do_src     = e->data;
-            dataObject  *do_dest    = e_x_prev->data;
-            /* eat sand */
-            if (do_dest->type->getType() == baseDataObjectType::sand) {
-                delete do_dest;
-                do_dest = new dataObject(baseDataObjectType::empty);
+            /* get the entry that is on the left side of the player */
+            objFieldEntry *e_x_prev = e->x_prev;
+
+            /* move the player if it is not blocked */
+            if (e_x_prev &&
+                e_x_prev->data->done != 1 &&
+                e_x_prev->data->type->getType() != baseDataObjectType::stone &&
+                e_x_prev->data->type->getType() != baseDataObjectType::wall)
+            {
+                /* move player by switching the object field entry data */
+                dataObject  *do_src     = e->data;
+                dataObject  *do_dest    = e_x_prev->data;
+                /* eat sand */
+                if (do_dest->type->getType() == baseDataObjectType::sand) {
+                    delete do_dest;
+                    do_dest = new dataObject(baseDataObjectType::empty);
+                }
+                do_dest->done = 1;          // set other object done
+                /* switch */
+                e->data           = do_dest;
+                e_x_prev->data    = do_src;
+                
+                /* update the address of the object field entry that contains
+                 * the player data */
+                pl_entry_new = e_x_prev;
             }
-            do_dest->done = 1;          // set other object done
-            /* switch */
-            e->data           = do_dest;
-            e_x_prev->data    = do_src;
-            
-            /* update the address of the object field entry that contains
-             * the player data */
-            pl_entry_new = e_x_prev;
+            break;
         }
-    }
+
+    } // switch m
 
     return pl_entry_new; 
 

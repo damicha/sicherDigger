@@ -41,8 +41,8 @@ int main(void)
     objField field(cfg);
 
     textEngine txt;
-    timeEngine time(250000);    // 250 ms trigger value
-//    timeEngine time(500000);    // trigger value
+//    timeEngine time(250000);    // 250 ms trigger value
+    timeEngine time(500000);    // trigger value
     physicsEngine phy;
 
     txt.draw(field, textEngine::firstdraw);
@@ -52,7 +52,7 @@ int main(void)
 
         time.wait4Trigger();
 
-        phy.run(field, (i % 12) < 6 ? -1: 1);
+        phy.run(field, (i % 12) < 6 ? physicsEngine::mtLeft : physicsEngine::mtRight);
 
         snprintf(str, 256, "%.2f", time.getTriggerTime()/1000000.0);
         txt.draw(field, textEngine::redraw, str);
