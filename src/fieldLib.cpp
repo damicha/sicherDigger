@@ -41,8 +41,8 @@ int main(void)
     objField field(cfg);
 
     textEngine txt;
-//    timeEngine time(250000);    // 250 ms trigger value
-    timeEngine time(500000);    // trigger value
+    timeEngine time(250000);    // 250 ms trigger value
+//    timeEngine time(500000);    // trigger value
     physicsEngine phy;
 
     txt.draw(field, textEngine::firstdraw);
@@ -62,10 +62,9 @@ int main(void)
     printf("iterations: %d\n", phy.getIterNum());
 
 #if 0
-    field.str(objField::list);
-//    field.str(objField::array);
+    txt.drawField(field);
+    txt.drawFieldList(field);
 #endif
-
     return 0;
 
 /* error handling */

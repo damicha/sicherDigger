@@ -77,7 +77,7 @@ public:
 
 
     /*!
-     * \brief   Print the content of the object field to the console
+     * \brief   Print the content of the object field as an array to the console
      * \param   field
      *  Reference to the object field to print
      */
@@ -91,6 +91,21 @@ public:
                 printf("%c ", c);
             }
             printf("\n");
+        }
+    }
+
+
+    /*!
+     * \brief   Print the content of the object field as a list to the console
+     * \param   field
+     *  Reference to the object field to print
+     */
+    void drawFieldList(const objField &field)
+    {
+        printf("Field dimensions: (x: %d, y: %d)\n",
+               field.size_x, field.size_y);
+        for (int i = 0; i < field.size_x*field.size_y; i++) {
+            printf("position: %2d, data: %s\n", i, field.entries[i].str().c_str());
         }
     }
 
