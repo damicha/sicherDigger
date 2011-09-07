@@ -54,21 +54,17 @@ int main(void)
 
         phy.run(field, (i % 12) < 6 ? physicsEngine::mtLeft : physicsEngine::mtRight);
 
-        snprintf(str, 256, "%.2f", time.getTriggerTime()/1000000.0);
+        snprintf(str, 256, "%.2f", time.getTriggerTime()/timeEngine::time_base);
         txt.draw(field, textEngine::redraw, str);
+        txt.drawDebugInfo(time);
     }
     printf("\n\n\n");
 
     printf("iterations: %d\n", phy.getIterNum());
 
 #if 0
-    txt.drawField(field);
     txt.drawFieldList(field);
 #endif
     return 0;
-
-/* error handling */
-out:
-    return -1;
 }
 

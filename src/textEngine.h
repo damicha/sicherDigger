@@ -13,8 +13,10 @@
 
 #include "objField.h"
 #include "baseDataObjectType.h"
+#include "timeEngine.h"
 
 #include <stdio.h>
+
 #include <string>
 #include <sstream>
 using namespace std;
@@ -109,6 +111,16 @@ public:
         }
     }
 
+    /*!
+     * \brief   Draw debug infos of the time engine
+     */
+     void drawDebugInfo(timeEngine &te)
+     {
+        int l_num;  // number of printed lines
+        printf("%s", te.getDebugInfo(&l_num).c_str());
+
+        moveCursorLinesUp(l_num);
+     }
 
     /*!
      * \brief   Gets a character to print that presents the type of the data object.
@@ -125,7 +137,7 @@ public:
             case baseDataObjectType::stone: return 'O';
             case baseDataObjectType::player:return '8';
             case baseDataObjectType::unknown:
-            default:                    return '?';
+            default:                        return '?';
         }
     }
 
