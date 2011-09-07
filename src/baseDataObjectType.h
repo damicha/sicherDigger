@@ -1,5 +1,5 @@
-/******************************************************************************/
-/*!
+/*! ****************************************************************************
+ *
  * \file    baseDataObjectType.h
  * \brief   Class used as basis class to define the interface of the used data
  *  object types.
