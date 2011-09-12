@@ -15,7 +15,7 @@
 
 #include "config.h"
 #include "textEngine.h"
-#include "timeEngine.h"
+#include "SDig_TimeEngine.h"
 #include "physicsEngine.h"
 
 #include <stdio.h>
@@ -41,11 +41,12 @@ int main(void)
     objField field(cfg);
 
     textEngine txt;
-    timeEngine time(250000);    // 250 ms trigger value
-//    timeEngine time(500000);    // trigger value
+    SDig::TimeEngine time(250000);      // 250 ms trigger value
+//    SDig::TimeEngine time(500000);      // trigger value
     physicsEngine phy;
 
     txt.draw(field, textEngine::firstdraw);
+    txt.drawDebugInfo(time);
     for (int i = 0; i < 24; i++)
     {
         char str[256];
@@ -54,7 +55,7 @@ int main(void)
 
         phy.run(field, (i % 12) < 6 ? physicsEngine::mtLeft : physicsEngine::mtRight);
 
-        snprintf(str, 256, "%.2f", time.getTriggerTime()/timeEngine::time_base);
+        snprintf(str, 256, "%.2f", time.getTriggerTime()/SDig::TimeEngine::mTimeBase);
         txt.draw(field, textEngine::redraw, str);
         txt.drawDebugInfo(time);
     }

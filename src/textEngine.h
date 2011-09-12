@@ -13,7 +13,7 @@
 
 #include "objField.h"
 #include "baseDataObjectType.h"
-#include "timeEngine.h"
+#include "SDig_TimeEngine.h"
 
 #include <stdio.h>
 
@@ -114,7 +114,7 @@ public:
     /*!
      * \brief   Draw debug infos of the time engine
      */
-     void drawDebugInfo(timeEngine &te)
+     void drawDebugInfo(SDig::TimeEngine &te)
      {
         int l_num;  // number of printed lines
         printf("%s", te.getDebugInfo(&l_num).c_str());
