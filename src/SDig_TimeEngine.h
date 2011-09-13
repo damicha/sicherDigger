@@ -1,14 +1,14 @@
 /*! ****************************************************************************
+ *
  * \file    SDig_TimeEngine.h
- * \class   TimeEngine
  * \brief   Provides common time and trigger functions.
  *
  * \author  damicha of defect
  * \date    2011
  *
  * \details
- * The time value is stored in micro seconds as a 64 bit unsigned integer value.
- * The gettimeofday() function is used to get the time from system.
+ *  The time value is stored in micro seconds as a 64 bit unsigned integer value.
+ *  The gettimeofday() function is used to get the time from system.
  *
  ******************************************************************************/
 
@@ -16,7 +16,7 @@
 #ifndef _SDIG_TIME_ENGINE_H_
 #define _SDIG_TIME_ENGINE_H_
 
-#include "textEngine.h"
+#include "SDig_TextEngine.h"
 
 #include <sys/time.h>
 #include <stdint.h>
