@@ -48,6 +48,7 @@ public:
      * \enum button type
      *
      * Internal representation of pressed keys/buttons.
+     * FIXME: move to a common SDig HW class
      */
     enum ButtonType {
         BT_NONE,    //!< no key identifier
@@ -128,8 +129,8 @@ public:
      *  representation.
      * \return  Recognized button.
      */
-    ButtonType getKey(void) {
-        ButtonType button;
+    ButtonType getButton(void) {
+        ButtonType button = BT_NONE;
 
         int c = getch();    // get first entry (key) of the input buffer    
         flushinp();         // flush all other keys from input buffer
@@ -145,7 +146,6 @@ public:
                 case KEY_UP     : button = BT_UP;       break;
                 case KEY_LEFT   : button = BT_LEFT;     break;
                 case KEY_RIGHT  : button = BT_RIGHT;    break;
-                default         : button = BT_NONE;     break;
             }
         }
 
