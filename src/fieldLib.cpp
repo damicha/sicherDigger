@@ -47,13 +47,35 @@ int main(void)
 
     txt.drawField(field);
     txt.drawDebugInfo(time);
-    for (int i = 0; i < 24; i++)
+
+    bool stop = false;
+    while(stop == false) 
     {
         char str[256];
 
         time.wait4Trigger();
 
-        phy.run(field, (i % 12) < 6 ? physicsEngine::mtLeft : physicsEngine::mtRight);
+        // FIXME:
+        //  add SDigGameEngine
+        //  get keys more than 4 times a second (60 times) <- game engine
+
+        SDig::TextEngine::ButtonType    button = txt.getButton();
+        physicsEngine::movement_t       moveDirection = physicsEngine::mtNone;
+        
+        switch(button)
+        {
+            case SDig::TextEngine::BT_LEFT:
+                moveDirection = physicsEngine::mtLeft; 
+                break;
+            case SDig::TextEngine::BT_RIGHT:
+                moveDirection = physicsEngine::mtRight;
+                break;
+            case SDig::TextEngine::BT_START:
+                stop = true;                // leave the loop
+                break;
+        }
+
+        phy.run(field, moveDirection);
 
         snprintf(str, 256, "%.2f", time.getTriggerTime()/SDig::TimeEngine::mTimeBase);
         txt.drawField(field, str);
