@@ -35,7 +35,8 @@ public:
         mtLeft,
         mtRight,
         mtUp,
-        mtDown
+        mtDown,
+        mtNone
     } movement_t;
 
 /* ======== class attributes ======== */    
