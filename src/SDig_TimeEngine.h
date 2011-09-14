@@ -86,7 +86,7 @@ public:
     }
 
     /*!
-     * \ brief  Waits until the next trigger event occures.
+     * \brief  Waits until the next trigger event occures.
      */
     void wait4Trigger() {
         /* update the last time value */
