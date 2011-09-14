@@ -1,135 +1,236 @@
-/******************************************************************************/
-/*!
- * \file    textEngine.h
+/*! ****************************************************************************
+ *
+ * \file    SDig_TextEngine.h
  * \brief   Displays the field objects as text on the console
  * 
  * \author  damicha of defect
  * \date    2011 
  *
+ * \details
+ *  The TextEngine class is implemented that provices functions to get the
+ *  user input and to do a ASCII text output of the game field.
+ *
  ******************************************************************************/
 
-#ifndef _TEXT_ENGINE_H_
-#define _TEXT_ENGINE_H_
+#ifndef _SDIG_TEXT_ENGINE_H_
+#define _SDIG_TEXT_ENGINE_H_
 
 #include "objField.h"
 #include "baseDataObjectType.h"
 #include "SDig_TimeEngine.h"
 
 #include <stdio.h>
+#include <ncurses.h>
 
 #include <string>
 #include <sstream>
+
+
 using namespace std;
 
 
 /*!
- * \class   textEngine 
+ * \namespace   SDig
+ * \brief   Namespace of the sicherDigger project.
+ *
+ * FIXME: move SDig namespace description to a central header file
  */
-class textEngine
+namespace SDig {
+
+/*!
+ * \class   TextEngine 
+ */
+class TextEngine
 {
 /* ======== class types ======== */    
 public:
     /*!
-     * \enum output type
+     * \enum button type
+     *
+     * Internal representation of pressed keys/buttons.
      */
-    typedef enum {
-        firstdraw,  //!< Draw without placing the cursor
-        redraw      //!< Set cursor to start position and draw
-    } drawType_t;
+    enum ButtonType {
+        BT_NONE,    //!< no key identifier
+        BT_UP,      //!< up key
+        BT_DOWN,    //!< down key
+        BT_LEFT,    //!< left key
+        BT_RIGHT,   //!< right key
+        BT_A,       //!< A button
+        BT_START    //!< start button
+    };
+
+
+
+/* ======== attributes ======== */    
+private:
+    /*! counts the number of intances. It's used to init the ncurses library
+     *  if the first TextEngine instance is created. The ncurses library is
+     *  closed if the last TextEngine instance will be deleted. */
+    static int mInstanceCounter;
 
 /* ======== functions ======== */
 public:
 
     /*!
+     * \brief   constructor
+     *
+     * Initialize ncurses if the first instance of this class will be created
+     */
+    TextEngine() {
+        if (mInstanceCounter == 0) {
+            /* init ncurses */
+            initNCurses();
+            /* increment instance counter */
+            mInstanceCounter++;
+        } 
+    }
+    
+    /*!
+     * \brief   destructor
+     *
+     * Stop ncurses if the last instance of this class will be destroyed
+     */
+    ~TextEngine() {
+        /* decrement instance counter */
+        mInstanceCounter--;
+        if (mInstanceCounter == 0) {
+            /* release ncurses */
+            stopNCurses();
+        } 
+    }
+
+    
+    /*!
+     * \brief   initialize ncurses
+     */
+    void initNCurses(void) {
+        /* start curses mode */
+        initscr();
+
+        /* configure the behavior of the getchar() function */
+        noecho();               // getchar() doesn't echo the get character
+        nodelay(stdscr, true);  // getchar()'s non blocking mode
+        cbreak();               // disable line buffering
+        keypad(stdscr, true);   // enable the keypad to get its keys
+    }
+
+    
+    /*!
+     * \brief   stop ncurses
+     */
+    void stopNCurses(void) {
+        /* End curses mode */
+        endwin();
+    }
+    
+    /*!
+     * \brief   Get key from input buffer and map it to the internal butten
+     *  representation.
+     * \return  Recognized button.
+     */
+    ButtonType getKey(void) {
+        ButtonType button;
+
+        int c = getch();    // get first entry (key) of the input buffer    
+        flushinp();         // flush all other keys from input buffer
+    
+        if (c != ERR)
+        {
+            /* keyboard button mapping */
+            switch(c)
+            {
+                case 'q'        : button = BT_START;    break;
+                case 'o'        : button = BT_A;        break;
+                case KEY_DOWN   : button = BT_DOWN;     break;
+                case KEY_UP     : button = BT_UP;       break;
+                case KEY_LEFT   : button = BT_LEFT;     break;
+                case KEY_RIGHT  : button = BT_RIGHT;    break;
+                default         : button = BT_NONE;     break;
+            }
+        }
+
+        return button;
+
+    }
+
+
+    /*!
      * \brief   Print the content of the object field to the console
-     * \param   field
-     *  Reference to the object field to print
-     * \param   drawtype
-     *  Set draw mode
+     * \param   pField
+     *  Reference to the object field to print.
+     * \param   pDrawType
+     *  Set draw mode.
+     * \param   pHeaderString
+     *  String used within the header
      */
 
-    // FIXME: 2 draw functions: draw, redraw
-    void draw(const objField &field,
-              const drawType_t drawtype = redraw,
-              const char *str = NULL)
+    void drawField(const objField &pField,
+                   const char *pHeaderString = NULL)
     {
-        // set the cursor to its start position if required
-        if (drawtype == redraw) {
-            moveCursorLinesUp(getHeaderHigh() + getFieldHigh(field) + getFooterHigh());
-        }
-      
+        // move cursor position to (row, col)
+        move(0, 0);
+
         // draw the object field
-        drawHeader(str);
-        drawField(field);
+        drawHeader(pHeaderString);
+        drawFieldData(pField);
         drawFooter();
     }
 
 
     /*!
-     * \param   y
-     *  Number of lines to move up.
-     */
-    static void moveCursorLinesUp(int y) {
-        /* set cursor position
-         * help: http://www.linuxselfhelp.com/howtos/Bash-Prompt/Bash-Prompt-HOWTO-6.html
-         *       (Cursor Movement)
-         */
-        printf("\033[%dA", y);
-    }
-
-
-    /*!
      * \brief   Print the content of the object field as an array to the console
-     * \param   field
+     * \param   pField
      *  Reference to the object field to print
      */
-    void drawField(const objField &field)
+    void drawFieldData(const objField &pField)
     {
-        for (int y = 0; y < field.size_y; y++)
+        for (int y = 0; y < pField.size_y; y++)
         {
-            for (int x = 0; x < field.size_x; x++)
+            for (int x = 0; x < pField.size_x; x++)
             {
-                char c = getSymbol(field.entries[y*field.size_x + x].data->type);
-                printf("%c ", c);
+                char c = getSymbol(pField.entries[y*pField.size_x + x].data->type);
+                printw("%c ", c);
             }
-            printf("\n");
+            printw("\n");
         }
+        refresh();
     }
 
 
     /*!
      * \brief   Print the content of the object field as a list to the console
-     * \param   field
+     * \param   pField
      *  Reference to the object field to print
      */
-    void drawFieldList(const objField &field)
+    void drawFieldList(const objField &pField)
     {
-        printf("Field dimensions: (x: %d, y: %d)\n",
-               field.size_x, field.size_y);
-        for (int i = 0; i < field.size_x*field.size_y; i++) {
-            printf("position: %2d, data: %s\n", i, field.entries[i].str().c_str());
+        printw("Field dimensions: (x: %d, y: %d)\n",
+               pField.size_x, pField.size_y);
+        for (int i = 0; i < pField.size_x*pField.size_y; i++) {
+            printw("position: %2d, data: %s\n", i, pField.entries[i].str().c_str());
         }
+        refresh();
     }
+
 
     /*!
      * \brief   Draw debug infos of the time engine
      */
      void drawDebugInfo(SDig::TimeEngine &te)
      {
-        int l_num;  // number of printed lines
-        printf("%s", te.getDebugInfo(&l_num).c_str());
+        printw("%s", te.getDebugInfo().c_str());
+        refresh();
+    }
 
-        moveCursorLinesUp(l_num);
-     }
 
     /*!
      * \brief   Gets a character to print that presents the type of the data object.
-     * \param   t
+     * \param   pObjType
      *  Address of data object.
      */
-    char getSymbol(baseDataObjectType *t)
+    char getSymbol(baseDataObjectType *pObjType)
     {
-        switch (t->getType())
+        switch (pObjType->getType())
         {
             case baseDataObjectType::empty: return ' '; 
             case baseDataObjectType::sand:  return '.';
@@ -143,42 +244,28 @@ public:
 
 
     /*!
-     * \brief   Get the high in lines of the field's text output
-     * \param   field
-     *  Reference to the object field to print
-     */
-    int getFieldHigh(const objField &field) {
-        return field.size_y;
-    }
-
-
-    /*!
      * \brief   Print the header
+     * \param   pStr
+     *  Additional info string inserted in the header
      */
-    void drawHeader(const char *str = NULL) {
-        printf("==== Header (%s) ====\n", (str != NULL) ? str : "-");
-    }
-    /*!
-     * \brief   Get the high in lines of the header's text output
-     */
-    int getHeaderHigh() {
-        return 1;
+    void drawHeader(const char *pStr = NULL) {
+        printw("==== Header (%s) ====\n", (pStr != NULL) ? pStr : "-");
+        refresh();
     }
 
     /*!
      * \brief   Print the footer
      */
     void drawFooter() {
-        printf("==== Footer ====\n");
+        printw("==== Footer ====\n");
+        refresh();
     }
-    /*!
-     * \brief   Get the high in lines of the footer's text output
-     */
-    int getFooterHigh() {
-        return 1;
-    }
-
 
 };
+
+/* set default value for the instance counter */
+int TextEngine::mInstanceCounter = 0;
+
+}       // namespace
 
 #endif

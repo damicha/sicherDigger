@@ -13,13 +13,14 @@ OBJECTS = fieldLib.o objFieldEntry.o objField.o \
           physicsEngine.o \
           baseDataObjectType.o
 INCLUDES = $(wildcard *.h)
+LDFLAGS_NCURSES = -lncurses
 
 #-------------------------------------------------------------------------------
 all: fieldLib
     
 #-------------------------------------------------------------------------------
 fieldLib: $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) -o $@
+	$(CC) $(CFLAGS) $(LDFLAGS_NCURSES) $(OBJECTS) -o $@
 
 %.o: %.cpp $(INCLUDES)
 	$(CC) $(CFLAGS) -c $<
