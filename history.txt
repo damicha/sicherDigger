@@ -14,6 +14,8 @@
 
 next:
  - file templates
+ - SDig_PhysicsEngine: player up and down
+ - SDig_GameEngine: add
 
 
   0.1pre - text output
@@ -39,11 +41,12 @@ next:
 * objFieldEntry.h, objFieldEntry.cpp:
   - ...
 
-* textEngine.h: text ouput engine
+* SDig_TextEngine.h: text output/input engine
+  - ncurses is used
   - basic drawing of the object field
   - maps data object type to an specified character
 
-* timeEngine.h: wait for configurable trigger events
+* SDig_TimeEngine.h: wait for configurable trigger events
   - uses the system functions gettimeofday() and usleep()
 
 * config.h: field configuration class
