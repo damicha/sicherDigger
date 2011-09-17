@@ -39,13 +39,16 @@ namespace SDig {
 
 /*!
  * \class   TextEngine 
+ * \brief
+ *  Provices functions to get the user input and to do a ASCII text output
+ *  of the game field.
  */
 class TextEngine
 {
 /* ======== class types ======== */    
 public:
     /*!
-     * \enum button type
+     * \brief    button type
      *
      * Internal representation of pressed keys/buttons.
      * FIXME: move to a common SDig HW class
@@ -158,8 +161,6 @@ public:
      * \brief   Print the content of the object field to the console
      * \param   pField
      *  Reference to the object field to print.
-     * \param   pDrawType
-     *  Set draw mode.
      * \param   pHeaderString
      *  String used within the header
      */
@@ -216,8 +217,8 @@ public:
     /*!
      * \brief   Draw debug infos of the time engine
      */
-     void drawDebugInfo(SDig::TimeEngine &te)
-     {
+    void drawDebugInfo(SDig::TimeEngine &te)
+    {
         printw("%s", te.getDebugInfo().c_str());
         refresh();
     }
@@ -268,4 +269,5 @@ int TextEngine::mInstanceCounter = 0;
 
 }       // namespace
 
-#endif
+#endif  // _SDIG_TEXT_ENGINE_H_
+
