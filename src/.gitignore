@@ -1,6 +1,9 @@
 # main binary
 fieldLib
 
+# save copies of vim
+*.swp
+
 # object files
 *.o
 
