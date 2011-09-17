@@ -15,11 +15,28 @@
 next:
  - file templates
  - SDig_PhysicsEngine: player up and down
- - SDig_GameEngine: add
 
 
   0.1pre - text output
 ================
+
+
+* SDig_GameEngine:
+  - creates TextEngine, TimeEngine and PhysicsEngine
+  - creates object field (game data)
+  - controls data and engines
+
+* SDig_TextEngine.h: text output/input engine
+  - ncurses is used
+  - basic drawing of the object field
+  - maps data object type to an specified character
+
+* SDig_TimeEngine.h: wait for configurable trigger events
+  - uses the system functions gettimeofday() and usleep()
+
+* physicsEngine.h, physicsEngine.cpp: game physic engine
+  - simple stone movement (it's falling down) was added
+  - player physics to move it to the left and right
 
 * baseDataObjectType.h, baseDataObjectType.cpp
   - The base data object type class baseDataObjectType for derived data object
@@ -41,30 +58,15 @@ next:
 * objFieldEntry.h, objFieldEntry.cpp:
   - ...
 
-* SDig_TextEngine.h: text output/input engine
-  - ncurses is used
-  - basic drawing of the object field
-  - maps data object type to an specified character
-
-* SDig_TimeEngine.h: wait for configurable trigger events
-  - uses the system functions gettimeofday() and usleep()
-
 * config.h: field configuration class
   - a simple char array is used to set the default values of an objField
 
 * configData.h: field configurations
 
-* physicsEngine.h, physicsEngine.cpp: game physic engine
-  - simple stone movement (it's falling down) was added
-  - player physics to move it to the left and right
-
 * == TODOs ==
 
 * physicsEngine.h, physicsEngine.cpp: game physic engine
   - add physics engine for obj types, empty, sand, wall, diamond
-
-* control engine
-  - capture user inputs
 
 * common:
  - use github to store the sources
