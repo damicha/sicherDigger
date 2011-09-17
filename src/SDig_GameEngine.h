@@ -13,14 +13,14 @@
 
 #include "SDig_TimeEngine.h"
 #include "SDig_TextEngine.h"
+#include "SDig_PhysicsEngine.h"
 
 #include "config.h"
 #include "configData.h"
-#include "physicsEngine.h"
 
 #include "objField.h"
 
-using namespace std;
+//using namespace std;
 
 
 namespace SDig {
@@ -35,9 +35,9 @@ class GameEngine
 private:
     objField    *mField;        //!< object field (game level data)
 
-    SDig::TextEngine    mTxt;   //!< test engine
-    SDig::TimeEngine    mTime;  //!< time engine
-    physicsEngine       mPhy;   //!< physics engine
+    TextEngine      mTxt;   //!< test engine
+    TimeEngine      mTime;  //!< time engine
+    PhysicsEngine   mPhy;   //!< physics engine
 
 /* ======== functions ======== */    
 public:
@@ -85,18 +85,18 @@ public:
             /* get last pushed button */
             // FIXME: detection of only the last and only one pressed
             //        button is possible
-            SDig::TextEngine::ButtonType    button = mTxt.getButton();
-            physicsEngine::movement_t       moveDirection = physicsEngine::mtNone;
+            TextEngine::ButtonType      button = mTxt.getButton();
+            PhysicsEngine::MovementType moveDirection = PhysicsEngine::MT_NONE;
             
             switch(button)
             {
-                case SDig::TextEngine::BT_LEFT:
-                    moveDirection = physicsEngine::mtLeft; 
+                case TextEngine::BT_LEFT:
+                    moveDirection = PhysicsEngine::MT_LEFT; 
                     break;
-                case SDig::TextEngine::BT_RIGHT:
-                    moveDirection = physicsEngine::mtRight;
+                case TextEngine::BT_RIGHT:
+                    moveDirection = PhysicsEngine::MT_RIGHT; 
                     break;
-                case SDig::TextEngine::BT_START:
+                case TextEngine::BT_START:
                     stop = true;                // leave the loop
                     break;
             }

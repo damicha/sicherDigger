@@ -8,7 +8,7 @@
  *
  ******************************************************************************/
 
-#include "physicsEngine.h"
+#include "SDig_PhysicsEngine.h"
 
 #include "baseDataObjectType.h"
 #include "dataObject.h"
@@ -16,51 +16,52 @@
 
 #include "stdio.h"
 
-using namespace std;
+using namespace SDig;
 
 
 /*!
  * \brief   Do one iteration on the object field.
- * \param field
+ * \param mField
  *          Object field with the objects to modify/move.
  *
  * FIXME: add mechanism to lock source and destination field
  * FIXME: add player movement
  */
-void physicsEngine::run(objField &field, movement_t m_pl)
+void PhysicsEngine::run(objField &pField, MovementType pPlayerMove)
 {
 
     /* clear dones */
-    for (int y = 0; y < field.size_y; y++)
+    for (int y = 0; y < pField.size_y; y++)
     {
-        for (int x = 0; x < field.size_x; x++)
+        for (int x = 0; x < pField.size_x; x++)
         {
             // FIXME remove done from data
-            field.entries[y*field.size_x + x].data->done = 0;
+            pField.entries[y*pField.size_x + x].data->done = 0;
         }
     }
 
-    iter_num++;
+    /* increase iteration counter */
+    mIterNum++;
 
     /* move player first */
     {
         objFieldEntry *pl_entry_new;
-        pl_entry_new = playerPhysics(field.pl_entry, m_pl);
-        field.pl_entry = pl_entry_new; 
+        pl_entry_new = runPlayerPhysics(pField.pl_entry, pPlayerMove);
+        pField.pl_entry = pl_entry_new; 
     }
 
     /* run physics on the other field objects */
-    for (int y = 0; y < field.size_y; y++)
+    for (int y = 0; y < pField.size_y; y++)
     {
-        for (int x = 0; x < field.size_x; x++)
+        for (int x = 0; x < pField.size_x; x++)
         {
-            objFieldEntry *entry = &(field.entries[y*field.size_x + x]);
+            objFieldEntry *entry = &(pField.entries[y*pField.size_x + x]);
 
             /* call physics functions as a function of the type of the entry data */
             switch (entry->data->type->getType())
             {
                 case baseDataObjectType::stone:
-                    stonePhysics(entry);
+                    runStonePhysics(entry);
                     break;
                 case baseDataObjectType::player:
                     // do nothing, because the player should already be moved
@@ -82,7 +83,7 @@ void physicsEngine::run(objField &field, movement_t m_pl)
  * Movement Rules:\n
  *  - a stone falls down if the field under it is free.
  */
-void physicsEngine::stonePhysics(objFieldEntry *e)
+void PhysicsEngine::runStonePhysics(objFieldEntry *e)
 {
     /* return if entry is already treated */
     if (e->data->done == 1) {
@@ -126,8 +127,8 @@ void physicsEngine::stonePhysics(objFieldEntry *e)
  * FIXME add player commands: move left, right, up, down, push..., pull ...
  * FIXME add usefull subfunction (check, move)
  */
-objFieldEntry *
-physicsEngine::playerPhysics(objFieldEntry *e, movement_t m)
+objFieldEntry *PhysicsEngine::runPlayerPhysics(objFieldEntry  *e,
+                                               MovementType   pPlayerMove)
 {
     /* set default value for the new player object field entry */
     objFieldEntry *pl_entry_new = e;
@@ -141,10 +142,10 @@ physicsEngine::playerPhysics(objFieldEntry *e, movement_t m)
     e->data->done = 1;
 
     /* move player */
-    switch (m)
+    switch (pPlayerMove)
     {
         /* move to right */
-        case mtRight:
+        case MT_RIGHT:
         {
             /* get the entry that is on the right side of the player */
             objFieldEntry *e_x_next = e->x_next;
@@ -176,7 +177,7 @@ physicsEngine::playerPhysics(objFieldEntry *e, movement_t m)
         }
 
         /* move to left */
-        case mtLeft:
+        case MT_LEFT:
         {
             /* get the entry that is on the left side of the player */
             objFieldEntry *e_x_prev = e->x_prev;

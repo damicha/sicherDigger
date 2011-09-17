@@ -11,7 +11,7 @@ CC = g++
 CFLAGS = -g -O2 
 OBJECTS = fieldLib.o objFieldEntry.o objField.o \
           SDig_TimeEngine.o \
-          physicsEngine.o \
+          SDig_PhysicsEngine.o \
           baseDataObjectType.o
 INCLUDES = $(wildcard *.h)
 LDFLAGS_NCURSES = -lncurses
