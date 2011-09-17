@@ -1,22 +1,16 @@
 /*! ****************************************************************************
  *
  * \file    SDig_TimeEngine.h
- * \brief   Provides common time and trigger functions.
+ * \brief   Declarations of TimeEngine class
  *
  * \author  damicha of defect
  * \date    2011
- *
- * \details
- *  The time value is stored in micro seconds as a 64 bit unsigned integer value.
- *  The gettimeofday() function is used to get the time from system.
  *
  ******************************************************************************/
 
 
 #ifndef _SDIG_TIME_ENGINE_H_
 #define _SDIG_TIME_ENGINE_H_
-
-#include "SDig_TextEngine.h"
 
 #include <sys/time.h>
 #include <stdint.h>
@@ -30,18 +24,22 @@ namespace SDig {
 
 /*!
  * \class   TimeEngine
+ * \brief
+ *  Provides common time and trigger functions.
+ * \details
+ *  The time value is stored in micro seconds as a 64 bit unsigned integer value.
+ *  The gettimeofday() function is used to get the time from system.
  */
 class TimeEngine
 {
 /* ======== class attributes ======== */    
-public:
-    const static uint32_t  mTimeBase;      /*!< time base value in micro seconds */
 
 private:
     uint64_t    mStartTime;         /*!< The first measured time in us */
     uint64_t    mLastTime;          /*!< The last measured time in us */
     uint32_t    mSleepTime;         /*!< Time to sleep until next trigger event will occur */
     uint32_t    mTriggerInterval;   /*!< Determines the trigger points in us */
+    const static uint32_t  mTimeBase;      /*!< time base value in micro seconds */
 
 /* ======== functions ======== */    
 
@@ -85,47 +83,11 @@ public:
         return ((uint64_t)t.tv_sec*1000000 + (uint64_t)t.tv_usec);
     }
 
-    /*!
-     * \brief  Waits until the next trigger event occures.
-     */
-    void wait4Trigger() {
-        /* update the last time value */
-        timeval t_val;
-        gettimeofday(&t_val, NULL);
-        mLastTime = timeval2us(t_val);
-
-        /* calculate the waiting time until the next trigger event */
-        mSleepTime = mTriggerInterval - (uint32_t)(mLastTime - mStartTime) % mTriggerInterval;
-
-        /* sleep */
-        usleep(mSleepTime);
-    }
-
-    /*!
-     * \brief   Print the values of the class members into a string.
-     * \param pLineNum
-     *  Number of lines that are used in the string.
-     * \return  Created string.
-     */
-    string getDebugInfo(int *pLineNum = NULL)
-    {
-        char s[256];
-
-        snprintf(s, 256,
-            "mStartTime, mLastTime: %u, %u    \n"
-            "consumed time (overall, since last trigger event), left time: %d, %d, %d   \n"
-            "next trigger time: %d      \n",
-            mStartTime, mLastTime,
-            (uint32_t)(mLastTime - mStartTime),
-            (uint32_t)(mLastTime - mStartTime) % mTriggerInterval, mSleepTime,
-            (uint32_t)((mLastTime - mStartTime) / mTriggerInterval + 1) * mTriggerInterval);
-
-        if (pLineNum != NULL) {
-            *pLineNum = 3;
-        }
-
-        return string(s);
-    }
+    /* Waits until the next trigger event occures. */
+    void wait4Trigger();
+    
+    /* Prints the values of the class members into a string. */
+    string getDebugInfo(int *pLineNum = NULL);
 
 
     /*!
@@ -137,11 +99,16 @@ public:
     }
 
 
+    /*!
+     * \brief   Get the time base;
+     * \return  time base value in micro seconds.
+     */
+    uint64_t getTimeBase() {
+        return mTimeBase;
+    }
+
+
 };
-
-
-/* set time base value */
-const uint32_t TimeEngine::mTimeBase = 1000000;      /*!< time base = 1s (1000000 us) */
 
 
 }       // namespace
