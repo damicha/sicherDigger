@@ -80,7 +80,6 @@ public:
         memcpy(this->data, cfg.data, sizeof(char) * this->size_x * this->size_y);
     }
 
-
     /*!
      * \brief   Destructor
      */

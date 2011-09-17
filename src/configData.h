@@ -9,6 +9,10 @@
  *
  ******************************************************************************/
 
+#ifndef _SDIG_CONFIG_DATA_H_
+#define _SDIG_CONFIG_DATA_H_
+
+
 #include "config.h"
 
 
@@ -39,4 +43,5 @@ config field_a = config("field_a", SIZE_X, SIZE_Y, field_a_data);
 
 /*! @} */
 
+#endif  // _SDIG_CONFIG_DATA_H_
 
