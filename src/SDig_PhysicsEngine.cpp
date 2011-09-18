@@ -208,6 +208,10 @@ objFieldEntry *PhysicsEngine::runPlayerPhysics(objFieldEntry  *e,
             break;
         }
 
+        // FIXME: there shouldn't be a default state
+        default:
+            break;
+
     } // switch m
 
     return pl_entry_new; 

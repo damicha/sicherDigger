@@ -49,7 +49,7 @@ string SDig::TimeEngine::getDebugInfo(int *pLineNum)
     char s[256];
 
     snprintf(s, 256,
-        "mStartTime, mLastTime: %u, %u    \n"
+        "mStartTime, mLastTime: %ld, %ld    \n"
         "consumed time (overall, since last trigger event), left time: %d, %d, %d   \n"
         "next trigger time: %d      \n",
         mStartTime, mLastTime,

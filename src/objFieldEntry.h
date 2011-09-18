@@ -30,7 +30,8 @@ public:
     objFieldEntry *x_prev, *x_next;
     objFieldEntry *y_prev, *y_next;
     /* position in field */
-    int pos_x, pos_y;
+    int pos_y;
+    int pos_x;
 #if 0
     // FIXME: add object layer: (objFieldEntry.obj: obj.m, obj...)
     baseMaterial *m;    /*!< the object material. A virtual class is used */
@@ -39,10 +40,12 @@ public:
 
 public:
     /* constructor */
-    objFieldEntry() : pos_x(-1), pos_y(-1),
-                      x_prev(NULL), x_next(NULL),
-                      y_prev(NULL), y_next(NULL),
-                      data(NULL) {};
+    objFieldEntry() :
+        x_prev(NULL), x_next(NULL),
+        y_prev(NULL), y_next(NULL),
+        pos_y(-1), pos_x(-1),
+        data(NULL)
+    {};
 
 
     /*!

@@ -99,6 +99,8 @@ public:
                 case TextEngine::BT_START:
                     stop = true;                // leave the loop
                     break;
+                default:
+                    break;
             }
 
             mPhy.run(*mField, moveDirection);

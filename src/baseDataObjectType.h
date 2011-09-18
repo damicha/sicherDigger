@@ -58,6 +58,9 @@ public:
 //        printf("%s: %s\n", __func__, getName().c_str());
     };
 
+    /* FIXME: add virtuel destructor */
+
+
     /*!
      * \brief   Create a data object type object as a function of its type.
      */

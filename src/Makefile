@@ -8,7 +8,7 @@
 
 #-------------------------------------------------------------------------------
 CC = g++
-CFLAGS = -g -O2 
+CFLAGS = -g -O2 -Wall
 OBJECTS = fieldLib.o objFieldEntry.o objField.o \
           SDig_TimeEngine.o \
           SDig_PhysicsEngine.o \
