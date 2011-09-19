@@ -85,6 +85,19 @@ public:
      */
     objFieldEntry *runPlayerPhysics(objFieldEntry *e, MovementType pPlayerMove);
 
+    objFieldEntry *movePlayer(objFieldEntry  *pSrc, objFieldEntry *pDest);
+
+    /* Check if this object has the type empty. */
+    bool isEmpty(objFieldEntry *pEntry);
+    
+    /* Check if this object has the type sand. */
+    bool isSand(objFieldEntry *pEntry);
+    
+    /* Check if this object is able to block others. */
+    bool isBlocking(objFieldEntry *pEntry);
+    
+    /* Switch data objects. */
+    void switchDataObjects(objFieldEntry *pSrc, objFieldEntry *pDest);
 
 };
 

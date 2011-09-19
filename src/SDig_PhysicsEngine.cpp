@@ -25,7 +25,6 @@ using namespace SDig;
  *          Object field with the objects to modify/move.
  *
  * FIXME: add mechanism to lock source and destination field
- * FIXME: add player movement
  */
 void PhysicsEngine::run(objField &pField, MovementType pPlayerMove)
 {
@@ -97,22 +96,20 @@ void PhysicsEngine::runStonePhysics(objFieldEntry *e)
     objFieldEntry *e_y_next = e->y_next;
 
     /* if it's empty */
-    if (e_y_next &&
-        e_y_next->data->done != 1 &&
-        e_y_next->data->type->getType() == baseDataObjectType::empty)
+    if (e_y_next && e_y_next->data->done != 1 &&
+        isEmpty(e_y_next))
     {
+        /* set empty object to done */
+        e_y_next->data->done   = 1;
+
         /* let stone fall by switching stone and empty data of the 
            field entries */
-        dataObject  *do_src     = e->data;
-        dataObject  *do_dest    = e_y_next->data;
-        // do_src->done    = 1;        // set stone object done
-        do_dest->done   = 1;        // set empty object done
-        /* switch */
-        e->data         = do_dest;
-        e_y_next->data  = do_src;
+        switchDataObjects(e, e_y_next);
     }
 
 };
+
+
 
 
 /*!
@@ -146,67 +143,23 @@ objFieldEntry *PhysicsEngine::runPlayerPhysics(objFieldEntry  *e,
     {
         /* move to right */
         case MT_RIGHT:
-        {
-            /* get the entry that is on the right side of the player */
-            objFieldEntry *e_x_next = e->x_next;
-
-            /* move the player if it is not blocked */
-            if (e_x_next &&
-                e_x_next->data->done != 1 &&
-                e_x_next->data->type->getType() != baseDataObjectType::stone &&
-                e_x_next->data->type->getType() != baseDataObjectType::wall)
-            {
-                /* move player by switching the object field entry data */
-                dataObject  *do_src     = e->data;
-                dataObject  *do_dest    = e_x_next->data;
-                /* eat sand */
-                if (do_dest->type->getType() == baseDataObjectType::sand) {
-                    delete do_dest;
-                    do_dest = new dataObject(baseDataObjectType::empty);
-                }
-                do_dest->done   = 1;        // set other object done
-                /* switch */
-                e->data           = do_dest;
-                e_x_next->data    = do_src;
-
-                /* update the address of the object field entry that contains
-                 * the player data */
-                pl_entry_new = e_x_next;
-            }
+            pl_entry_new = movePlayer(e, e->x_next);
             break;
-        }
 
         /* move to left */
         case MT_LEFT:
-        {
-            /* get the entry that is on the left side of the player */
-            objFieldEntry *e_x_prev = e->x_prev;
-
-            /* move the player if it is not blocked */
-            if (e_x_prev &&
-                e_x_prev->data->done != 1 &&
-                e_x_prev->data->type->getType() != baseDataObjectType::stone &&
-                e_x_prev->data->type->getType() != baseDataObjectType::wall)
-            {
-                /* move player by switching the object field entry data */
-                dataObject  *do_src     = e->data;
-                dataObject  *do_dest    = e_x_prev->data;
-                /* eat sand */
-                if (do_dest->type->getType() == baseDataObjectType::sand) {
-                    delete do_dest;
-                    do_dest = new dataObject(baseDataObjectType::empty);
-                }
-                do_dest->done = 1;          // set other object done
-                /* switch */
-                e->data           = do_dest;
-                e_x_prev->data    = do_src;
-                
-                /* update the address of the object field entry that contains
-                 * the player data */
-                pl_entry_new = e_x_prev;
-            }
+            pl_entry_new = movePlayer(e, e->x_prev);
             break;
-        }
+        
+        /* move up */
+        case MT_UP:
+            pl_entry_new = movePlayer(e, e->y_prev);
+            break;
+
+        /* move down */
+        case MT_DOWN:
+            pl_entry_new = movePlayer(e, e->y_next);
+            break;
 
         // FIXME: there shouldn't be a default state
         default:
@@ -218,6 +171,85 @@ objFieldEntry *PhysicsEngine::runPlayerPhysics(objFieldEntry  *e,
 
 };
 
+
+objFieldEntry *PhysicsEngine::movePlayer(objFieldEntry  *pSrc, objFieldEntry *pDest)
+{
+    /* set default value for the new player object field entry */
+    objFieldEntry *plEntryNew = pSrc;
+
+    /* move the player if it is not blocked */
+    if (pDest && pDest->data->done != 1 &&
+        isBlocking(pDest) == false)
+    {
+        /* eat sand */
+        if (isSand(pDest)) {
+            delete pDest->data;
+            pDest->data = new dataObject(baseDataObjectType::empty);
+        }
+
+        /* the empty field to done */
+        pDest->data->done   = 1;
+
+        /* move player by switch the data objects */
+        switchDataObjects(pSrc, pDest);
+
+        /* update the address of the object field entry that contains
+         * the player data */
+        plEntryNew = pDest;
+    }
+
+    return plEntryNew;
+}
+
+/*!
+ * \brief   Check if this object has the type empty.
+ */
+bool PhysicsEngine::isEmpty(objFieldEntry *pEntry)
+{
+    if (pEntry->data->type->getType() == baseDataObjectType::empty) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/*!
+ * \brief   Check if this object has the type sand.
+ */
+bool PhysicsEngine::isSand(objFieldEntry *pEntry)
+{
+    if (pEntry->data->type->getType() == baseDataObjectType::sand) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/*!
+ * \brief   Check if this object is able to block others.
+ * FIXME: give object type properties like blocking, moveable,...
+ */
+bool PhysicsEngine::isBlocking(objFieldEntry *pEntry)
+{
+    if (pEntry->data->type->getType() == baseDataObjectType::wall ||
+        pEntry->data->type->getType() == baseDataObjectType::stone) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/*!
+ * \brief   Switch data objects.
+ */
+void PhysicsEngine::switchDataObjects(objFieldEntry *pSrc, objFieldEntry *pDest)
+{
+    dataObject  *doSrc     = pSrc->data;
+    dataObject  *doDest    = pDest->data;
+    /* switch */
+    pSrc->data  = doDest;
+    pDest->data = doSrc;
+}
 
 
 
