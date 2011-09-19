@@ -96,6 +96,12 @@ public:
                 case TextEngine::BT_RIGHT:
                     moveDirection = PhysicsEngine::MT_RIGHT; 
                     break;
+                case TextEngine::BT_UP:
+                    moveDirection = PhysicsEngine::MT_UP; 
+                    break;
+                case TextEngine::BT_DOWN:
+                    moveDirection = PhysicsEngine::MT_DOWN; 
+                    break;
                 case TextEngine::BT_START:
                     stop = true;                // leave the loop
                     break;
