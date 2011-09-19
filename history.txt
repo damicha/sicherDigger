@@ -13,9 +13,8 @@
 
 
 next:
- - file templates
- - SDig_PhysicsEngine: player up and down
-
+- file templatesi
+- add level handling
 
   0.1pre - text output
 ================
@@ -36,7 +35,7 @@ next:
 
 * SDig_PhysicsEngine.h/.cpp: game physic engine
   - simple stone movement (it's falling down) was added
-  - player physics to move to the left and right
+  - player physics to move to the left, right, up and down
 
 * baseDataObjectType.h, baseDataObjectType.cpp
   - The base data object type class baseDataObjectType for derived data object
