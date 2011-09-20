@@ -19,9 +19,10 @@
 
 #include "baseDataObjectType.h"
 #include "objFieldEntry.h"
-#include "config.h"
+#include "SDig_LevelConfig.h"
 
 using namespace std;
+using namespace SDig;
 
 
 class objField;
@@ -92,11 +93,12 @@ public:
      * \param   cfg configuration
      * FIXME: move function implementation to *.cpp
      */
-    objField(const config &cfg)
+    objField(const LevelConfig &pLevelConfig)
     {
         /* set dimensions */
-        this->size_x = cfg.size_x;
-        this->size_y = cfg.size_y;
+        size_x = pLevelConfig.getSizeX();
+        size_y = pLevelConfig.getSizeY();
+        char *cfgData = pLevelConfig.getData(); 
         
         /* get memory for the field entries */
         entries = new objFieldEntry[size_x*size_y];
@@ -111,7 +113,7 @@ public:
         {
             for (int x = 0; x < size_x; x++)
             {
-                switch (cfg.data[y*size_x + x])
+                switch (cfgData[y*size_x + x])
                 {
                     case '#':
                         entries[y*size_x + x].createDataObject(baseDataObjectType::wall);

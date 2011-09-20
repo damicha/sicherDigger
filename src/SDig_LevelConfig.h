@@ -1,13 +1,14 @@
 /*!
- * \file    config.h
- * \brief   Stores the configuration for the field as an array of characters
+ * \file    SDig_LevelConfig.h
+ * \brief   Stores the configuration of a single game level as an array of
+ *  characters
  * 
  * \author  damicha of defect
  * \date    2011 
  */
 
-#ifndef _CONFIG_H_
-#define _CONFIG_H_
+#ifndef _SDIG_LEVEL_CONFIG_H_
+#define _SDIG_LEVEL_CONFIG_H_
 
 #include <string>
 
@@ -15,83 +16,101 @@
 
 using namespace std;
 
+
+namespace SDig {
+
 /*
- * \class config
+ * \class LevelConfig
  */
-class config
+class LevelConfig
 {
 /* ======== class attributes ======== */    
-public:
-    int size_x;     /*!< size of the field dimension x */
-    int size_y;     /*!< size of the field dimension y */
-    string name;    /*!< name od the configuration */
-    char *data;     /*!< character array that contains the configuration */
+// FIXME: make attr. to private members 
+private:
+    string mName;   /*!< Level name */
+    int mSizeX;     /*!< X size of the level */
+    int mSizeY;     /*!< Y size of the level */
+    char *mData;    /*!< Character array that contains the level data. */
 
 
 /* ======== class init functions ======== */
 public:
     /*!
      * \brief   Constructor
-     * \details Set field sizes, create and initialize the object field.
-     * \param   size_x field size of the dimension x
-     * \param   size_y field size of the dimension y
-     * \param   cfg character array with the configuration
+     * \details Set level sizes, create and initialize the level data.
+     * \param   pName
+     *  The name of the level.
+     * \param   pSizeX
+     *  Level size of the dimension x.
+     * \param   pSizeY
+     *  Level size of the dimension y.
+     * \param   pData
+     *  Character array with the level configuration.
      */
-    config(const string &name,
-           int size_x, int size_y,
-           const char *data)
-    {
+    LevelConfig(const string &pName,
+                int pSizeX, int pSizeY,
+                const char *pData) :
         /* set configuration name */
-        this->name = name;
-        /* set dimensions */
-        this->size_x = size_x;
-        this->size_y = size_y;
-
+        mName(pName),
+        /* set array dimensions */
+        mSizeX(pSizeX), mSizeY(pSizeY)
+    {
         /* create configuration array */
-        this->data = new char[size_x*size_y];
+        mData = new char[mSizeX * mSizeY];
 
         /* check and copy */
         // FIXME: check
         int cnt = 0;
-        for (int y = 0; y < size_y; y++) {
-            for (int x = 0; x < size_x; x++) {
-                this->data[cnt] = data[cnt];
+        for (int y = 0; y < mSizeY; y++) {
+            for (int x = 0; x < mSizeX; x++) {
+                mData[cnt] = pData[cnt];
                 cnt++;
             }
         }
     }
 
-    
     /*!
      * \brief   Copy Constructor
      */
-    config(const config &cfg)
-    {
+    LevelConfig(const LevelConfig &pLevelConfig) :
         /* set configuration name */
-        this->name = cfg.name;
-        /* set dimensions */
-        this->size_x = cfg.size_x;
-        this->size_y = cfg.size_y;
-
-        /* copy the configuration array */
-        this->data = new char[this->size_x*this->size_y];
+        mName(pLevelConfig.mName),
+        /* set array dimensions */
+        mSizeX(pLevelConfig.mSizeX), mSizeY(pLevelConfig.mSizeY)
+    {
+        /* create a new configuration array */
+        mData = new char[mSizeX * mSizeY];
 
         /* copy */
-        memcpy(this->data, cfg.data, sizeof(char) * this->size_x * this->size_y);
+        memcpy(mData, pLevelConfig.mData, sizeof(char) * mSizeX * mSizeY);
     }
 
     /*!
      * \brief   Destructor
      */
-    ~config() {
-        /* destroy the configuration array */
-        delete [] data;
+    ~LevelConfig() {
+        /* destroy the level data array */
+        delete [] mData;
     }
     
 
 public:
+/* ======== functions to get private member values ======== */
+    /*! \brief   Get the name of the level. */
+    string getName() const  { return mName; }   // FIXME return a reference (&) ???
+    
+    /*! \brief   Get the X size of the level. */
+    int getSizeX() const    { return mSizeX; }
+    
+    /*! \brief   Get the Y size of the level. */
+    int getSizeY() const    { return mSizeY; }
+
+    char *getData() const   { return mData; }   // FIXME: don't provide data!
+    // FIXME provide a function that copy the levelData to field Data
 
 };
 
 
-#endif
+}       // namespace
+
+#endif  // _SDIG_LEVEL_CONFIG_H_

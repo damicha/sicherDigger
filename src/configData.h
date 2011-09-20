@@ -13,7 +13,7 @@
 #define _SDIG_CONFIG_DATA_H_
 
 
-#include "config.h"
+#include "SDig_LevelConfig.h"
 
 
 
@@ -36,7 +36,7 @@ char field_a_data[SIZE_X*SIZE_Y] =
     '#', '.', ' ', '.', ' ', ' ', 'O', '#',
     '#', '#', '#', '#', '#', '#', '#', '#',
 };
-config field_a = config("field_a", SIZE_X, SIZE_Y, field_a_data);
+SDig::LevelConfig field_a = SDig::LevelConfig("field_a", SIZE_X, SIZE_Y, field_a_data);
 
 #undef SIZE_X
 #undef SIZE_Y

@@ -15,7 +15,7 @@
 #include "SDig_TextEngine.h"
 #include "SDig_PhysicsEngine.h"
 
-#include "config.h"
+#include "SDig_LevelConfig.h"
 #include "configData.h"
 
 #include "objField.h"
@@ -47,7 +47,7 @@ public:
     GameEngine(void)
     {
         /* select config and create object field */
-        config *cfg = &field_a;
+        LevelConfig *cfg = &field_a;
         mField  = new objField(*cfg);
 
         /* set duration of one turn */
