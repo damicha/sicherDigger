@@ -10,8 +10,9 @@
 #ifndef _SDIG_LEVEL_CONFIG_H_
 #define _SDIG_LEVEL_CONFIG_H_
 
-#include <string>
+#include "baseDataObjectType.h"
 
+//#include <string>
 #include <string.h>
 
 using namespace std;
@@ -104,9 +105,36 @@ public:
     
     /*! \brief   Get the Y size of the level. */
     int getSizeY() const    { return mSizeY; }
-
-    char *getData() const   { return mData; }   // FIXME: don't provide data!
+#if 0
+    char *getData() const   { return mData; }   // FIXME: don't provide the data array!
     // FIXME provide a function that copy the levelData to field Data
+#endif
+
+    /*!
+     * \brief   Get the type of the object that is stored as position X, Y
+     *  in the level configuration array.
+     * \param   pX, pY
+     *  Positions.
+     */
+    baseDataObjectType::dataObjectType_t getData(int pX, int pY) const
+    {
+        switch (mData[pY*mSizeX + pX])
+        {
+            case '#':
+                return baseDataObjectType::wall;
+            case '.':
+                return baseDataObjectType::sand;
+            case ' ':
+                return baseDataObjectType::empty;
+            case 'O':
+                return baseDataObjectType::stone;
+            case '8':
+                /* set player position/object */
+                return baseDataObjectType::player;
+            default:
+                return baseDataObjectType::unknown;
+        }
+     }
 
 };
 

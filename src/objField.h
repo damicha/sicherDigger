@@ -98,7 +98,6 @@ public:
         /* set dimensions */
         size_x = pLevelConfig.getSizeX();
         size_y = pLevelConfig.getSizeY();
-        char *cfgData = pLevelConfig.getData(); 
         
         /* get memory for the field entries */
         entries = new objFieldEntry[size_x*size_y];
@@ -107,37 +106,23 @@ public:
         initObj();
 
         /* create materials */
-        // FIXME do type conversion in function of the config class
         // FIXME move player info data and functions to player class dotPlayer
         for (int y = 0; y < size_y; y++)
         {
             for (int x = 0; x < size_x; x++)
             {
-                switch (cfgData[y*size_x + x])
-                {
-                    case '#':
-                        entries[y*size_x + x].createDataObject(baseDataObjectType::wall);
-                        break;
-                    case '.':
-                        entries[y*size_x + x].createDataObject(baseDataObjectType::sand);
-                        break;
-                    case ' ':
-                        entries[y*size_x + x].createDataObject(baseDataObjectType::empty);
-                        break;
-                    case 'O':
-                        entries[y*size_x + x].createDataObject(baseDataObjectType::stone);
-                        break;
-                    case '8':
-                        /* set player position/object */
-                        entries[y*size_x + x].createDataObject(baseDataObjectType::player);
-                        pl_entry = &entries[y*size_x + x];
-                        break;
-                    default:
-                        entries[y*size_x + x].createDataObject(baseDataObjectType::unknown);
-                        break;
+                /* get object type */
+                baseDataObjectType::dataObjectType_t objType = pLevelConfig.getData(x, y);
+                /* create entry */
+                entries[y*size_x + x].createDataObject(objType);
+                
+                /* store the reference of the players object */
+                if (objType == baseDataObjectType::player) {
+                    pl_entry = &entries[y*size_x + x];
                 }
             }
         }
+
     };
     
     /*!
