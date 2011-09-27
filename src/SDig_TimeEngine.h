@@ -30,46 +30,71 @@ namespace SDig {
  *  The time value is stored in micro seconds as a 64 bit unsigned integer value.
  *  The gettimeofday() function is used to get the time from system.
  */
+// FIXME: distinguish between local class time and global system time
+// FIXME: define the own time type
+// FIXME: This class needs a call of wait4TriggerEvent() to get a synchronisation
+// on the system time
+// FIXME: add a local time
 class TimeEngine
 {
 /* ======== class attributes ======== */    
-
 private:
-    uint64_t    mStartTime;         /*!< The first measured time in us */
+ //   uint64_t    mGlobalStartTime;   /*!< The first measured system time in us */
+    uint64_t    mTriggerInterval;   /*!< Determines the time between two 
+                                         trigger points in us */
+//    uint64_t    mNextGlobalTriggerTime;
+#if 0    
     uint64_t    mLastTime;          /*!< The last measured time in us */
     uint32_t    mSleepTime;         /*!< Time to sleep until next trigger event will occur */
-    uint32_t    mTriggerInterval;   /*!< Determines the trigger points in us */
-    const static uint32_t  mTimeBase;      /*!< time base value in micro seconds */
+#endif
+    const static uint64_t  mTimeBase;      /*!< time base value in micro seconds */
 
 /* ======== functions ======== */    
-
 public:
     /*!
      * \brief   constructor
-     * \param   triggerInterval
+     * \param   pTriggerInterval
      *  Trigger interval in us. Default value is 1000000 (1 second).
      */
-    TimeEngine(const uint32_t triggerInterval = 1000000) {
-        setStartTime();
-        setTriggerInterval(triggerInterval);
+    TimeEngine(const uint64_t pTriggerInterval = 1000000)
+    {
+//        setStartTime();
+        setTriggerInterval(pTriggerInterval);
+//        mNextGlobalTriggerTime = mGlobalStartTime + mTriggerInterval;
     }
 
     /*!
      * \brief   Set the start time.
      */
-    void setStartTime(void) {
-        timeval t_val;
-        gettimeofday(&t_val, NULL);
-        mStartTime = timeval2us(t_val);
+    void setStartTime(void)
+    {
+//        mGlobalStartTime      = getTime();
     }
+
 
     /*!
      * \brief   Set the trigger interval.
      * \param   triggerInterval   
      *  Trigger interval in us.
      */
-    void setTriggerInterval(const uint32_t triggerInterval) {
-        mTriggerInterval = triggerInterval;
+    void setTriggerInterval(const uint64_t pTriggerInterval) {
+        mTriggerInterval = pTriggerInterval;
+    }
+
+    /*!
+     * \brief   Get time from system.
+     * \return  Return with a class internal representation.
+     */
+    uint64_t getTime(void)
+    {
+        /* get time from system */
+        timeval t_val;
+        gettimeofday(&t_val, NULL);
+
+        /* convert into class internal representation */
+        uint64_t t = timeval2us(t_val);
+
+        return t;
     }
 
     /*!
@@ -84,12 +109,12 @@ public:
     }
 
     /* Waits until the next trigger event occures. */
-    void wait4Trigger();
+    void wait4TriggerEvent();
     
     /* Prints the values of the class members into a string. */
     string getDebugInfo(int *pLineNum = NULL);
 
-
+#if 0
     /*!
      * \brief   Get the time of the last trigger event.
      * \return  Calculated time.
@@ -97,7 +122,7 @@ public:
     uint64_t getTriggerTime() {
         return mLastTime - mStartTime;
     }
-
+#endif
 
     /*!
      * \brief   Get the time base;

@@ -23,18 +23,32 @@ using namespace std;
 /*!
  * \brief  Waits until the next trigger event occures.
  */
-void SDig::TimeEngine::wait4Trigger()
+void SDig::TimeEngine::wait4TriggerEvent()
 {
+    /* get current time */
+    uint64_t    currentTime = getTime();
+
+    /* calculate the time of the next expected trigger event */
+    uint64_t    nextTriggerTime = currentTime + mTriggerInterval - currentTime % mTriggerInterval;
+    //uint64_t    nextTriggerTime = (currentTime/mTriggerInterval + 1) * mTriggerInterval;
+
+    /* calculate the time to sleep */
+    uint64_t    sleepTime = nextTriggerTime - currentTime;
+
+    /* sleep */
+    usleep(sleepTime);
+
+
+#if 0
     /* update the last time value */
-    timeval t_val;
-    gettimeofday(&t_val, NULL);
-    mLastTime = timeval2us(t_val);
+    mLastTime = getTime();
 
     /* calculate the waiting time until the next trigger event */
     mSleepTime = mTriggerInterval - (uint32_t)(mLastTime - mStartTime) % mTriggerInterval;
 
     /* sleep */
     usleep(mSleepTime);
+#endif
 }
 
 
@@ -46,8 +60,8 @@ void SDig::TimeEngine::wait4Trigger()
  */
 string SDig::TimeEngine::getDebugInfo(int *pLineNum)
 {
-    char s[256];
-
+    char s[256] = "";
+#if 0
     snprintf(s, 256,
         "mStartTime, mLastTime: %ld, %ld    \n"
         "consumed time (overall, since last trigger event), left time: %d, %d, %d   \n"
@@ -55,8 +69,9 @@ string SDig::TimeEngine::getDebugInfo(int *pLineNum)
         mStartTime, mLastTime,
         (uint32_t)(mLastTime - mStartTime),
         (uint32_t)(mLastTime - mStartTime) % mTriggerInterval, mSleepTime,
-        (uint32_t)((mLastTime - mStartTime) / mTriggerInterval + 1) * mTriggerInterval);
-
+        (uint32_t)((mLastTime - mStartTime) / mTriggerInterval + 1) * mTriggerInterval
+    );
+#endif
     if (pLineNum != NULL) {
         *pLineNum = 3;
     }
@@ -65,4 +80,4 @@ string SDig::TimeEngine::getDebugInfo(int *pLineNum)
 }
 
 /* set time base value */
-const uint32_t SDig::TimeEngine::mTimeBase = 1000000;      /*!< time base = 1s (1000000 us) */
+const uint64_t SDig::TimeEngine::mTimeBase = 1000000;      /*!< time base = 1s (1000000 us) */

@@ -80,7 +80,7 @@ public:
         {
             char str[256];
 
-            mTime.wait4Trigger();
+            mTime.wait4TriggerEvent();
 
             /* get last pushed button */
             // FIXME: detection of only the last and only one pressed
@@ -112,8 +112,8 @@ public:
             mPhy.run(*mField, moveDirection);
 
             /* create string with timing information */
-            snprintf(str, 256, "%.2f",  
-                     (float)mTime.getTriggerTime() / (float)mTime.getTimeBase());
+            snprintf(str, 256, "%.2f", 1.0);
+//                     (float)mTime.getTriggerTime() / (float)mTime.getTimeBase());
             
             /* generate the output */
             mTxt.drawField(*mField, str);
