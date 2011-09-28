@@ -29,10 +29,10 @@ class LevelConfig
 // FIXME: make attr. to private members 
 private:
     string mName;   /*!< Level name */
+    int mTimeLimit; /*!< Time limit of the level in seconds. */
     int mSizeX;     /*!< X size of the level */
     int mSizeY;     /*!< Y size of the level */
     char *mData;    /*!< Character array that contains the level data. */
-
 
 /* ======== class init functions ======== */
 public:
@@ -48,11 +48,11 @@ public:
      * \param   pData
      *  Character array with the level configuration.
      */
-    LevelConfig(const string &pName,
+    LevelConfig(const string &pName, int pTimeLimit,
                 int pSizeX, int pSizeY,
                 const char *pData) :
-        /* set configuration name */
-        mName(pName),
+        /* set configuration name and time limit */
+        mName(pName), mTimeLimit(pTimeLimit),
         /* set array dimensions */
         mSizeX(pSizeX), mSizeY(pSizeY)
     {
@@ -74,8 +74,8 @@ public:
      * \brief   Copy Constructor
      */
     LevelConfig(const LevelConfig &pLevelConfig) :
-        /* set configuration name */
-        mName(pLevelConfig.mName),
+        /* set configuration name and time limit */
+        mName(pLevelConfig.mName), mTimeLimit(pLevelConfig.mTimeLimit),
         /* set array dimensions */
         mSizeX(pLevelConfig.mSizeX), mSizeY(pLevelConfig.mSizeY)
     {
@@ -98,13 +98,24 @@ public:
 public:
 /* ======== functions to get private member values ======== */
     /*! \brief   Get the name of the level. */
-    string getName() const  { return mName; }   // FIXME return a reference (&) ???
+    string getName() const {
+        return mName;
+    }   // FIXME return a reference (&) ???
+    
+    /*! \brief   Get the time limit of the level. */
+    int getTimeLimit() const {
+        return mTimeLimit;
+    }
     
     /*! \brief   Get the X size of the level. */
-    int getSizeX() const    { return mSizeX; }
+    int getSizeX() const {
+        return mSizeX;
+    }
     
     /*! \brief   Get the Y size of the level. */
-    int getSizeY() const    { return mSizeY; }
+    int getSizeY() const {
+        return mSizeY;
+    }
 #if 0
     char *getData() const   { return mData; }   // FIXME: don't provide the data array!
     // FIXME provide a function that copy the levelData to field Data
