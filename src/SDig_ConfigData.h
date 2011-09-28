@@ -1,6 +1,6 @@
 /*! ****************************************************************************
  *
- * \file    configData
+ * \file    SDig_ConfigData
  * \brief   Field configuration data
  *          FIXME: Include only once!
  *
@@ -15,7 +15,7 @@
 
 #include "SDig_LevelConfig.h"
 
-
+namespace SDig {
 
 /*!
  * \name field_a configuration data
@@ -23,9 +23,11 @@
  * FIXME: correct doxygen tags
  * @{
  */
-#define SIZE_X 8
-#define SIZE_Y 8
-char field_a_data[SIZE_X*SIZE_Y] =
+#define LEVEL_NAME          "field_a"
+#define LEVEL_TIME_LIMIT    25
+#define LEVEL_SIZE_X        8
+#define LEVEL_SIZE_Y        8
+char field_a_data[LEVEL_SIZE_X * LEVEL_SIZE_Y] =
 {
     '#', '#', '#', '#', '#', '#', '#', '#',
     '#', 'O', 'O', 'O', 'O', 'O', ' ', '#',
@@ -36,12 +38,20 @@ char field_a_data[SIZE_X*SIZE_Y] =
     '#', '.', ' ', '.', ' ', ' ', 'O', '#',
     '#', '#', '#', '#', '#', '#', '#', '#',
 };
-SDig::LevelConfig field_a = SDig::LevelConfig("field_a", SIZE_X, SIZE_Y, field_a_data);
+LevelConfig field_a = LevelConfig(
+    LEVEL_NAME, LEVEL_TIME_LIMIT,
+    LEVEL_SIZE_X, LEVEL_SIZE_Y, field_a_data
+);
 
-#undef SIZE_X
-#undef SIZE_Y
+#undef LEVEL_NAME
+#undef LEVEL_TIME_LIMIT
+#undef LEVEL_SIZE_X    
+#undef LEVEL_SIZE_Y    
 
 /*! @} */
+
+
+}       // namespace
 
 #endif  // _SDIG_CONFIG_DATA_H_
 
