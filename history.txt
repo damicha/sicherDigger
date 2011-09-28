@@ -13,8 +13,13 @@
 
 
 next:
-- file templatesi
-- add level handling
+- file templates
+- add level handling: SDig_LevelEngine()
+  - init level
+  - run level
+  - exit level
+  - set game info (point, lives, level results)
+
 
   0.1pre - text output
 ================
@@ -30,7 +35,7 @@ next:
   - basic drawing of the object field
   - maps data object type to an specified character
 
-* SDig_TimeEngine.h/.cpp: wait for configurable trigger events
+* SDig_TimeEngine.h/.cpp: waits for a configurable trigger event
   - uses the system functions gettimeofday() and usleep()
 
 * SDig_PhysicsEngine.h/.cpp: game physic engine
