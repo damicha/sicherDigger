@@ -76,9 +76,11 @@ public:
     void run()
     {
         bool stop = false;
+        int loop_cnt = 0;           // counts the number of iterrations
         while(stop == false) 
         {
-            char str[256];
+            const int str_len = 128;
+            char str[str_len];
 
             mTime.wait4TriggerEvent();
 
@@ -112,16 +114,17 @@ public:
             mPhy.run(*mField, moveDirection);
 
             /* create string with timing information */
-            snprintf(str, 256, "%.2f", 1.0);
-//                     (float)mTime.getTriggerTime() / (float)mTime.getTimeBase());
+            snprintf(str, str_len, "%3d", loop_cnt);
             
             /* generate the output */
             mTxt.drawField(*mField, str);
             
             /* print timing debug information */
             mTxt.drawDebugInfo(mTime);
+        
+            /* increase loop counter */
+            loop_cnt++;
         }
-    
     
     }
 

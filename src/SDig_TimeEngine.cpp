@@ -28,27 +28,42 @@ void SDig::TimeEngine::wait4TriggerEvent()
     /* get current time */
     uint64_t    currentTime = getTime();
 
-    /* calculate the time of the next expected trigger event */
-    uint64_t    nextTriggerTime = currentTime + mTriggerInterval - currentTime % mTriggerInterval;
-    //uint64_t    nextTriggerTime = (currentTime/mTriggerInterval + 1) * mTriggerInterval;
+    /* calculate the time of the next trigger event */
+    uint64_t    nextTriggerTime;
+    nextTriggerTime = currentTime + mTriggerInterval - currentTime % mTriggerInterval;
 
     /* calculate the time to sleep */
     uint64_t    sleepTime = nextTriggerTime - currentTime;
 
-    /* sleep */
+    /* sleep until the trigger event is reached */
     usleep(sleepTime);
+}
 
+/*!
+ * \brief   Get time from system.
+ * \return  Return with a class internal representation.
+ */
+uint64_t SDig::TimeEngine::getSystemTime(void)
+{
+    /* get time from system */
+    timeval t_val;
+    gettimeofday(&t_val, NULL);
 
-#if 0
-    /* update the last time value */
-    mLastTime = getTime();
+    /* convert into class internal representation */
+    uint64_t t = timeval2us(t_val);
 
-    /* calculate the waiting time until the next trigger event */
-    mSleepTime = mTriggerInterval - (uint32_t)(mLastTime - mStartTime) % mTriggerInterval;
+    return t;
+}
 
-    /* sleep */
-    usleep(mSleepTime);
-#endif
+/*!
+ * \brief   Converts the values of a timeval structure into a 64 bit value
+ *          in micro seconds.
+ * \param   t
+ *  The timeval structure.
+ * \return  64 bit time value in micro seconds. 
+ */
+uint64_t SDig::TimeEngine::timeval2us(const timeval &t) {
+    return ((uint64_t)t.tv_sec*1000000 + (uint64_t)t.tv_usec);
 }
 
 
@@ -60,20 +75,12 @@ void SDig::TimeEngine::wait4TriggerEvent()
  */
 string SDig::TimeEngine::getDebugInfo(int *pLineNum)
 {
-    char s[256] = "";
-#if 0
-    snprintf(s, 256,
-        "mStartTime, mLastTime: %ld, %ld    \n"
-        "consumed time (overall, since last trigger event), left time: %d, %d, %d   \n"
-        "next trigger time: %d      \n",
-        mStartTime, mLastTime,
-        (uint32_t)(mLastTime - mStartTime),
-        (uint32_t)(mLastTime - mStartTime) % mTriggerInterval, mSleepTime,
-        (uint32_t)((mLastTime - mStartTime) / mTriggerInterval + 1) * mTriggerInterval
-    );
-#endif
+    const int len = 128;
+    char s[len] = "";
+    snprintf(s, len, "currtent time: %ld  \n", getTime());
+    
     if (pLineNum != NULL) {
-        *pLineNum = 3;
+        *pLineNum = 1;
     }
 
     return string(s);
