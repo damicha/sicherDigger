@@ -16,7 +16,7 @@
 #include "SDig_PhysicsEngine.h"
 
 #include "SDig_LevelConfig.h"
-#include "configData.h"
+#include "SDig_ConfigData.h"
 
 #include "objField.h"
 
@@ -39,6 +39,7 @@ private:
     TimeEngine      mTime;  //!< time engine
     PhysicsEngine   mPhy;   //!< physics engine
 
+    int mTimeLimit;         //!< The level's time limit. FIXME: move to LevelEngine
 /* ======== functions ======== */    
 public:
     /*!
@@ -49,6 +50,8 @@ public:
         /* select config and create object field */
         LevelConfig *cfg = &field_a;
         mField  = new objField(*cfg);
+
+        mTimeLimit = cfg->getTimeLimit();
 
         /* set duration of one turn */
         mTime.setTriggerInterval(250000);
@@ -64,7 +67,7 @@ public:
     }
 
     /*!
-     * \brief   initizalise game engine
+     * \brief   initialise game engine
      */
     void init()
     {
@@ -76,7 +79,7 @@ public:
     void run()
     {
         bool stop = false;
-        int loop_cnt = 0;           // counts the number of iterrations
+        float timeCnt = (float)mTimeLimit;   // set time counter
         while(stop == false) 
         {
             const int str_len = 128;
@@ -86,7 +89,8 @@ public:
 
             /* get last pushed button */
             // FIXME: detection of only the last and only one pressed
-            //        button is possible
+            //        button is currently possible
+            // -> change to pressed, released bavior/events
             TextEngine::ButtonType      button = mTxt.getButton();
             PhysicsEngine::MovementType moveDirection = PhysicsEngine::MT_NONE;
             
@@ -114,7 +118,7 @@ public:
             mPhy.run(*mField, moveDirection);
 
             /* create string with timing information */
-            snprintf(str, str_len, "%3d", loop_cnt);
+            snprintf(str, str_len, "%6.2f", timeCnt);
             
             /* generate the output */
             mTxt.drawField(*mField, str);
@@ -122,8 +126,8 @@ public:
             /* print timing debug information */
             mTxt.drawDebugInfo(mTime);
         
-            /* increase loop counter */
-            loop_cnt++;
+            /* decrease time counter */
+            timeCnt = timeCnt - (float)mTime.getTriggerInterval()/(float)mTime.getTimeBase();
         }
     
     }
