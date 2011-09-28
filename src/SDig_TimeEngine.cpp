@@ -23,7 +23,7 @@ using namespace std;
 /*!
  * \brief  Waits until the next trigger event occures.
  */
-void SDig::TimeEngine::wait4TriggerEvent()
+void SDig::TimeEngine::wait4TriggerEvent() const
 {
     /* get current time */
     uint64_t    currentTime = getTime();
@@ -43,7 +43,7 @@ void SDig::TimeEngine::wait4TriggerEvent()
  * \brief   Get time from system.
  * \return  Return with a class internal representation.
  */
-uint64_t SDig::TimeEngine::getSystemTime(void)
+uint64_t SDig::TimeEngine::getSystemTime(void) const
 {
     /* get time from system */
     timeval t_val;
@@ -62,7 +62,8 @@ uint64_t SDig::TimeEngine::getSystemTime(void)
  *  The timeval structure.
  * \return  64 bit time value in micro seconds. 
  */
-uint64_t SDig::TimeEngine::timeval2us(const timeval &t) {
+uint64_t SDig::TimeEngine::timeval2us(const timeval &t) const
+{
     return ((uint64_t)t.tv_sec*1000000 + (uint64_t)t.tv_usec);
 }
 
@@ -73,7 +74,7 @@ uint64_t SDig::TimeEngine::timeval2us(const timeval &t) {
  *  Number of lines that are used in the string.
  * \return  Created string.
  */
-string SDig::TimeEngine::getDebugInfo(int *pLineNum)
+string SDig::TimeEngine::getDebugInfo(int *pLineNum) const
 {
     const int len = 128;
     char s[len] = "";

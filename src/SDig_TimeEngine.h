@@ -58,8 +58,7 @@ public:
     /*!
      * \brief   Reset the start time.
      */
-    void resetTime(void)
-    {
+    void resetTime(void) {
         mSystemStartTime = getSystemTime();
     }
 
@@ -74,34 +73,41 @@ public:
     }
 
     /*!
+     * \brief   Get the trigger interval.
+     * \return  Return with the trigger interval in us.
+     */
+    uint64_t getTriggerInterval(void) const {
+        return mTriggerInterval;
+    }
+
+    /*!
      * \brief   Get the local time.
      * \return  Return with a class internal representation.
      */
-    uint64_t getTime(void)
-    {
+    uint64_t getTime(void) const {
         return getSystemTime() - mSystemStartTime;
     }
     
 private:
     /* Get time from system. */
-    uint64_t getSystemTime(void);
+    uint64_t getSystemTime(void) const;
 
     /* Converts the values of a timeval structure into a 64 bit value in micro seconds */
-    uint64_t timeval2us(const timeval &t);
+    uint64_t timeval2us(const timeval &t) const;
 
 public:
     /* Waits until the next trigger event occures. */
-    void wait4TriggerEvent();
+    void wait4TriggerEvent() const;
     
     /* Prints the values of the class members into a string. */
-    string getDebugInfo(int *pLineNum = NULL);
+    string getDebugInfo(int *pLineNum = NULL) const;
 
 
     /*!
      * \brief   Get the time base;
      * \return  time base value in micro seconds.
      */
-    uint64_t getTimeBase() {
+    uint64_t getTimeBase() const {
         return mTimeBase;
     }
 
