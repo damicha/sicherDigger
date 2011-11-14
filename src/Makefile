@@ -1,7 +1,17 @@
 #===============================================================================
 #=
-#= File: Makefile
-#= Author: damicha of defect, (c) 2011
+#= Project: sicherDigger
+#= Author:  damicha of defect, (c) 2011
+#=
+#= File:    Makefile
+#=
+#= Description:
+#=  Build binary file and doxygen generated documentation
+#=  $ make              - builds binary
+#=  $ make doxygen      - builds documentation
+#=  $ make clean        - cleans up the source directory
+#=
+#= License: See license file in the main directory.
 #=
 #===============================================================================
 
@@ -9,7 +19,7 @@
 #-------------------------------------------------------------------------------
 CC = g++
 CFLAGS = -g -O2 -Wall
-OBJECTS = fieldLib.o objFieldEntry.o objField.o \
+OBJECTS = sicherDigger.o objFieldEntry.o objField.o \
           SDig_TimeEngine.o \
           SDig_PhysicsEngine.o \
           baseDataObjectType.o
@@ -17,10 +27,10 @@ INCLUDES = $(wildcard *.h)
 LDFLAGS_NCURSES = -lncurses
 
 #-------------------------------------------------------------------------------
-all: fieldLib
+all: sicherDigger
     
 #-------------------------------------------------------------------------------
-fieldLib: $(OBJECTS)
+sicherDigger: $(OBJECTS)
 	$(CC) $(CFLAGS) $(LDFLAGS_NCURSES) $(OBJECTS) -o $@
 
 %.o: %.cpp $(INCLUDES)
@@ -34,7 +44,7 @@ doxygen:
 #-------------------------------------------------------------------------------
 clean:
 	rm -f $(OBJECTS)
-	rm -f fieldLib
+	rm -f sicherDigger
 	rm -rf html/ latex/
 
 
