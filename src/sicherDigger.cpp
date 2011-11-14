@@ -1,10 +1,12 @@
 /*! ****************************************************************************
  *
- * \file    fieldLib.cpp
+ * \file    sicherDigger.cpp
  * \brief   Main program of the project sicherDigger
  *
  * \author  damicha of defect
  * \date    2011
+ *
+ * License: see license file in the main directory.
  *
  ******************************************************************************/
 
