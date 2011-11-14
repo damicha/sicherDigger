@@ -1,4 +1,4 @@
-===============================================================================
+================================================================================
 =
 = project:  sicherDigger
 = author:   damicha of defect, 2011
@@ -9,10 +9,11 @@
 = description:
 =  The development history of the project sicherDigger
 =
-===============================================================================
+================================================================================
 
 
 next:
+- add license info to file headers
 - file templates
 - add level handling: SDig_LevelEngine()
   - init level
@@ -22,7 +23,7 @@ next:
 
 
   0.1pre - text output
-================
+========================
 
 
 * SDig_GameEngine:
