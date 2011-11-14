@@ -78,7 +78,7 @@ string SDig::TimeEngine::getDebugInfo(int *pLineNum) const
 {
     const int len = 128;
     char s[len] = "";
-    snprintf(s, len, "currtent time: %ld  \n", getTime());
+    snprintf(s, len, "current time: %ld  \n", getTime());
     
     if (pLineNum != NULL) {
         *pLineNum = 1;
