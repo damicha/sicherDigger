@@ -1,10 +1,10 @@
 ================================================================================
 =
-= project:  sicherDigger
-= author:   damicha of defect, 2011
-=
 = file:
 =  history.txt
+=
+= project:  sicherDigger
+= author:   damicha of defect, 2011
 =
 = description:
 =  The development history of the project sicherDigger
@@ -25,6 +25,17 @@ next:
   0.1pre - text output
 ========================
 
+* == TODOs ==
+
+* add the main page for doxygen documentation
+
+* physicsEngine.h, physicsEngine.cpp: game physic engine
+  - add physics engine for obj types, empty, sand, wall, diamond
+
+* common:
+ - use github to store the sources
+
+* == history ==
 
 * SDig_GameEngine:
   - creates TextEngine, TimeEngine and PhysicsEngine
@@ -68,10 +79,3 @@ next:
 
 * configData.h: field configurations
 
-* == TODOs ==
-
-* physicsEngine.h, physicsEngine.cpp: game physic engine
-  - add physics engine for obj types, empty, sand, wall, diamond
-
-* common:
- - use github to store the sources
