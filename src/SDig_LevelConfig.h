@@ -1,3 +1,4 @@
+/******************************************************************************/
 /*!
  * \file    SDig_LevelConfig.h
  * \brief   Stores the configuration of a single game level as an array of
@@ -5,7 +6,10 @@
  * 
  * \author  damicha of defect
  * \date    2011 
- */
+ *
+ * \license See license file in the main directory. 
+ *
+ ******************************************************************************/
 
 #ifndef _SDIG_LEVEL_CONFIG_H_
 #define _SDIG_LEVEL_CONFIG_H_

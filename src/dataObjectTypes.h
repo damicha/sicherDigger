@@ -7,6 +7,8 @@
  * \author  damicha of defect
  * \date    2011 
  *
+ * \license See license file in the main directory. 
+ *
  ******************************************************************************/
 
 #ifndef _DATA_OBJECT_TYPES_H_

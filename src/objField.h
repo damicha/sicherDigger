@@ -6,6 +6,8 @@
  * \author  damicha of defect
  * \date    2011 
  *
+ * \license See license file in the main directory. 
+ *
  * \todo add obj type (physic, gfx(txt output) ) as a member of objFieldEntry->obj
  * \todo add a configuration class 
  *

@@ -1,4 +1,14 @@
-/* file: objFieldEntry.cpp */
+/******************************************************************************/
+/*!
+ * \file    objFieldEntry.cpp
+ * \brief   FIXME
+ * 
+ * \author  damicha of defect
+ * \date    2011 
+ *
+ * \license See license file in the main directory. 
+ *
+ ******************************************************************************/
 
 /* FIXME:
  *  add obj type (physic, gfx(txt output) ) as a member of objFieldEntry->obj

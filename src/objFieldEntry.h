@@ -1,6 +1,14 @@
-/* file: objFieldEntry.h
- * FIXME add doxygen header/comments
-*/
+/******************************************************************************/
+/*!
+ * \file    objFieldEntry.h
+ * \brief   FIXME
+ * 
+ * \author  damicha of defect
+ * \date    2011 
+ *
+ * \license See license file in the main directory. 
+ *
+ ******************************************************************************/
 
 #ifndef _OBJ_FIELD_ENTRY_H_
 #define _OBJ_FIELD_ENTRY_H_

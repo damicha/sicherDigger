@@ -1,11 +1,13 @@
-/*! ****************************************************************************
- *
+/******************************************************************************/
+/*!
  * \file    baseDataObjectType.h
  * \brief   Class used as basis class to define the interface of the used data
  *  object types.
  * 
  * \author  damicha of defect
  * \date    2011 
+ *
+ * \license See license file in the main directory. 
  *
  * \todo    FIXME define data object type symbols
  *

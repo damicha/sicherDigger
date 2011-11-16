@@ -1,10 +1,12 @@
-/*! ****************************************************************************
- *
+/******************************************************************************/
+/*!
  * \file    SDig_GameEngine.h
  * \brief   Initializes and controls the game data and engines.
  *
  * \author  damicha of defect
  * \date    2011
+ *
+ * \license See license file in the main directory. 
  *
  ******************************************************************************/
 

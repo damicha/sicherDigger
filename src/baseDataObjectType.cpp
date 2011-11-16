@@ -1,11 +1,13 @@
-/*! ****************************************************************************
- *
+/******************************************************************************/
+/*!
  * \file    baseDataObjectType.cpp
  * \brief   FIXME Virtual class to define the interface of the used data object types
  *  and to define the data object config class.
  * 
  * \author  damicha of defect
  * \date    2011 
+ *
+ * \license See license file in the main directory. 
  *
  ******************************************************************************/
 

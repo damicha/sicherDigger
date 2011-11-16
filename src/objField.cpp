@@ -1,3 +1,4 @@
+/******************************************************************************/
 /*!
  * \file    objField.cpp
  * \brief   Implementation of the class objField.
@@ -5,7 +6,9 @@
  * \author  damicha of defect
  * \date    2011 
  *
- */
+ * \license See license file in the main directory. 
+ *
+ ******************************************************************************/
 
 #include "objFieldEntry.h"
 #include "objField.h"

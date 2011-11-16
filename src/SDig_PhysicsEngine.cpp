@@ -1,10 +1,12 @@
 /******************************************************************************/
 /*!
- * \file    physicsEngine.cpp
+ * \file    SDig_PhysicsEngine.cpp
  * \brief   Implements the physics of the world.
  *
  * \author  damicha of defect
  * \date    2011
+ *
+ * \license See license file in the main directory. 
  *
  ******************************************************************************/
 

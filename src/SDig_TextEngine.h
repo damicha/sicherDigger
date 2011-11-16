@@ -10,6 +10,8 @@
  *  The TextEngine class is implemented that provices functions to get the
  *  user input and to do a ASCII text output of the game field.
  *
+ * \license See license file in the main directory. 
+ *
  ******************************************************************************/
 
 #ifndef _SDIG_TEXT_ENGINE_H_

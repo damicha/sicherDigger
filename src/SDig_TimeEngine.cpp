@@ -6,6 +6,8 @@
  * \author  damicha of defect
  * \date    2011
  *
+ * \license See license file in the main directory. 
+ *
  ******************************************************************************/
 
 

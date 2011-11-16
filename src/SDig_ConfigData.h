@@ -1,11 +1,13 @@
-/*! ****************************************************************************
- *
- * \file    SDig_ConfigData
+/******************************************************************************/
+/*!
+ * \file    SDig_ConfigData.h
  * \brief   Field configuration data
  *          FIXME: Include only once!
  *
  * \author  damicha of defect
  * \date    2011
+ *
+ * \license See license file in the main directory. 
  *
  ******************************************************************************/
 

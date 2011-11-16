@@ -6,6 +6,9 @@
  * 
  * \author  damicha of defect
  * \date    2011 
+ *
+ * \license See license file in the main directory. 
+ *
  ******************************************************************************/
 
 // FIXME: add physics properties/states (create a class or add to baseType)

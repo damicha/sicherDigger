@@ -1,9 +1,9 @@
 #===============================================================================
 #=
+#= File:    Makefile
+#=
 #= Project: sicherDigger
 #= Author:  damicha of defect, (c) 2011
-#=
-#= File:    Makefile
 #=
 #= Description:
 #=  Build binary file and doxygen generated documentation
