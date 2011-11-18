@@ -14,18 +14,19 @@
 #ifndef _DATA_OBJECT_TYPES_H_
 #define _DATA_OBJECT_TYPES_H_
 
-#include "baseDataObjectType.h"
+#include "SDig_BaseDOT.h"
 
 #include <string>
 
-using namespace std;
 
+using namespace std;
+using namespace SDig;
 
 /*!
  * \class   dotWall
  * \brief   Declaration of the data object type class: wall. 
  */
-class dotWall : public baseDataObjectType
+class dotWall : public BaseDOT
 {
 
 public:
@@ -34,7 +35,7 @@ public:
      * \details Define constant class attributes.
      */
     dotWall() {
-        name = string("Wall");
+        mName = string("Wall");
         setType(wall);
 //        printf("%s: %s\n", __func__, getName().c_str());
     }
@@ -45,7 +46,7 @@ public:
  * \class   dotSand
  * \brief   Declaration of the data object type class: sand.
  */
-class dotSand : public baseDataObjectType
+class dotSand : public BaseDOT
 {
 public:
     /*!
@@ -53,7 +54,7 @@ public:
      * \details Define constant class attributes.
      */
     dotSand() {
-        name = string("Sand");
+        mName = string("Sand");
         setType(sand);
     };
 };
@@ -63,7 +64,7 @@ public:
  * \class   dotEmpty
  * \brief   Declaration of the data object type class: empty.
  */
-class dotEmpty : public baseDataObjectType
+class dotEmpty : public BaseDOT
 {
 public:
     /*!
@@ -71,7 +72,7 @@ public:
      * \details Define constant class attributes.
      */
     dotEmpty() {
-        name = string("Empty");
+        mName = string("Empty");
         setType(empty);
     };
 };
@@ -81,7 +82,7 @@ public:
  * \class   dotStone 
  * \brief   Declaration of the data object type class: stone.
  */
-class dotStone : public baseDataObjectType
+class dotStone : public BaseDOT
 {
 public:
     /*!
@@ -89,7 +90,7 @@ public:
      * \details Define constant class attributes.
      */
     dotStone() {
-        name = string("Stone");
+        mName = string("Stone");
         setType(stone);
     };
 };
@@ -99,7 +100,7 @@ public:
  * \class   dotPlayer
  * \brief   Declaration of the data object type class: player.
  */
-class dotPlayer : public baseDataObjectType
+class dotPlayer : public BaseDOT
 {
 public:
     /*!
@@ -107,7 +108,7 @@ public:
      * \details Define constant class attributes.
      */
     dotPlayer() {
-        name = string("Player");
+        mName = string("Player");
         setType(player);
     };
 };

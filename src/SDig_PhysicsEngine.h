@@ -14,7 +14,6 @@
 #ifndef _SDIG_PHYSICS_ENGINE_H_
 #define _SDIG_PHYSICS_ENGINE_H_
 
-#include "baseDataObjectType.h"
 #include "dataObjectTypes.h"
 #include "objField.h"
 
@@ -27,6 +26,8 @@ namespace SDig {
 
 /*!
  * \class   PhysicsEngine
+ * \brief   Implements the object physics like stones are falling, stones are
+ *          lying on walls or sand, the player can move and eat sand, etc.
  */
 class PhysicsEngine
 {

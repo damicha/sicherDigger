@@ -1,8 +1,7 @@
 /******************************************************************************/
 /*!
- * \file    baseDataObjectType.cpp
- * \brief   FIXME Virtual class to define the interface of the used data object types
- *  and to define the data object config class.
+ * \file    SDig_BaseDOT.cpp
+ * \brief   Base class of the data object types (dot).
  * 
  * \author  damicha of defect
  * \date    2011 
@@ -11,39 +10,41 @@
  *
  ******************************************************************************/
 
-#include <string>
-#include <stdio.h> 
-
 #include "dataObjectTypes.h"
-#include "baseDataObjectType.h"
+#include "SDig_BaseDOT.h"
+
 
 using namespace std;
 
 /*!
- * \brief   Create a data object type object as a function of its type.
+ * \brief   Function to create a new DOT object as a function of its type.
  */
-baseDataObjectType *baseDataObjectType::createDataObjectType(dataObjectType_t type)
+BaseDOT *SDig::BaseDOT::createDOT(DOTType pType)
 {
-    baseDataObjectType *t;
-    switch(type)
+    BaseDOT *t;
+    switch(pType)
     {
         case wall:  t = (dotWall  *)new dotWall();  break;
         case sand:  t = (dotSand  *)new dotSand();  break;
         case empty: t = (dotEmpty *)new dotEmpty(); break;
         case stone: t = (dotStone *)new dotStone(); break;
         case player:t = (dotStone *)new dotPlayer(); break;
-        default:    t = new baseDataObjectType();   break;
+        // FIXME: give a note/message to the user, because the default case is not intended
+        default:    t = new BaseDOT();   break;
     }
     return t;
 };
 
 /*!
- * \brief   Delete a data object type object
+ * \brief   Delete a DOT object
  */
-void baseDataObjectType::deleteDataObjectType(baseDataObjectType *t)
+void SDig::BaseDOT::deleteDOT(BaseDOT *pObj)
 {
-    if (t != NULL) {
-        delete t;
+    if (pObj != NULL) {
+        delete pObj;
     }
+    pObj = NULL;
 };
+
+
 

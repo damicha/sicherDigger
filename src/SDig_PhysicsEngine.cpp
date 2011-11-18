@@ -12,7 +12,7 @@
 
 #include "SDig_PhysicsEngine.h"
 
-#include "baseDataObjectType.h"
+#include "SDig_BaseDOT.h"
 #include "dataObject.h"
 #include "objField.h"
 
@@ -61,10 +61,10 @@ void PhysicsEngine::run(objField &pField, MovementType pPlayerMove)
             /* call physics functions as a function of the type of the entry data */
             switch (entry->data->type->getType())
             {
-                case baseDataObjectType::stone:
+                case BaseDOT::stone:
                     runStonePhysics(entry);
                     break;
-                case baseDataObjectType::player:
+                case BaseDOT::player:
                     // do nothing, because the player should already be moved
                     break;
                 default:
@@ -186,7 +186,7 @@ objFieldEntry *PhysicsEngine::movePlayer(objFieldEntry  *pSrc, objFieldEntry *pD
         /* eat sand */
         if (isSand(pDest)) {
             delete pDest->data;
-            pDest->data = new dataObject(baseDataObjectType::empty);
+            pDest->data = new dataObject(BaseDOT::empty);
         }
 
         /* the empty field to done */
@@ -208,7 +208,7 @@ objFieldEntry *PhysicsEngine::movePlayer(objFieldEntry  *pSrc, objFieldEntry *pD
  */
 bool PhysicsEngine::isEmpty(objFieldEntry *pEntry)
 {
-    if (pEntry->data->type->getType() == baseDataObjectType::empty) {
+    if (pEntry->data->type->getType() == BaseDOT::empty) {
         return true;
     } else {
         return false;
@@ -220,7 +220,7 @@ bool PhysicsEngine::isEmpty(objFieldEntry *pEntry)
  */
 bool PhysicsEngine::isSand(objFieldEntry *pEntry)
 {
-    if (pEntry->data->type->getType() == baseDataObjectType::sand) {
+    if (pEntry->data->type->getType() == BaseDOT::sand) {
         return true;
     } else {
         return false;
@@ -233,8 +233,8 @@ bool PhysicsEngine::isSand(objFieldEntry *pEntry)
  */
 bool PhysicsEngine::isBlocking(objFieldEntry *pEntry)
 {
-    if (pEntry->data->type->getType() == baseDataObjectType::wall ||
-        pEntry->data->type->getType() == baseDataObjectType::stone) {
+    if (pEntry->data->type->getType() == BaseDOT::wall ||
+        pEntry->data->type->getType() == BaseDOT::stone) {
         return true;
     } else {
         return false;

@@ -19,7 +19,7 @@
 #define _OBJ_FIELD_H_
 
 
-#include "baseDataObjectType.h"
+#include "SDig_BaseDOT.h"
 #include "objFieldEntry.h"
 #include "SDig_LevelConfig.h"
 
@@ -76,14 +76,14 @@ public:
                 if (x == 1 && y == 1)
                 {
                     /* set player position/object */
-                    entries[y*size_x + x].createDataObject(baseDataObjectType::player);
+                    entries[y*size_x + x].createDataObject(BaseDOT::player);
                     pl_entry  = &entries[y*size_x + x];
                 } else if (x == 0 || x == size_x - 1 ||
                            y == 0 || y == size_y - 1)
                 {
-                    entries[y*size_x + x].createDataObject(baseDataObjectType::wall);
+                    entries[y*size_x + x].createDataObject(BaseDOT::wall);
                 } else {
-                    entries[y*size_x + x].createDataObject(baseDataObjectType::sand);
+                    entries[y*size_x + x].createDataObject(BaseDOT::sand);
                 }
             }
         }
@@ -114,12 +114,12 @@ public:
             for (int x = 0; x < size_x; x++)
             {
                 /* get object type */
-                baseDataObjectType::dataObjectType_t objType = pLevelConfig.getData(x, y);
+                BaseDOT::DOTType objType = pLevelConfig.getData(x, y);
                 /* create entry */
                 entries[y*size_x + x].createDataObject(objType);
                 
                 /* store the reference of the players object */
-                if (objType == baseDataObjectType::player) {
+                if (objType == BaseDOT::player) {
                     pl_entry = &entries[y*size_x + x];
                 }
             }

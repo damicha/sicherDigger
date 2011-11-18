@@ -18,7 +18,7 @@
 #define _SDIG_TEXT_ENGINE_H_
 
 #include "objField.h"
-#include "baseDataObjectType.h"
+#include "SDig_BaseDOT.h"
 #include "SDig_TimeEngine.h"
 
 #include <stdio.h>
@@ -231,16 +231,16 @@ public:
      * \param   pObjType
      *  Address of data object.
      */
-    char getSymbol(baseDataObjectType *pObjType)
+    char getSymbol(BaseDOT *pObjType)
     {
         switch (pObjType->getType())
         {
-            case baseDataObjectType::empty: return ' '; 
-            case baseDataObjectType::sand:  return '.';
-            case baseDataObjectType::wall:  return '#';
-            case baseDataObjectType::stone: return 'O';
-            case baseDataObjectType::player:return '8';
-            case baseDataObjectType::unknown:
+            case BaseDOT::empty: return ' '; 
+            case BaseDOT::sand:  return '.';
+            case BaseDOT::wall:  return '#';
+            case BaseDOT::stone: return 'O';
+            case BaseDOT::player:return '8';
+            case BaseDOT::unknown:
             default:                        return '?';
         }
     }

@@ -16,12 +16,13 @@
 #ifndef _DATA_OBJECT_H_
 #define _DATA_OBJECT_H_
 
-#include "baseDataObjectType.h"
+#include "SDig_BaseDOT.h"
 #include "dataObjectTypes.h"
 
 #include <stdio.h> 
 
 using namespace std;
+using namespace SDig;
 
 /*
  * \class dataObject
@@ -33,7 +34,7 @@ class dataObject
 private:
 public:
     // FIXME: use class name objectType <- is a virtual class!
-    baseDataObjectType *type;   //!< object type FIXME: rename class baseMaterial to baseType
+    BaseDOT *type;   //!< object type FIXME: rename class baseMaterial to baseType
     int done;       /*!< 1 if material was already used by physics engine: 
                      * FIXME: move to a physics class (maybe)
                      * FIXME: use a own data type
@@ -45,9 +46,9 @@ public:
     /*!
      * \brief   Constructor
      */
-    dataObject(const baseDataObjectType::dataObjectType_t objType = baseDataObjectType::unknown)
+    dataObject(const BaseDOT::DOTType objType = BaseDOT::unknown)
     {
-        type = baseDataObjectType::createDataObjectType(objType);
+        type = BaseDOT::createDOT(objType);
         done = 0;
     }
     

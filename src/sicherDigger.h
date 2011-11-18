@@ -31,8 +31,7 @@ them is empty.
 
 
 \section    Source
-www.github.com/...FIXME
-
+http://github.com/damicha/sicherDigger
 */
 
 

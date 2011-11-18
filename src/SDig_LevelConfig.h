@@ -2,7 +2,7 @@
 /*!
  * \file    SDig_LevelConfig.h
  * \brief   Stores the configuration of a single game level as an array of
- *  characters
+ *          characters
  * 
  * \author  damicha of defect
  * \date    2011 
@@ -14,7 +14,7 @@
 #ifndef _SDIG_LEVEL_CONFIG_H_
 #define _SDIG_LEVEL_CONFIG_H_
 
-#include "baseDataObjectType.h"
+#include "SDig_BaseDOT.h"
 
 //#include <string>
 #include <string.h>
@@ -24,8 +24,10 @@ using namespace std;
 
 namespace SDig {
 
-/*
- * \class LevelConfig
+/*!
+ * \class   LevelConfig
+ * \brief   Is able to store a configuration of a single game level as an
+ *          array of characters.
  */
 class LevelConfig
 {
@@ -131,23 +133,23 @@ public:
      * \param   pX, pY
      *  Positions.
      */
-    baseDataObjectType::dataObjectType_t getData(int pX, int pY) const
+    BaseDOT::DOTType getData(int pX, int pY) const
     {
         switch (mData[pY*mSizeX + pX])
         {
             case '#':
-                return baseDataObjectType::wall;
+                return BaseDOT::wall;
             case '.':
-                return baseDataObjectType::sand;
+                return BaseDOT::sand;
             case ' ':
-                return baseDataObjectType::empty;
+                return BaseDOT::empty;
             case 'O':
-                return baseDataObjectType::stone;
+                return BaseDOT::stone;
             case '8':
                 /* set player position/object */
-                return baseDataObjectType::player;
+                return BaseDOT::player;
             default:
-                return baseDataObjectType::unknown;
+                return BaseDOT::unknown;
         }
      }
 

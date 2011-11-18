@@ -19,7 +19,9 @@
 #include <stdio.h>
 #include <string>
 #include <sstream>
+
 using namespace std;
+using namespace SDig;
 
 class objFieldEntry;
 
@@ -59,7 +61,7 @@ public:
     /*!
      *\brief  create a data object
      */
-    void createDataObject(baseDataObjectType::dataObjectType_t type)
+    void createDataObject(BaseDOT::DOTType type)
     {
 
         data = new dataObject(type);
