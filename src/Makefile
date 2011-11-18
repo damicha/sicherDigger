@@ -22,23 +22,26 @@ CFLAGS = -g -O2 -Wall
 OBJECTS = sicherDigger.o objFieldEntry.o objField.o \
           SDig_TimeEngine.o \
           SDig_PhysicsEngine.o \
-          baseDataObjectType.o
+          SDig_BaseDOT.o
 INCLUDES = $(wildcard *.h)
 LDFLAGS_NCURSES = -lncurses
 
-#-------------------------------------------------------------------------------
-all: sicherDigger
-    
+
 #-------------------------------------------------------------------------------
 sicherDigger: $(OBJECTS)
 	$(CC) $(CFLAGS) $(LDFLAGS_NCURSES) $(OBJECTS) -o $@
 
+
+all: sicherDigger html
+    
+
+#-------------------------------------------------------------------------------
 %.o: %.cpp $(INCLUDES)
 	$(CC) $(CFLAGS) -c $<
 
 
 #-------------------------------------------------------------------------------
-doxygen:
+html:
 	doxygen
 
 #-------------------------------------------------------------------------------
@@ -47,4 +50,5 @@ clean:
 	rm -f sicherDigger
 	rm -rf html/ latex/
 
+.PHONY: html clean
 
