@@ -65,9 +65,9 @@ next:
   - The data object type classes DOTWall, DOTSand, DOTEmpty, DOTStone and
     DOTPlayer derived from class BaseDOT were implemented.
 
-* dataObject.h, dataObject.cpp
-  - data object class that contains the type of the object and some members that
-    defines the state of class' instance.
+* SDig_DataObject.h
+  - The data object class contains the type of the object and some members that
+    store internal states.
 
 * objField.h, objField.cpp:
   - creates and initializes an object field from a configuration array

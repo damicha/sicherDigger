@@ -13,7 +13,7 @@
 #include "SDig_PhysicsEngine.h"
 
 #include "SDig_BaseDOT.h"
-#include "dataObject.h"
+#include "SDig_DataObject.h"
 #include "objField.h"
 
 #include "stdio.h"
@@ -37,7 +37,7 @@ void PhysicsEngine::run(objField &pField, MovementType pPlayerMove)
         for (int x = 0; x < pField.size_x; x++)
         {
             // FIXME remove done from data
-            pField.entries[y*pField.size_x + x].data->done = 0;
+            pField.entries[y*pField.size_x + x].data->clearDone();
         }
     }
 
@@ -59,7 +59,7 @@ void PhysicsEngine::run(objField &pField, MovementType pPlayerMove)
             objFieldEntry *entry = &(pField.entries[y*pField.size_x + x]);
 
             /* call physics functions as a function of the type of the entry data */
-            switch (entry->data->type->getType())
+            switch (entry->data->getType())
             {
                 case BaseDOT::stone:
                     runStonePhysics(entry);
@@ -87,22 +87,22 @@ void PhysicsEngine::run(objField &pField, MovementType pPlayerMove)
 void PhysicsEngine::runStonePhysics(objFieldEntry *e)
 {
     /* return if entry is already treated */
-    if (e->data->done == 1) {
+    if (e->data->isDone()) {
         return;
     }
 
     /* set stone object to done */
-    e->data->done = 1;
+    e->data->setDone();
 
     /* get the entry that is under the stone */
     objFieldEntry *e_y_next = e->y_next;
 
     /* if it's empty */
-    if (e_y_next && e_y_next->data->done != 1 &&
+    if (e_y_next && e_y_next->data->isDone() == false &&
         isEmpty(e_y_next))
     {
         /* set empty object to done */
-        e_y_next->data->done   = 1;
+        e_y_next->data->setDone();
 
         /* let stone fall by switching stone and empty data of the 
            field entries */
@@ -133,12 +133,12 @@ objFieldEntry *PhysicsEngine::runPlayerPhysics(objFieldEntry  *e,
     objFieldEntry *pl_entry_new = e;
 
     /* return if entry is already treated */
-    if (e->data->done == 1) {
+    if (e->data->isDone()) {
         return pl_entry_new;
     }
 
     /* set player object to done */
-    e->data->done = 1;
+    e->data->setDone();
 
     /* move player */
     switch (pPlayerMove)
@@ -180,17 +180,17 @@ objFieldEntry *PhysicsEngine::movePlayer(objFieldEntry  *pSrc, objFieldEntry *pD
     objFieldEntry *plEntryNew = pSrc;
 
     /* move the player if it is not blocked */
-    if (pDest && pDest->data->done != 1 &&
+    if (pDest && pDest->data->isDone() == false &&
         isBlocking(pDest) == false)
     {
         /* eat sand */
         if (isSand(pDest)) {
             delete pDest->data;
-            pDest->data = new dataObject(BaseDOT::empty);
+            pDest->data = new DataObject(BaseDOT::empty);
         }
 
         /* the empty field to done */
-        pDest->data->done   = 1;
+        pDest->data->setDone();
 
         /* move player by switch the data objects */
         switchDataObjects(pSrc, pDest);
@@ -208,7 +208,7 @@ objFieldEntry *PhysicsEngine::movePlayer(objFieldEntry  *pSrc, objFieldEntry *pD
  */
 bool PhysicsEngine::isEmpty(objFieldEntry *pEntry)
 {
-    if (pEntry->data->type->getType() == BaseDOT::empty) {
+    if (pEntry->data->getType() == BaseDOT::empty) {
         return true;
     } else {
         return false;
@@ -220,7 +220,7 @@ bool PhysicsEngine::isEmpty(objFieldEntry *pEntry)
  */
 bool PhysicsEngine::isSand(objFieldEntry *pEntry)
 {
-    if (pEntry->data->type->getType() == BaseDOT::sand) {
+    if (pEntry->data->getType() == BaseDOT::sand) {
         return true;
     } else {
         return false;
@@ -233,8 +233,8 @@ bool PhysicsEngine::isSand(objFieldEntry *pEntry)
  */
 bool PhysicsEngine::isBlocking(objFieldEntry *pEntry)
 {
-    if (pEntry->data->type->getType() == BaseDOT::wall ||
-        pEntry->data->type->getType() == BaseDOT::stone) {
+    if (pEntry->data->getType() == BaseDOT::wall ||
+        pEntry->data->getType() == BaseDOT::stone) {
         return true;
     } else {
         return false;
@@ -246,8 +246,8 @@ bool PhysicsEngine::isBlocking(objFieldEntry *pEntry)
  */
 void PhysicsEngine::switchDataObjects(objFieldEntry *pSrc, objFieldEntry *pDest)
 {
-    dataObject  *doSrc     = pSrc->data;
-    dataObject  *doDest    = pDest->data;
+    DataObject  *doSrc     = pSrc->data;
+    DataObject  *doDest    = pDest->data;
     /* switch */
     pSrc->data  = doDest;
     pDest->data = doSrc;

@@ -13,8 +13,7 @@
 #ifndef _OBJ_FIELD_ENTRY_H_
 #define _OBJ_FIELD_ENTRY_H_
 
-//#include "SDig_DOTs.h"
-#include "dataObject.h"
+#include "SDig_DataObject.h"
 
 #include <stdio.h>
 #include <string>
@@ -28,7 +27,7 @@ class objFieldEntry;
 /*
  * objFieldEntry
  */
-// FIXME: change to a template class for dataObject
+// FIXME: change to a template class for DataObject
 class objFieldEntry
 {
 public:
@@ -47,7 +46,7 @@ public:
     // FIXME: add object layer: (objFieldEntry.obj: obj.m, obj...)
     baseMaterial *m;    /*!< the object material. A virtual class is used */
 #endif
-    dataObject *data;   //!< Data field that contains properties and states
+    DataObject *data;   //!< Data field that contains properties and states
 
 public:
     /* constructor */
@@ -65,7 +64,7 @@ public:
     void createDataObject(BaseDOT::DOTType type)
     {
 
-        data = new dataObject(type);
+        data = new DataObject(type);
 #if 0
         baseMaterial *m = createMaterial(type);
         data->type = m;

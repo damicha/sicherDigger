@@ -191,7 +191,8 @@ public:
         {
             for (int x = 0; x < pField.size_x; x++)
             {
-                char c = getSymbol(pField.entries[y*pField.size_x + x].data->type);
+                DataObject *dataObj = pField.entries[y*pField.size_x + x].data;  
+                char c = getSymbol(dataObj->getTypeObject());
                 printw("%c ", c);
             }
             printw("\n");
