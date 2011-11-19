@@ -13,7 +13,7 @@
 #ifndef _OBJ_FIELD_ENTRY_H_
 #define _OBJ_FIELD_ENTRY_H_
 
-#include "dataObjectTypes.h"
+//#include "SDig_DOTs.h"
 #include "dataObject.h"
 
 #include <stdio.h>
@@ -28,6 +28,7 @@ class objFieldEntry;
 /*
  * objFieldEntry
  */
+// FIXME: change to a template class for dataObject
 class objFieldEntry
 {
 public:

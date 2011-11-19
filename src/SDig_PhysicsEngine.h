@@ -14,7 +14,6 @@
 #ifndef _SDIG_PHYSICS_ENGINE_H_
 #define _SDIG_PHYSICS_ENGINE_H_
 
-#include "dataObjectTypes.h"
 #include "objField.h"
 
 #include "stdio.h"

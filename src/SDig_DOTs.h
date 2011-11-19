@@ -1,8 +1,8 @@
 /******************************************************************************/
 /*!
- * \file    dataObjectTypes.h
- * \brief   Declarations of Data object type classes; derivated from the
- *  class baseDataObjectType.
+ * \file    SDig_DOTs.h
+ * \brief   Declarations of data object type classes; derivated from the
+ *          class SDig_BaseDOT.
  * 
  * \author  damicha of defect
  * \date    2011 
@@ -11,8 +11,8 @@
  *
  ******************************************************************************/
 
-#ifndef _DATA_OBJECT_TYPES_H_
-#define _DATA_OBJECT_TYPES_H_
+#ifndef _SDIG_DOTS_H_
+#define _SDIG_DOTS_H_
 
 #include "SDig_BaseDOT.h"
 
@@ -20,13 +20,15 @@
 
 
 using namespace std;
-using namespace SDig;
+
+namespace SDig {
+
 
 /*!
- * \class   dotWall
+ * \class   DOTWall
  * \brief   Declaration of the data object type class: wall. 
  */
-class dotWall : public BaseDOT
+class DOTWall : public BaseDOT
 {
 
 public:
@@ -34,7 +36,7 @@ public:
      * \brief   constructor
      * \details Define constant class attributes.
      */
-    dotWall() {
+    DOTWall() {
         mName = string("Wall");
         setType(wall);
 //        printf("%s: %s\n", __func__, getName().c_str());
@@ -43,17 +45,17 @@ public:
 
 
 /*!
- * \class   dotSand
+ * \class   DOTSand
  * \brief   Declaration of the data object type class: sand.
  */
-class dotSand : public BaseDOT
+class DOTSand : public BaseDOT
 {
 public:
     /*!
      * \brief   constructor
      * \details Define constant class attributes.
      */
-    dotSand() {
+    DOTSand() {
         mName = string("Sand");
         setType(sand);
     };
@@ -61,17 +63,17 @@ public:
 
 
 /*!
- * \class   dotEmpty
+ * \class   DOTEmpty
  * \brief   Declaration of the data object type class: empty.
  */
-class dotEmpty : public BaseDOT
+class DOTEmpty : public BaseDOT
 {
 public:
     /*!
      * \brief   constructor
      * \details Define constant class attributes.
      */
-    dotEmpty() {
+    DOTEmpty() {
         mName = string("Empty");
         setType(empty);
     };
@@ -79,17 +81,17 @@ public:
 
 
 /*!
- * \class   dotStone 
+ * \class   DOTStone 
  * \brief   Declaration of the data object type class: stone.
  */
-class dotStone : public BaseDOT
+class DOTStone : public BaseDOT
 {
 public:
     /*!
      * \brief   constructor
      * \details Define constant class attributes.
      */
-    dotStone() {
+    DOTStone() {
         mName = string("Stone");
         setType(stone);
     };
@@ -97,21 +99,23 @@ public:
 
 
 /*!
- * \class   dotPlayer
+ * \class   DOTPlayer
  * \brief   Declaration of the data object type class: player.
  */
-class dotPlayer : public BaseDOT
+class DOTPlayer : public BaseDOT
 {
 public:
     /*!
      * \brief   constructor
      * \details Define constant class attributes.
      */
-    dotPlayer() {
+    DOTPlayer() {
         mName = string("Player");
         setType(player);
     };
 };
 
+
+}       // namespace
 
 #endif

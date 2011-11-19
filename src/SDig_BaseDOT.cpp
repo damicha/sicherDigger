@@ -1,7 +1,7 @@
 /******************************************************************************/
 /*!
  * \file    SDig_BaseDOT.cpp
- * \brief   Base class of the data object types (dot).
+ * \brief   Base class of the data object types (dot|DOT).
  * 
  * \author  damicha of defect
  * \date    2011 
@@ -10,25 +10,26 @@
  *
  ******************************************************************************/
 
-#include "dataObjectTypes.h"
+#include "SDig_DOTs.h"
 #include "SDig_BaseDOT.h"
 
 
 using namespace std;
+using namespace SDig;
 
 /*!
  * \brief   Function to create a new DOT object as a function of its type.
  */
-BaseDOT *SDig::BaseDOT::createDOT(DOTType pType)
+BaseDOT *BaseDOT::createDOT(DOTType pType)
 {
     BaseDOT *t;
     switch(pType)
     {
-        case wall:  t = (dotWall  *)new dotWall();  break;
-        case sand:  t = (dotSand  *)new dotSand();  break;
-        case empty: t = (dotEmpty *)new dotEmpty(); break;
-        case stone: t = (dotStone *)new dotStone(); break;
-        case player:t = (dotStone *)new dotPlayer(); break;
+        case wall:  t = new DOTWall();  break;
+        case sand:  t = new DOTSand();  break;
+        case empty: t = new DOTEmpty(); break;
+        case stone: t = new DOTStone(); break;
+        case player:t = new DOTPlayer(); break;
         // FIXME: give a note/message to the user, because the default case is not intended
         default:    t = new BaseDOT();   break;
     }
@@ -38,7 +39,7 @@ BaseDOT *SDig::BaseDOT::createDOT(DOTType pType)
 /*!
  * \brief   Delete a DOT object
  */
-void SDig::BaseDOT::deleteDOT(BaseDOT *pObj)
+void BaseDOT::deleteDOT(BaseDOT *pObj)
 {
     if (pObj != NULL) {
         delete pObj;

@@ -17,7 +17,6 @@
 #define _DATA_OBJECT_H_
 
 #include "SDig_BaseDOT.h"
-#include "dataObjectTypes.h"
 
 #include <stdio.h> 
 

@@ -61,9 +61,9 @@ next:
   - function to create a object of a derived BaseDOT class as a function
     of the required object type.
 
-* dataObjectTypes.h
-  - The data object type classes dotWall, dotSand, dotStone and dotEmpty derived
-    from class baseDataObjectType.
+* SDig_DOTs.h
+  - The data object type classes DOTWall, DOTSand, DOTEmpty, DOTStone and
+    DOTPlayer derived from class BaseDOT were implemented.
 
 * dataObject.h, dataObject.cpp
   - data object class that contains the type of the object and some members that
