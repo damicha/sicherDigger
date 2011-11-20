@@ -33,6 +33,17 @@ namespace SDig {
  */
 class GameEngine
 {
+/* ======== class types ======== */    
+public:
+#if 0
+    /*!
+     * \brief   State of a menu (used as exit reason)
+     */
+    enum MenuStateType {
+        MST_QUIT,           //!< menu requires quit
+        MST_START_LEVEL,    //!< start a level
+    };
+#endif
 /* ======== attributes ======== */    
 private:
     objField    *mField;        //!< object field (game level data)
@@ -59,8 +70,10 @@ public:
     void run();
 
     /* Main menu */
-    void mainMenu();
+    void runMainMenu();
     
+    /* a single Level */
+    void runLevel();
 };
 
 

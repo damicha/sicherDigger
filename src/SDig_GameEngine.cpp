@@ -46,11 +46,10 @@ GameEngine::~GameEngine(void)
 /*!
  * \brief   Main menu.
  */
-void GameEngine::mainMenu()
+void GameEngine::runMainMenu()
 {
 
-    bool stop = false;
-    while(stop == false) 
+    while(true) 
     {
         /* sync on tigger event */
         mTime.wait4TriggerEvent();
@@ -61,23 +60,43 @@ void GameEngine::mainMenu()
         /* print menu */
         mTxt.drawMainMenu();
 
-        if (button == TextEngine::BT_START || 
-            button == TextEngine::BT_SELECT ) {
-            break;
+        switch (button)
+        {
+            case TextEngine::BT_SELECT:
+                return;
+            
+            case TextEngine::BT_START:
+                // FIXME: reset level state
+                runLevel();
+                break;
+
+            // ignore the other keys
+            default:
+                break;
+
         }
 
     }
+
+    // default
+    return;
 }
 
 /*!
  * \brief   run game engine until it quits.
  */
 // FIXME: split into functions: menu, level (start, run, end)
+// FIXME: implement a menu stack:
+// mainMenu <-> level (start -> run -> end)
+// mainMenu --> exit
 void GameEngine::run()
 {
 
-    mainMenu();
+    runMainMenu();
+}
 
+void GameEngine::runLevel()
+{
 
     bool stop = false;
     float timeCnt = (float)mTimeLimit;   // set time counter

@@ -279,8 +279,8 @@ public:
         printw("\n");
         printw("==== Main Menu ====\n");
         printw("\n");
-        printw("s       - Start\n");
-        printw("q       - Exit\n");
+        printw("  s       - Start\n");
+        printw("  q       - Exit\n");
         refresh();
     }
 
