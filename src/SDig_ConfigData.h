@@ -29,7 +29,7 @@ namespace SDig {
 #define LEVEL_TIME_LIMIT    25
 #define LEVEL_SIZE_X        8
 #define LEVEL_SIZE_Y        8
-char field_a_data[LEVEL_SIZE_X * LEVEL_SIZE_Y] =
+static char field_a_data[LEVEL_SIZE_X * LEVEL_SIZE_Y] =
 {
     '#', '#', '#', '#', '#', '#', '#', '#',
     '#', 'O', 'O', 'O', 'O', 'O', ' ', '#',
@@ -40,7 +40,7 @@ char field_a_data[LEVEL_SIZE_X * LEVEL_SIZE_Y] =
     '#', '.', ' ', '.', ' ', ' ', 'O', '#',
     '#', '#', '#', '#', '#', '#', '#', '#',
 };
-LevelConfig field_a = LevelConfig(
+static LevelConfig field_a = LevelConfig(
     LEVEL_NAME, LEVEL_TIME_LIMIT,
     LEVEL_SIZE_X, LEVEL_SIZE_Y, field_a_data
 );

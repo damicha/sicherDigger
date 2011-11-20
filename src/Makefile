@@ -19,10 +19,13 @@
 #-------------------------------------------------------------------------------
 CC = g++
 CFLAGS = -g -O2 -Wall
-OBJECTS = sicherDigger.o objFieldEntry.o objField.o \
-          SDig_TimeEngine.o \
-          SDig_PhysicsEngine.o \
-          SDig_BaseDOT.o
+OBJECTS =   sicherDigger.o \
+            objFieldEntry.o objField.o \
+            SDig_TimeEngine.o \
+            SDig_TextEngine.o \
+            SDig_PhysicsEngine.o \
+            SDig_GameEngine.o \
+            SDig_BaseDOT.o
 INCLUDES = $(wildcard *.h)
 LDFLAGS_NCURSES = -lncurses
 

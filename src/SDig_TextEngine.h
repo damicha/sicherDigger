@@ -62,7 +62,9 @@ public:
         BT_LEFT,    //!< left key
         BT_RIGHT,   //!< right key
         BT_A,       //!< A button
-        BT_START    //!< start button
+        BT_B,       //!< B button
+        BT_START,   //!< start button
+        BT_SELECT   //!< select button
     };
 
 
@@ -145,8 +147,10 @@ public:
             /* keyboard button mapping */
             switch(c)
             {
-                case 'q'        : button = BT_START;    break;
-                case 'o'        : button = BT_A;        break;
+                case (int)'q'   : button = BT_SELECT;   break;
+                case (int)'s'   : button = BT_START;    break;
+                case (int)'o'   : button = BT_A;        break;
+                case (int)'p'   : button = BT_B;        break;
                 case KEY_DOWN   : button = BT_DOWN;     break;
                 case KEY_UP     : button = BT_UP;       break;
                 case KEY_LEFT   : button = BT_LEFT;     break;
@@ -265,10 +269,24 @@ public:
         refresh();
     }
 
-};
+    /*!
+     * \brief   Print main menu
+     */
+    void drawMainMenu()
+    {
+        // move cursor position to (row, col)
+        move(0, 0);
+        printw("\n");
+        printw("==== Main Menu ====\n");
+        printw("\n");
+        printw("s       - Start\n");
+        printw("q       - Exit\n");
+        refresh();
+    }
 
-/* set default value for the instance counter */
-int TextEngine::mInstanceCounter = 0;
+
+
+};
 
 }       // namespace
 
