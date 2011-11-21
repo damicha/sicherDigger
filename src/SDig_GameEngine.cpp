@@ -30,8 +30,8 @@ GameEngine::GameEngine(void)
 
     mTimeLimit = cfg->getTimeLimit();
 
-    /* set duration of one turn */
-    mTime.setTriggerInterval(250000);
+    /* set duration of one turn (1/60 sec) */
+    mTime.setTriggerInterval(16667);    // in us
 }
     
 /*!
@@ -65,20 +65,24 @@ void GameEngine::run()
 
     mTxt.clearScreen();
     
+    // FIXME: move phyEngine triggering to TimeEngine
+    int phyTrigger = 0;
+    TextEngine::ButtonType  button = TextEngine::BT_NONE;
+    TextEngine::ButtonType  phyButton = TextEngine::BT_NONE;
     bool stop = false;
     while(stop == false) 
     {
     
         s_curr = s_next;
 
-        /* sync on tigger event */
+        /* sync on tigger event to display content */
         mTime.wait4TriggerEvent();
 
         /* get last pushed button */
         // FIXME: the detection of only the last and only one pressed
         //        button is currently possible
-        // -> change to pressed, released bavior/events
-        TextEngine::ButtonType      button = mTxt.getButton();
+        // -> change to pressed, released behavior/events
+        button = mTxt.getButton();
         
         switch (s_curr)
         {
@@ -106,10 +110,22 @@ void GameEngine::run()
                 }
                 break;
 
+
             case EST_LEVEL_EXEC:
-                
-               
-                runLevelEngine(button);
+
+                /* get first button event */
+                if (button != TextEngine::BT_NONE &&
+                    phyButton == TextEngine::BT_NONE) {
+                    phyButton = button;
+                }
+                //    phyButton = button;
+
+                if (phyTrigger % 15 == 0) {  
+                    runLevelEngine(phyButton);
+                    // reset button value
+                    phyButton = TextEngine::BT_NONE;
+                }
+                phyTrigger++;
 
                 /* change state */
                 if        (button == TextEngine::BT_SELECT)  {
@@ -138,6 +154,7 @@ void GameEngine::run()
         if (s_curr != s_next) {
             mTxt.clearScreen();
         }
+
 
     }
 

@@ -34,6 +34,10 @@ namespace SDig {
  *  The class has its own local time that is calculated by substracting the
  *  fixed system start time and the current system time.
  */
+// FIXME: add trigger events for :
+// gfxEngine, phyEngine
+//  - start/stop, set/get
+
 class TimeEngine
 {
 /* ======== class attributes ======== */    

@@ -136,7 +136,8 @@ public:
      *  representation.
      * \return  Recognized button.
      */
-    ButtonType getButton(void) {
+    ButtonType getButton(void)
+    {
         ButtonType button = BT_NONE;
 
         int c = getch();    // get first entry (key) of the input buffer    
@@ -159,7 +160,6 @@ public:
         }
 
         return button;
-
     }
 
 
