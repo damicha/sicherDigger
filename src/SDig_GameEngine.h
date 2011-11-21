@@ -35,15 +35,17 @@ class GameEngine
 {
 /* ======== class types ======== */    
 public:
-#if 0
     /*!
-     * \brief   State of a menu (used as exit reason)
+     * \brief   State of the game engine to switch between possible menus
      */
-    enum MenuStateType {
-        MST_QUIT,           //!< menu requires quit
-        MST_START_LEVEL,    //!< start a level
+    enum EngineStateType {
+        EST_MAIN_MENU,          //!< main menu
+        EST_LEVEL_START_MENU,   //!< start of a level
+        EST_LEVEL_EXEC,         //!< level execution
+        EST_LEVEL_END_MENU,     //!< end of a level
+        EST_QUIT,               //!< leave game engine
     };
-#endif
+
 /* ======== attributes ======== */    
 private:
     objField    *mField;        //!< object field (game level data)
@@ -70,10 +72,19 @@ public:
     void run();
 
     /* Main menu */
-    void runMainMenu();
+//    void runMainMenu();
     
-    /* a single Level */
-    void runLevel();
+    /* a single level sequence */
+//    void runLevelExec();
+    
+    /* the level start */
+//    void runLevelStart();
+    
+    /* the level itself  */
+    void runLevelEngine(TextEngine::ButtonType button);
+    
+    /* the level end */
+//    void runLevelEnd();
 };
 
 

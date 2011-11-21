@@ -44,36 +44,99 @@ GameEngine::~GameEngine(void)
 
 
 /*!
- * \brief   Main menu.
+ * \brief   run game engine until it quits.
  */
-void GameEngine::runMainMenu()
-{
+/* Implemented sequences:
+   menu  -> start                       - go to level start
+        <-  start                       - go back to menu
+            start  -> level             - run level
+                      level  -> end     - conclusion
+                  <-----------  end     - restart level
+        <---------------------  end     - go back to menu
 
-    while(true) 
+*/
+void GameEngine::run()
+{
+    EngineStateType s_curr;     // current state
+    EngineStateType s_next;     // next state
+
+    s_curr = EST_MAIN_MENU;
+    s_next = EST_MAIN_MENU;
+
+    mTxt.clearScreen();
+    
+    bool stop = false;
+    while(stop == false) 
     {
+    
+        s_curr = s_next;
+
         /* sync on tigger event */
         mTime.wait4TriggerEvent();
 
-        /* get button */
+        /* get last pushed button */
+        // FIXME: the detection of only the last and only one pressed
+        //        button is currently possible
+        // -> change to pressed, released bavior/events
         TextEngine::ButtonType      button = mTxt.getButton();
         
-        /* print menu */
-        mTxt.drawMainMenu();
-
-        switch (button)
+        switch (s_curr)
         {
-            case TextEngine::BT_SELECT:
-                return;
+            case EST_MAIN_MENU:
+                /* print menu */
+                mTxt.drawMainMenu();
+
+                /* change state */
+                if        (button == TextEngine::BT_START)  {
+                    s_next = EST_LEVEL_START_MENU;
+                } else if (button == TextEngine::BT_SELECT) {
+                    s_next = EST_QUIT;
+                }
+                break;
             
-            case TextEngine::BT_START:
-                // FIXME: reset level state
-                runLevel();
+            case EST_LEVEL_START_MENU:
+                /* print menu */
+                mTxt.drawLevelStart();
+                
+                /* change state */
+                if        (button == TextEngine::BT_START)  {
+                    s_next = EST_LEVEL_EXEC;
+                } else if (button == TextEngine::BT_SELECT) {
+                    s_next = EST_MAIN_MENU;
+                }
                 break;
 
-            // ignore the other keys
-            default:
+            case EST_LEVEL_EXEC:
+                
+               
+                runLevelEngine(button);
+
+                /* change state */
+                if        (button == TextEngine::BT_SELECT)  {
+                    s_next = EST_LEVEL_END_MENU;
+                }
                 break;
 
+            case EST_LEVEL_END_MENU:
+                /* print menu */
+                mTxt.drawLevelEnd();
+                
+                /* change state */
+                if        (button == TextEngine::BT_START)  {
+                    s_next = EST_LEVEL_START_MENU;
+                } else if (button == TextEngine::BT_SELECT) {
+                    s_next = EST_MAIN_MENU;
+                }
+                break;
+
+            case EST_QUIT:
+                stop = true;
+                break;
+        }
+
+        // clear screen if menu will change
+        if (s_curr != s_next) {
+            mTxt.clearScreen();
         }
 
     }
@@ -82,73 +145,47 @@ void GameEngine::runMainMenu()
     return;
 }
 
-/*!
- * \brief   run game engine until it quits.
- */
-// FIXME: split into functions: menu, level (start, run, end)
-// FIXME: implement a menu stack:
-// mainMenu <-> level (start -> run -> end)
-// mainMenu --> exit
-void GameEngine::run()
+
+void GameEngine::runLevelEngine(TextEngine::ButtonType button)
 {
-
-    runMainMenu();
-}
-
-void GameEngine::runLevel()
-{
-
-    bool stop = false;
-    float timeCnt = (float)mTimeLimit;   // set time counter
-    while(stop == false) 
-    {
-        const int str_len = 128;
-        char str[str_len];
-
-        mTime.wait4TriggerEvent();
-
-        /* get last pushed button */
-        // FIXME: detection of only the last and only one pressed
-        //        button is currently possible
-        // -> change to pressed, released bavior/events
-        TextEngine::ButtonType      button = mTxt.getButton();
-        PhysicsEngine::MovementType moveDirection = PhysicsEngine::MT_NONE;
+    static float timeCnt = (float)mTimeLimit;   // set time counter
         
-        switch(button)
-        {
-            case TextEngine::BT_LEFT:
-                moveDirection = PhysicsEngine::MT_LEFT; 
-                break;
-            case TextEngine::BT_RIGHT:
-                moveDirection = PhysicsEngine::MT_RIGHT; 
-                break;
-            case TextEngine::BT_UP:
-                moveDirection = PhysicsEngine::MT_UP; 
-                break;
-            case TextEngine::BT_DOWN:
-                moveDirection = PhysicsEngine::MT_DOWN; 
-                break;
-            case TextEngine::BT_SELECT:
-                stop = true;                // leave the loop
-                break;
-            default:
-                break;
-        }
+    const int str_len = 128;
+    char str[str_len];
 
-        mPhy.run(*mField, moveDirection);
-
-        /* create string with timing information */
-        snprintf(str, str_len, "%6.2f", timeCnt);
-        
-        /* generate the output */
-        mTxt.drawField(*mField, str);
-        
-        /* print timing debug information */
-        mTxt.drawDebugInfo(mTime);
+    PhysicsEngine::MovementType moveDirection = PhysicsEngine::MT_NONE;
     
-        /* decrease time counter */
-        timeCnt = timeCnt - (float)mTime.getTriggerInterval()/(float)mTime.getTimeBase();
+    switch(button)
+    {
+        case TextEngine::BT_LEFT:
+            moveDirection = PhysicsEngine::MT_LEFT; 
+            break;
+        case TextEngine::BT_RIGHT:
+            moveDirection = PhysicsEngine::MT_RIGHT; 
+            break;
+        case TextEngine::BT_UP:
+            moveDirection = PhysicsEngine::MT_UP; 
+            break;
+        case TextEngine::BT_DOWN:
+            moveDirection = PhysicsEngine::MT_DOWN; 
+            break;
+        default:
+            break;
     }
+
+    mPhy.run(*mField, moveDirection);
+
+    /* create string with timing information */
+    snprintf(str, str_len, "%6.2f", timeCnt);
+    
+    /* generate the output */
+    mTxt.drawField(*mField, str);
+    
+    /* print timing debug information */
+    mTxt.drawDebugInfo(mTime);
+
+    /* decrease time counter */
+    timeCnt = timeCnt - (float)mTime.getTriggerInterval()/(float)mTime.getTimeBase();
 
 }
 

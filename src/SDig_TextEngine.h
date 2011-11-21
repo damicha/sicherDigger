@@ -283,7 +283,47 @@ public:
         printw("  q       - Exit\n");
         refresh();
     }
+    
+    
+    /*!
+     * \brief   Print level start.
+     */
+    void drawLevelStart()
+    {
+        // move cursor position to (row, col)
+        move(0, 0);
+        printw("\n");
+        // FIXME: add level number
+        printw("==== Level x ====\n");
+        printw("\n");
+        printw("  s       - Start\n");
+        printw("  q       - Got back to main menu\n");
+        refresh();
+    }
+    
+    /*!
+     * \brief   Print a conclusion after a level ends.
+     */
+    void drawLevelEnd()
+    {
+        // move cursor position to (row, col)
+        move(0, 0);
+        printw("\n");
+        // FIXME: add level number
+        printw("==== End of Level x ====\n");
+        printw("\n");
+        printw("  s       - Restart level\n");
+        printw("  q       - Got back to main menu\n");
+        refresh();
+    }
 
+
+    /*!
+     * \brief   Clear the screen
+     */
+    void clearScreen() {
+        clear();
+    }
 
 
 };
