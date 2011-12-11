@@ -44,6 +44,7 @@ public:
         wall,
         stone,
         player,
+        exit,
         unknown
     };
 

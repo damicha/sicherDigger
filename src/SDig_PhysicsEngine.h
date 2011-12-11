@@ -95,6 +95,9 @@ public:
     /* Check if this object has the type sand. */
     bool isSand(objFieldEntry *pEntry);
     
+    /* Check if this object has the type exit. */
+    bool isExit(objFieldEntry *pEntry);
+    
     /* Check if this object is able to block others. */
     bool isBlocking(objFieldEntry *pEntry);
     

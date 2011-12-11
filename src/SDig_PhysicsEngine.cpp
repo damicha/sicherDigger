@@ -189,6 +189,13 @@ objFieldEntry *PhysicsEngine::movePlayer(objFieldEntry  *pSrc, objFieldEntry *pD
             pDest->data = new DataObject(BaseDOT::empty);
         }
 
+        /* enter exit */
+        if (isExit(pDest)) {
+            delete pDest->data;
+            pDest->data = new DataObject(BaseDOT::empty);
+            // FIXME: change player to exiting player and exit level !
+        }
+
         /* the empty field to done */
         pDest->data->setDone();
 
@@ -208,11 +215,7 @@ objFieldEntry *PhysicsEngine::movePlayer(objFieldEntry  *pSrc, objFieldEntry *pD
  */
 bool PhysicsEngine::isEmpty(objFieldEntry *pEntry)
 {
-    if (pEntry->data->getType() == BaseDOT::empty) {
-        return true;
-    } else {
-        return false;
-    }
+    return (pEntry->data->getType() == BaseDOT::empty) ? true : false;
 }
 
 /*!
@@ -220,11 +223,15 @@ bool PhysicsEngine::isEmpty(objFieldEntry *pEntry)
  */
 bool PhysicsEngine::isSand(objFieldEntry *pEntry)
 {
-    if (pEntry->data->getType() == BaseDOT::sand) {
-        return true;
-    } else {
-        return false;
-    }
+    return (pEntry->data->getType() == BaseDOT::sand) ? true : false;
+}
+
+/*!
+ * \brief   Check if this object has the type exit.
+ */
+bool PhysicsEngine::isExit(objFieldEntry *pEntry)
+{
+    return (pEntry->data->getType() == BaseDOT::exit) ? true : false;
 }
 
 /*!
@@ -233,8 +240,9 @@ bool PhysicsEngine::isSand(objFieldEntry *pEntry)
  */
 bool PhysicsEngine::isBlocking(objFieldEntry *pEntry)
 {
-    if (pEntry->data->getType() == BaseDOT::wall ||
-        pEntry->data->getType() == BaseDOT::stone) {
+    if (pEntry->data->getType() == BaseDOT::wall    ||
+        pEntry->data->getType() == BaseDOT::stone)
+    {
         return true;
     } else {
         return false;

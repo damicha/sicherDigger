@@ -116,6 +116,24 @@ public:
 };
 
 
+/*!
+ * \class   DOTExit
+ * \brief   Declaration of the data object type class: exit.
+ */
+class DOTExit : public BaseDOT
+{
+public:
+    /*!
+     * \brief   constructor
+     * \details Define constant class attributes.
+     */
+    DOTExit() {
+        mName = string("Exit");
+        setType(exit);
+    };
+};
+
+
 }       // namespace
 
 #endif

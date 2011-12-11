@@ -148,6 +148,8 @@ public:
             case '8':
                 /* set player position/object */
                 return BaseDOT::player;
+            case 'E':
+                return BaseDOT::exit;
             default:
                 return BaseDOT::unknown;
         }

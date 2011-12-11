@@ -240,13 +240,15 @@ public:
     {
         switch (pObjType->getType())
         {
-            case BaseDOT::empty: return ' '; 
-            case BaseDOT::sand:  return '.';
-            case BaseDOT::wall:  return '#';
-            case BaseDOT::stone: return 'O';
-            case BaseDOT::player:return '8';
+            case BaseDOT::empty:    return ' '; 
+            case BaseDOT::sand:     return '.';
+            case BaseDOT::wall:     return '#';
+            case BaseDOT::stone:    return 'O';
+            case BaseDOT::player:   return '8';
+            case BaseDOT::exit:     return 'E';
+
             case BaseDOT::unknown:
-            default:                        return '?';
+            default:                return '?';
         }
     }
 

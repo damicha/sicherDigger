@@ -30,6 +30,7 @@ BaseDOT *BaseDOT::createDOT(DOTType pType)
         case empty: t = new DOTEmpty(); break;
         case stone: t = new DOTStone(); break;
         case player:t = new DOTPlayer(); break;
+        case exit:  t = new DOTExit(); break;
         // FIXME: give a note/message to the user, because the default case is not intended
         default:    t = new BaseDOT();   break;
     }
