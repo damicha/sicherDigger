@@ -19,6 +19,7 @@
 
 #include "objField.h"
 #include "SDig_BaseDOT.h"
+#include "SDig_DOTs.h"
 #include "SDig_TimeEngine.h"
 
 #include <stdio.h>
@@ -244,7 +245,14 @@ public:
             case BaseDOT::sand:     return '.';
             case BaseDOT::wall:     return '#';
             case BaseDOT::stone:    return 'O';
-            case BaseDOT::player:   return '8';
+            case BaseDOT::player:
+                if (((DOTPlayer *)pObjType)->isExiting() == false) {
+                    // display normal player
+                    return '8';
+                } else {
+                    // display exiting player
+                    return 'X';
+                }
             case BaseDOT::exit:     return 'E';
 
             case BaseDOT::unknown:

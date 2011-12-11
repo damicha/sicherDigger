@@ -112,15 +112,16 @@ void GameEngine::run()
 
 
             case EST_LEVEL_EXEC:
-
+            {
                 /* get first button event */
                 if (button != TextEngine::BT_NONE &&
                     phyButton == TextEngine::BT_NONE) {
                     phyButton = button;
                 }
 
+                bool isExit = false;
                 if (phyTrigger % 15 == 0) {  
-                    runLevelEngine(phyButton);
+                    isExit = runLevelEngine(phyButton);
                     // reset button value
                     phyButton = TextEngine::BT_NONE;
                 }
@@ -129,8 +130,11 @@ void GameEngine::run()
                 /* change state */
                 if        (button == TextEngine::BT_SELECT)  {
                     s_next = EST_LEVEL_END_MENU;
+                } else if (isExit == true) {
+                    s_next = EST_LEVEL_END_MENU;
                 }
                 break;
+            }
 
             case EST_LEVEL_END_MENU:
                 /* print menu */
@@ -161,8 +165,9 @@ void GameEngine::run()
     return;
 }
 
-
-void GameEngine::runLevelEngine(TextEngine::ButtonType button)
+// FIXME: present level exit state not as a return value -> getState function of
+// an private member (mLevelExit..)
+bool GameEngine::runLevelEngine(TextEngine::ButtonType button)
 {
     static float timeCnt = (float)mTimeLimit;   // set time counter
         
@@ -189,7 +194,7 @@ void GameEngine::runLevelEngine(TextEngine::ButtonType button)
             break;
     }
 
-    mPhy.run(*mField, moveDirection);
+    bool levelExit = mPhy.run(*mField, moveDirection);
 
     /* create string with timing information */
     snprintf(str, str_len, "%6.2f", timeCnt);
@@ -203,6 +208,7 @@ void GameEngine::runLevelEngine(TextEngine::ButtonType button)
     /* decrease time counter */
     timeCnt = timeCnt - (float)mTime.getTriggerInterval()/(float)mTime.getTimeBase();
 
+    return levelExit;
 }
 
 

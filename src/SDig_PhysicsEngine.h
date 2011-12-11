@@ -72,10 +72,8 @@ public:
         return mIterNum;
     }
 
-    /*!
-     * \brief   Do one iteration on the object field.
-     */
-    void run(objField &pField, MovementType pPlayerMove);
+    /* Do one iteration on the object field. */
+    bool run(objField &pField, MovementType pPlayerMove);
 
     /*!
      * \brief   Stone physics

@@ -12,6 +12,7 @@
 
 #include "SDig_PhysicsEngine.h"
 
+#include "SDig_DOTs.h"
 #include "SDig_BaseDOT.h"
 #include "SDig_DataObject.h"
 #include "objField.h"
@@ -26,9 +27,11 @@ using namespace SDig;
  * \param mField
  *          Object field with the objects to modify/move.
  *
+ * \return
+ *          Is true if a level exit condition is reached
  * FIXME: add mechanism to lock source and destination field
  */
-void PhysicsEngine::run(objField &pField, MovementType pPlayerMove)
+bool PhysicsEngine::run(objField &pField, MovementType pPlayerMove)
 {
 
     /* clear dones */
@@ -46,6 +49,12 @@ void PhysicsEngine::run(objField &pField, MovementType pPlayerMove)
 
     /* move player first */
     {
+        /* return if player is an exiting player */
+        // FIXME add counter for exiting player -> DOTPlayer, but present state (normal, exiting, exiting done, ...)
+        if (((SDig::DOTPlayer *)pField.pl_entry->data->getTypeObject())->isExiting()) {
+            return true;
+        }
+
         objFieldEntry *pl_entry_new;
         pl_entry_new = runPlayerPhysics(pField.pl_entry, pPlayerMove);
         pField.pl_entry = pl_entry_new; 
@@ -73,7 +82,8 @@ void PhysicsEngine::run(objField &pField, MovementType pPlayerMove)
         }    
     }
 
-};
+    return false;
+}
 
 
 /*!
@@ -193,7 +203,8 @@ objFieldEntry *PhysicsEngine::movePlayer(objFieldEntry  *pSrc, objFieldEntry *pD
         if (isExit(pDest)) {
             delete pDest->data;
             pDest->data = new DataObject(BaseDOT::empty);
-            // FIXME: change player to exiting player and exit level !
+            /* Change player state to exiting player */
+            ((SDig::DOTPlayer *)pSrc->data->getTypeObject())->setExiting(true);
         }
 
         /* the empty field to done */

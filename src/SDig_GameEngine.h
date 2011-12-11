@@ -81,7 +81,7 @@ public:
 //    void runLevelStart();
     
     /* the level itself  */
-    void runLevelEngine(TextEngine::ButtonType button);
+    bool runLevelEngine(TextEngine::ButtonType button);
     
     /* the level end */
 //    void runLevelEnd();

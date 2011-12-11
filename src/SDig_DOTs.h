@@ -104,15 +104,30 @@ public:
  */
 class DOTPlayer : public BaseDOT
 {
+private:
+    /* Flags */
+    bool mExiting;   //! exiting flag
 public:
     /*!
      * \brief   constructor
      * \details Define constant class attributes.
      */
-    DOTPlayer() {
+    DOTPlayer()
+    {
         mName = string("Player");
         setType(player);
+        
+        /* set local class members */
+        mExiting = false;
     };
+
+    bool isExiting(void) {
+        return mExiting;
+    }
+
+    void setExiting(bool pExiting) {
+        mExiting = pExiting;
+    }
 };
 
 

@@ -54,6 +54,7 @@ next:
 * SDig_PhysicsEngine.h/.cpp: game physic engine
   - simple stone movement (it's falling down) was added
   - player physics to move to the left, right, up and down
+  - exit
 
 * SDig_BaseDOT.h, BaseDObT.cpp
   - The base data object type class BaseDOT for derived data object
@@ -62,7 +63,7 @@ next:
     of the required object type.
 
 * SDig_DOTs.h
-  - The data object type classes DOTWall, DOTSand, DOTEmpty, DOTStone and
+  - The data object type classes DOTWall, DOTSand, DOTEmpty, DOTStone, DOTExit and
     DOTPlayer derived from class BaseDOT were implemented.
 
 * SDig_DataObject.h
