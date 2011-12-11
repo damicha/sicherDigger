@@ -118,7 +118,6 @@ void GameEngine::run()
                     phyButton == TextEngine::BT_NONE) {
                     phyButton = button;
                 }
-                //    phyButton = button;
 
                 if (phyTrigger % 15 == 0) {  
                     runLevelEngine(phyButton);
