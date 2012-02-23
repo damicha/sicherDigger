@@ -56,7 +56,8 @@ next:
   - player physics to move to the left, right, up and down
   - exit
 
-* SDig_BaseDOT.h, BaseDObT.cpp
+* SDig_BaseDOT.h, BaseDOT.cpp
+  - The DOTPlayer class has its own states (ALIVE, EXITING, EXITED)
   - The base data object type class BaseDOT for derived data object
     types (stone, wall, sand, ...)
   - function to create a object of a derived BaseDOT class as a function

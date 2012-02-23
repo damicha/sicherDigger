@@ -50,8 +50,8 @@ bool PhysicsEngine::run(objField &pField, MovementType pPlayerMove)
     /* move player first */
     {
         /* return if player is an exiting player */
-        // FIXME add counter for exiting player -> DOTPlayer, but present state (normal, exiting, exiting done, ...)
-        if (((SDig::DOTPlayer *)pField.pl_entry->data->getTypeObject())->isExiting()) {
+        SDig::DOTPlayer *player = (SDig::DOTPlayer *)pField.pl_entry->data->getTypeObject();
+        if (player->getState() == DOTPlayer::ST_EXITED) {
             return true;
         }
 
@@ -142,42 +142,59 @@ objFieldEntry *PhysicsEngine::runPlayerPhysics(objFieldEntry  *e,
     /* set default value for the new player object field entry */
     objFieldEntry *pl_entry_new = e;
 
-    /* return if entry is already treated */
+    /* return if entry was already treated */
     if (e->data->isDone()) {
         return pl_entry_new;
     }
 
-    /* set player object to done */
-    e->data->setDone();
-
-    /* move player */
-    switch (pPlayerMove)
+    /* move player as a function of the player state */
+    SDig::DOTPlayer *player = (SDig::DOTPlayer *)e->data->getTypeObject();
+    switch (player->getState())
     {
-        /* move to right */
-        case MT_RIGHT:
-            pl_entry_new = movePlayer(e, e->x_next);
-            break;
+        /* player is alive */
+        case DOTPlayer::ST_ALIVE:
+        {
+            switch (pPlayerMove)
+            {
+                /* move to right */
+                case MT_RIGHT:
+                    // FIXME: set new player with call back function ?
+                    pl_entry_new = movePlayer(e, e->x_next);
+                    break;
 
-        /* move to left */
-        case MT_LEFT:
-            pl_entry_new = movePlayer(e, e->x_prev);
+                /* move to left */
+                case MT_LEFT:
+                    pl_entry_new = movePlayer(e, e->x_prev);
+                    break;
+                
+                /* move up */
+                case MT_UP:
+                    pl_entry_new = movePlayer(e, e->y_prev);
+                    break;
+
+                /* move down */
+                case MT_DOWN:
+                    pl_entry_new = movePlayer(e, e->y_next);
+                    break;
+            }
+            break;
+        }
+
+        /* player is exiting the level */
+        case DOTPlayer::ST_EXITING:
             break;
         
-        /* move up */
-        case MT_UP:
-            pl_entry_new = movePlayer(e, e->y_prev);
+        /* player has the level exited */
+        case DOTPlayer::ST_EXITED:
             break;
+    };
 
-        /* move down */
-        case MT_DOWN:
-            pl_entry_new = movePlayer(e, e->y_next);
-            break;
+    /* proceed internal player states */
+    player->run();
+    
 
-        // FIXME: there shouldn't be a default state
-        default:
-            break;
-
-    } // switch m
+    /* set player object to done */
+    e->data->setDone();
 
     return pl_entry_new; 
 
@@ -204,7 +221,9 @@ objFieldEntry *PhysicsEngine::movePlayer(objFieldEntry  *pSrc, objFieldEntry *pD
             delete pDest->data;
             pDest->data = new DataObject(BaseDOT::empty);
             /* Change player state to exiting player */
-            ((SDig::DOTPlayer *)pSrc->data->getTypeObject())->setExiting(true);
+            // FIXME: don't set the state in this subfunction:
+            //  - use signal or call back or return code of this function!
+            ((SDig::DOTPlayer *)pSrc->data->getTypeObject())->setState(DOTPlayer::ST_EXITING);
         }
 
         /* the empty field to done */

@@ -104,9 +104,20 @@ public:
  */
 class DOTPlayer : public BaseDOT
 {
+/* ======== class types ======== */
+public:
+    /*!
+     * State of the player.
+     */
+    enum StateType {
+        ST_ALIVE,           //!< still alive
+        ST_EXITING,         //!< is entering the exit
+        ST_EXITED           //!< entered the exit
+    };
+
 private:
-    /* Flags */
-    bool mExiting;   //! exiting flag
+    StateType   mState;     //!< player's state: FIXME: use it instead of mExiting
+    int         mCnt;       //!< counter value used for the exiting phases
 public:
     /*!
      * \brief   constructor
@@ -118,16 +129,46 @@ public:
         setType(player);
         
         /* set local class members */
-        mExiting = false;
+        setState(ST_ALIVE);
+        mCnt = 0;
     };
 
-    bool isExiting(void) {
-        return mExiting;
+    void setState(StateType pState) {
+        mState = pState;
+
+        /* initialize new states */
+        if (pState == ST_EXITING) {
+            mCnt = 0;
+        }
+    }
+    
+    StateType getState(void) {
+        return mState;
     }
 
-    void setExiting(bool pExiting) {
-        mExiting = pExiting;
+    void run(void)
+    {
+        switch (mState)
+        {
+            case ST_ALIVE:
+                break;
+
+            case ST_EXITING:
+                mCnt++;
+                if (mCnt > 4) {
+                    mState = ST_EXITED;
+                }
+                break;
+
+            case ST_EXITED:
+                break;
+        }
     }
+
+    int getStateCnt(void) {
+        return mCnt;
+    }
+
 };
 
 

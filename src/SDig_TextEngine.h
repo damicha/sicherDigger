@@ -246,13 +246,23 @@ public:
             case BaseDOT::wall:     return '#';
             case BaseDOT::stone:    return 'O';
             case BaseDOT::player:
-                if (((DOTPlayer *)pObjType)->isExiting() == false) {
-                    // display normal player
-                    return '8';
-                } else {
-                    // display exiting player
-                    return 'X';
+            {
+                SDig::DOTPlayer *player = (SDig::DOTPlayer *)pObjType;
+                switch (player->getState())
+                {
+                    case DOTPlayer::ST_ALIVE:
+                        // display normal player
+                        return '8';
+                
+                    case DOTPlayer::ST_EXITING:
+                        // display exiting player
+                        return '0' + player->getStateCnt();
+                    
+                    case DOTPlayer::ST_EXITED:
+                        // display the exited player
+                        return 'X';
                 }
+            }
             case BaseDOT::exit:     return 'E';
 
             case BaseDOT::unknown:
