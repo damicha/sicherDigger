@@ -25,6 +25,7 @@ OBJECTS =   sicherDigger.o \
             SDig_TextEngine.o \
             SDig_PhysicsEngine.o \
             SDig_GameEngine.o \
+            SDig_LevelEngine.o \
             SDig_BaseDOT.o
 INCLUDES = $(wildcard *.h)
 LDFLAGS_NCURSES = -lncurses

@@ -15,6 +15,7 @@
 
 #include "SDig_TimeEngine.h"
 #include "SDig_TextEngine.h"
+#include "SDig_LevelEngine.h"
 #include "SDig_PhysicsEngine.h"
 
 #include "SDig_LevelConfig.h"
@@ -30,11 +31,12 @@ namespace SDig {
 /*!
  * \class   GameEngine
  * \brief   Implementes the game data, controlling and engines.
+ * FIXME: move level stuff to level engine
  */
 class GameEngine
 {
 /* ======== class types ======== */    
-public:
+private:
     /*!
      * \brief   State of the game engine to switch between possible menus
      */
@@ -48,13 +50,15 @@ public:
 
 /* ======== attributes ======== */    
 private:
-    objField    *mField;        //!< object field (game level data)
+    objField        *mField;    //!< object field (game level data)
 
-    TextEngine      mTxt;   //!< test engine
-    TimeEngine      mTime;  //!< time engine
-    PhysicsEngine   mPhy;   //!< physics engine
+    TextEngine      mTxt;       //!< test engine
+    TimeEngine      mTime;      //!< time engine
+    PhysicsEngine   mPhy;       //!< physics engine
+    LevelEngine     mLevel;     //!< level engine FIXME: dynamically?
 
-    int mTimeLimit;         //!< The level's time limit. FIXME: move to LevelEngine
+    // FIXME: create LevelStatisticData Class/Struct
+    int mTimeLimit;             //!< The level's time limit. FIXME: move to LevelEngine
 /* ======== functions ======== */    
 public:
      /* Constructor */
@@ -66,7 +70,8 @@ public:
     /*!
      * \brief   initialize game engine
      */
-    void init() {}
+    void init() {
+    }
 
     /* Run game engine until it quits. */
     void run();
@@ -79,9 +84,6 @@ public:
     
     /* the level start */
 //    void runLevelStart();
-    
-    /* the level itself  */
-    bool runLevelEngine(TextEngine::ButtonType button);
     
     /* the level end */
 //    void runLevelEnd();

@@ -105,6 +105,8 @@ void GameEngine::run()
                 /* change state */
                 if        (button == TextEngine::BT_START)  {
                     s_next = EST_LEVEL_EXEC;
+                    /* init level state */
+                    mLevel.setStart(); 
                 } else if (button == TextEngine::BT_SELECT) {
                     s_next = EST_MAIN_MENU;
                 }
@@ -121,7 +123,10 @@ void GameEngine::run()
 
                 bool isExit = false;
                 if (phyTrigger % 15 == 0) {  
-                    isExit = runLevelEngine(phyButton);
+                    mLevel.run(phyButton);
+                    if (mLevel.getState() == LevelEngine::ST_END) {
+                        isExit = true;
+                    }
                     // reset button value
                     phyButton = TextEngine::BT_NONE;
                 }
@@ -164,52 +169,5 @@ void GameEngine::run()
     // default
     return;
 }
-
-// FIXME: present level exit state not as a return value -> getState function of
-// an private member (mLevelExit..)
-bool GameEngine::runLevelEngine(TextEngine::ButtonType button)
-{
-    static float timeCnt = (float)mTimeLimit;   // set time counter
-        
-    const int str_len = 128;
-    char str[str_len];
-
-    PhysicsEngine::MovementType moveDirection = PhysicsEngine::MT_NONE;
-    
-    switch(button)
-    {
-        case TextEngine::BT_LEFT:
-            moveDirection = PhysicsEngine::MT_LEFT; 
-            break;
-        case TextEngine::BT_RIGHT:
-            moveDirection = PhysicsEngine::MT_RIGHT; 
-            break;
-        case TextEngine::BT_UP:
-            moveDirection = PhysicsEngine::MT_UP; 
-            break;
-        case TextEngine::BT_DOWN:
-            moveDirection = PhysicsEngine::MT_DOWN; 
-            break;
-        default:
-            break;
-    }
-
-    bool levelExit = mPhy.run(*mField, moveDirection);
-
-    /* create string with timing information */
-    snprintf(str, str_len, "%6.2f", timeCnt);
-    
-    /* generate the output */
-    mTxt.drawField(*mField, str);
-    
-    /* print timing debug information */
-    mTxt.drawDebugInfo(mTime);
-
-    /* decrease time counter */
-    timeCnt = timeCnt - (float)mTime.getTriggerInterval()/(float)mTime.getTimeBase();
-
-    return levelExit;
-}
-
 
 

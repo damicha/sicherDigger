@@ -39,7 +39,11 @@ next:
   - a main page was added
 
 * SDig_GameEngine:
-  - creates TextEngine, TimeEngine and PhysicsEngine
+  - creates TextEngine and TimeEngine
+  - controls data and engines
+
+* SDig_LevelEngine:
+  - creates TextEngine and PhysicsEngine
   - creates object field (game data)
   - controls data and engines
 
