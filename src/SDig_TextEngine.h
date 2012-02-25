@@ -53,28 +53,6 @@ namespace SDig {
  */
 class TextEngine
 {
-#if 0
-/* ======== class types ======== */    
-public:
-    /*!
-     * \brief    button type
-     *
-     * Internal representation of pressed keys/buttons.
-     * FIXME: move to a common SDig HW class
-     */
-    enum ButtonType {
-        BT_NONE,    //!< no key identifier
-        BT_UP,      //!< up key
-        BT_DOWN,    //!< down key
-        BT_LEFT,    //!< left key
-        BT_RIGHT,   //!< right key
-        BT_A,       //!< A button
-        BT_B,       //!< B button
-        BT_START,   //!< start button
-        BT_SELECT   //!< select button
-    };
-#endif
-
 
 /* ======== attributes ======== */    
 private:
@@ -190,6 +168,7 @@ public:
         drawField(pLevel.getField(), str);
     }
 
+private:
     /*!
      * \brief   Print the content of the object field to the console
      * \param   pField
@@ -314,6 +293,7 @@ public:
         refresh();
     }
 
+public:
     /*!
      * \brief   Print main menu
      */
