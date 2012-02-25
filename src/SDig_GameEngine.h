@@ -32,6 +32,9 @@ namespace SDig {
  * \class   GameEngine
  * \brief   Implementes the game data, controlling and engines.
  * FIXME: move level stuff to level engine
+ * \details 
+ *  - runs physics engine
+ *  - runs text engine
  */
 class GameEngine
 {
@@ -50,43 +53,40 @@ private:
 
 /* ======== attributes ======== */    
 private:
-    objField        *mField;    //!< object field (game level data)
+//    objField        *mField;    //!< object field (game level data)
 
     TextEngine      mTxt;       //!< test engine
     TimeEngine      mTime;      //!< time engine
-    PhysicsEngine   mPhy;       //!< physics engine
     LevelEngine     mLevel;     //!< level engine FIXME: dynamically?
 
     // FIXME: create LevelStatisticData Class/Struct
-    int mTimeLimit;             //!< The level's time limit. FIXME: move to LevelEngine
+//    int mTimeLimit;             //!< The level's time limit. FIXME: move to LevelEngine
 /* ======== functions ======== */    
 public:
-     /* Constructor */
-    GameEngine(void);
-    
-     /* Destructur */
-    ~GameEngine(void);
 
+    /*!
+     * \brief   constructor
+     */
+    GameEngine(void)
+    {
+        /* set duration of one turn (1/60 sec) */
+        mTime.setTriggerInterval(16667);    // in us
+    }
+        
+    /*!
+     * \brief   destructur
+     */
+    ~GameEngine(void) {}
+
+#if 0
     /*!
      * \brief   initialize game engine
      */
-    void init() {
-    }
-
+    void init() {}
+#endif
     /* Run game engine until it quits. */
     void run();
 
-    /* Main menu */
-//    void runMainMenu();
-    
-    /* a single level sequence */
-//    void runLevelExec();
-    
-    /* the level start */
-//    void runLevelStart();
-    
-    /* the level end */
-//    void runLevelEnd();
 };
 
 

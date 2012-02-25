@@ -19,29 +19,6 @@
 
 using namespace SDig;
 
-/*!
- * \brief   constructor
- */
-GameEngine::GameEngine(void)
-{
-    /* select config and create object field */
-    LevelConfig *cfg = &field_a;
-    mField  = new objField(*cfg);
-
-    mTimeLimit = cfg->getTimeLimit();
-
-    /* set duration of one turn (1/60 sec) */
-    mTime.setTriggerInterval(16667);    // in us
-}
-    
-/*!
- * \brief   destructur
- */
-GameEngine::~GameEngine(void)
-{
-    delete mField;
-}
-
 
 /*!
  * \brief   run game engine until it quits.
@@ -79,29 +56,32 @@ void GameEngine::run()
         mTime.wait4TriggerEvent();
 
         /* get last pushed button */
-        // FIXME: the detection of only the last and only one pressed
+        // FIXME: detection of only the last and only one pressed
         //        button is currently possible
         // -> change to pressed, released behavior/events
         button = mTxt.getButton();
         
         switch (s_curr)
         {
+            /* ==== Main menu ==== */
             case EST_MAIN_MENU:
-                /* print menu */
-                mTxt.drawMainMenu();
-
+            {
                 /* change state */
                 if        (button == TextEngine::BT_START)  {
                     s_next = EST_LEVEL_START_MENU;
                 } else if (button == TextEngine::BT_SELECT) {
                     s_next = EST_QUIT;
                 }
-                break;
-            
-            case EST_LEVEL_START_MENU:
-                /* print menu */
-                mTxt.drawLevelStart();
                 
+                /* print menu */
+                mTxt.drawMainMenu();
+
+                break;
+            }
+            
+            /* ==== Level Start Menu ==== */
+            case EST_LEVEL_START_MENU:
+            {
                 /* change state */
                 if        (button == TextEngine::BT_START)  {
                     s_next = EST_LEVEL_EXEC;
@@ -110,9 +90,14 @@ void GameEngine::run()
                 } else if (button == TextEngine::BT_SELECT) {
                     s_next = EST_MAIN_MENU;
                 }
+
+                /* print menu */
+                mTxt.drawLevelStart();
+                
                 break;
+            }
 
-
+            /* ==== Level Execution ==== */
             case EST_LEVEL_EXEC:
             {
                 /* get first button event */
@@ -138,27 +123,42 @@ void GameEngine::run()
                 } else if (isExit == true) {
                     s_next = EST_LEVEL_END_MENU;
                 }
+    
+                /* generate the output */
+                // create string with timing information
+                {
+                    const int str_len = 128;
+                    char str[str_len];
+                    snprintf(str, str_len, "%04d", mLevel.getTimer());
+                    // display level
+                    // FIXME: use drawLevel function and pass mLevel
+                    mTxt.drawField(*mLevel.getField(), (char *)str);
+                }    
                 break;
             }
 
+            /* ==== Level End Menu ==== */
             case EST_LEVEL_END_MENU:
-                /* print menu */
-                mTxt.drawLevelEnd();
-                
+            {
                 /* change state */
                 if        (button == TextEngine::BT_START)  {
                     s_next = EST_LEVEL_START_MENU;
                 } else if (button == TextEngine::BT_SELECT) {
                     s_next = EST_MAIN_MENU;
                 }
+                
+                /* print menu */
+                mTxt.drawLevelEnd();
+                
                 break;
+            }
 
             case EST_QUIT:
                 stop = true;
                 break;
         }
 
-        // clear screen if menu will change
+        /* clear screen if menu will change */
         if (s_curr != s_next) {
             mTxt.clearScreen();
         }

@@ -49,35 +49,47 @@ private:
     objField        *mField;    //!< object field (game level data)
 
     TextEngine      mTxt;       //!< text engine
-//    TimeEngine      mTime;      //!< time engine
     PhysicsEngine   mPhy;       //!< physics engine
 
     StateType       mState;     //!< current state of the level
 
     // FIXME: create LevelStatisticData Class/Struct
     int mTimeLimit;             //!< The level's time limit.
+    int mTimeCnt;               //!< The current time counter value.
 
     /* ======== functions ======== */    
 public:
-     /*! Constructor */
+     /* Constructor */
     LevelEngine(void);
     
-     /*! Destructur */
+     /* Destructur */
     ~LevelEngine(void);
 
-    /*!
-     * \brief   Set start state
-     */
-    void setStart() {
-        mState = ST_START;
-    }
+    /* Set start state */
+    void setStart();
 
-    /*! Run level engine for one iteration. */
+    /* Run level engine for one iteration. */
     void run(TextEngine::ButtonType button);
     
-    /* get engine state */
+    /*!
+     * \brief   Get object field address.
+     */
+    objField *getField(void) {
+        return mField;
+    }
+    
+    /*!
+     * \brief   Get engine state
+     */
     StateType getState(void) {
         return mState;
+    }
+    
+    /*!
+     * \brief   Get value of the level timer.
+     */
+    int getTimer(void) {
+        return mTimeCnt;
     }
 };
 

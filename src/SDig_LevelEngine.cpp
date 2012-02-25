@@ -21,7 +21,7 @@
 using namespace SDig;
 
 /*!
- * \brief   constructor
+ * \brief   Constructor
  */
 LevelEngine::LevelEngine(void)
 {
@@ -32,31 +32,34 @@ LevelEngine::LevelEngine(void)
     LevelConfig *cfg = &field_a;
     mField  = new objField(*cfg);
 
-#if 0
     mTimeLimit = cfg->getTimeLimit();
 
-    /* set duration of one turn (1/60 sec) */
-    mTime.setTriggerInterval(16667);    // in us
-#endif
 }
     
 /*!
- * \brief   destructur
+ * \brief   Destructur
  */
 LevelEngine::~LevelEngine(void)
 {
     delete mField;
 }
 
+/*!
+ * \brief   Set start state
+ */
+void LevelEngine::setStart() {
+    // FIXME: reset level
+    mState = ST_START;
+    mTimeCnt = mTimeLimit; 
+}
 
 // FIXME: present level exit state not as a return value -> getState function of
 // an private member (mLevelExit..)
+/* Run level engine for one iteration. */
 void LevelEngine::run(TextEngine::ButtonType button)
 {
-    static float timeCnt = (float)mTimeLimit;   // set time counter
-        
-    const int str_len = 128;
-    char str[str_len];
+//    const int str_len = 128;
+//    char str[str_len];
 
     PhysicsEngine::MovementType moveDirection = PhysicsEngine::MT_NONE;
     
@@ -87,11 +90,18 @@ void LevelEngine::run(TextEngine::ButtonType button)
         case ST_RUNNING:
         {
             bool levelExit = mPhy.run(*mField, moveDirection);
-            // FIXME: get players state/ level state (timeout)
+            // FIXME: 
+            // - don't use levelExit flag
+            // - get players state: exiting -> ending (stop timer)
+            // - get level state (timeout)
 
             if (levelExit == true) {
                 mState = ST_END;
             }
+
+            /* decrease level counter */
+            mTimeCnt--;
+            
             break;
         }
 
@@ -101,12 +111,12 @@ void LevelEngine::run(TextEngine::ButtonType button)
 
     /* create string with timing information */
     // FIXME: put time count to level data (counter)
-    snprintf(str, str_len, "%6.2f", timeCnt);
+//    snprintf(str, str_len, "%04d", mTimeCnt);
    
     // FIXME: remove text output from level engine ???
 
     /* generate the output */
-    mTxt.drawField(*mField, str);
+//    mTxt.drawField(*mField, str);
     
     /* print timing debug information */
 //    mTxt.drawDebugInfo(mTime);

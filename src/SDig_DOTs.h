@@ -107,7 +107,7 @@ class DOTPlayer : public BaseDOT
 /* ======== class types ======== */
 public:
     /*!
-     * State of the player.
+     * States of the player.
      */
     enum StateType {
         ST_ALIVE,           //!< still alive
@@ -116,11 +116,11 @@ public:
     };
 
 private:
-    StateType   mState;     //!< player's state: FIXME: use it instead of mExiting
+    StateType   mState;     //!< player's state
     int         mCnt;       //!< counter value used for the exiting phases
 public:
     /*!
-     * \brief   constructor
+     * \brief   Constructor
      * \details Define constant class attributes.
      */
     DOTPlayer()
@@ -133,19 +133,36 @@ public:
         mCnt = 0;
     };
 
+    /*!
+     * \brief   Set players stare
+     */
     void setState(StateType pState) {
         mState = pState;
 
-        /* initialize new states */
+        /* initialize new state variables */
         if (pState == ST_EXITING) {
             mCnt = 0;
         }
     }
-    
+   
+    /*!
+     * \brief   Get players current state
+     */ 
     StateType getState(void) {
         return mState;
     }
 
+    /*!
+     * \brief   Get state counter value
+     * \details Some of the states have an additionally counter
+     */
+    int getStateCnt(void) {
+        return mCnt;
+    }
+
+    /*!
+     * \brief   Do one interration of the player's states.
+     */
     void run(void)
     {
         switch (mState)
@@ -163,10 +180,6 @@ public:
             case ST_EXITED:
                 break;
         }
-    }
-
-    int getStateCnt(void) {
-        return mCnt;
     }
 
 };
