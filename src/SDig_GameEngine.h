@@ -53,14 +53,10 @@ private:
 
 /* ======== attributes ======== */    
 private:
-//    objField        *mField;    //!< object field (game level data)
-
     TextEngine      mTxt;       //!< test engine
     TimeEngine      mTime;      //!< time engine
     LevelEngine     mLevel;     //!< level engine FIXME: dynamically?
 
-    // FIXME: create LevelStatisticData Class/Struct
-//    int mTimeLimit;             //!< The level's time limit. FIXME: move to LevelEngine
 /* ======== functions ======== */    
 public:
 

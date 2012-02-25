@@ -15,7 +15,7 @@
 #define _SDIG_LEVEL_ENGINE_H_
 
 #include "SDig_TimeEngine.h"
-#include "SDig_TextEngine.h"
+#include "SDig_TextEngineTypes.h"
 #include "SDig_PhysicsEngine.h"
 
 #include "SDig_LevelConfig.h"
@@ -48,7 +48,6 @@ public:
 private:
     objField        *mField;    //!< object field (game level data)
 
-    TextEngine      mTxt;       //!< text engine
     PhysicsEngine   mPhy;       //!< physics engine
 
     StateType       mState;     //!< current state of the level
@@ -69,12 +68,12 @@ public:
     void setStart();
 
     /* Run level engine for one iteration. */
-    void run(TextEngine::ButtonType button);
+    void run(TextEngineTypes::Button button);
     
     /*!
      * \brief   Get object field address.
      */
-    objField *getField(void) {
+    const objField *getField(void) {
         return mField;
     }
     
@@ -88,7 +87,7 @@ public:
     /*!
      * \brief   Get value of the level timer.
      */
-    int getTimer(void) {
+    const int getTimer(void) {
         return mTimeCnt;
     }
 };

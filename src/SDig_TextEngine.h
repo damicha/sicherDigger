@@ -17,10 +17,14 @@
 #ifndef _SDIG_TEXT_ENGINE_H_
 #define _SDIG_TEXT_ENGINE_H_
 
+
+
 #include "objField.h"
 #include "SDig_BaseDOT.h"
 #include "SDig_DOTs.h"
 #include "SDig_TimeEngine.h"
+#include "SDig_LevelEngine.h"
+#include "SDig_TextEngineTypes.h"
 
 #include <stdio.h>
 #include <ncurses.h>
@@ -40,6 +44,7 @@ using namespace std;
  */
 namespace SDig {
 
+    
 /*!
  * \class   TextEngine 
  * \brief
@@ -48,6 +53,7 @@ namespace SDig {
  */
 class TextEngine
 {
+#if 0
 /* ======== class types ======== */    
 public:
     /*!
@@ -67,7 +73,7 @@ public:
         BT_START,   //!< start button
         BT_SELECT   //!< select button
     };
-
+#endif
 
 
 /* ======== attributes ======== */    
@@ -137,9 +143,10 @@ public:
      *  representation.
      * \return  Recognized button.
      */
-    ButtonType getButton(void)
+    TextEngineTypes::Button getButton(void)
     {
-        ButtonType button = BT_NONE;
+        using namespace TextEngineTypes;    // refer to button types (BT_...)
+        TextEngineTypes::Button button = BT_NONE;
 
         int c = getch();    // get first entry (key) of the input buffer    
         flushinp();         // flush all other keys from input buffer
@@ -165,14 +172,32 @@ public:
 
 
     /*!
+     * FIXME: header
      * \brief   Print the content of the object field to the console
      * \param   pField
      *  Reference to the object field to print.
      * \param   pHeaderString
      *  String used within the header
      */
+    void drawLevel(LevelEngine &pLevel)
+    {
+        /* create string with timing information */
+        const int str_len = 128;
+        char str[str_len];
+        snprintf(str, str_len, "%04d", pLevel.getTimer());
+        
+        /* display level */
+        drawField(pLevel.getField(), str);
+    }
 
-    void drawField(const objField &pField,
+    /*!
+     * \brief   Print the content of the object field to the console
+     * \param   pField
+     *  Reference to the object field to print.
+     * \param   pHeaderString
+     *  String used within the header
+     */
+    void drawField(const objField *pField,
                    const char *pHeaderString = NULL)
     {
         // move cursor position to (row, col)
@@ -190,13 +215,13 @@ public:
      * \param   pField
      *  Reference to the object field to print
      */
-    void drawFieldData(const objField &pField)
+    void drawFieldData(const objField *pField)
     {
-        for (int y = 0; y < pField.size_y; y++)
+        for (int y = 0; y < pField->size_y; y++)
         {
-            for (int x = 0; x < pField.size_x; x++)
+            for (int x = 0; x < pField->size_x; x++)
             {
-                DataObject *dataObj = pField.entries[y*pField.size_x + x].data;  
+                DataObject *dataObj = pField->entries[y*pField->size_x + x].data;  
                 char c = getSymbol(dataObj->getTypeObject());
                 printw("%c ", c);
             }

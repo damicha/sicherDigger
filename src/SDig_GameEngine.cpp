@@ -12,6 +12,7 @@
 
 #include "SDig_GameEngine.h"
 #include "SDig_TimeEngine.h"
+#include "SDig_TextEngineTypes.h"
 #include "SDig_TextEngine.h"
 #include "SDig_PhysicsEngine.h"
 
@@ -44,8 +45,11 @@ void GameEngine::run()
     
     // FIXME: move phyEngine triggering to TimeEngine
     int phyTrigger = 0;
-    TextEngine::ButtonType  button = TextEngine::BT_NONE;
-    TextEngine::ButtonType  phyButton = TextEngine::BT_NONE;
+    
+    using namespace TextEngineTypes;    // refer to button types (BT_...)
+    TextEngineTypes::Button  button     = BT_NONE;
+    TextEngineTypes::Button  phyButton  = BT_NONE;
+ 
     bool stop = false;
     while(stop == false) 
     {
@@ -67,9 +71,9 @@ void GameEngine::run()
             case EST_MAIN_MENU:
             {
                 /* change state */
-                if        (button == TextEngine::BT_START)  {
+                if        (button == BT_START)  {
                     s_next = EST_LEVEL_START_MENU;
-                } else if (button == TextEngine::BT_SELECT) {
+                } else if (button == BT_SELECT) {
                     s_next = EST_QUIT;
                 }
                 
@@ -83,11 +87,11 @@ void GameEngine::run()
             case EST_LEVEL_START_MENU:
             {
                 /* change state */
-                if        (button == TextEngine::BT_START)  {
+                if        (button == BT_START)  {
                     s_next = EST_LEVEL_EXEC;
                     /* init level state */
                     mLevel.setStart(); 
-                } else if (button == TextEngine::BT_SELECT) {
+                } else if (button == BT_SELECT) {
                     s_next = EST_MAIN_MENU;
                 }
 
@@ -101,8 +105,8 @@ void GameEngine::run()
             case EST_LEVEL_EXEC:
             {
                 /* get first button event */
-                if (button != TextEngine::BT_NONE &&
-                    phyButton == TextEngine::BT_NONE) {
+                if (button != BT_NONE &&
+                    phyButton == BT_NONE) {
                     phyButton = button;
                 }
 
@@ -113,27 +117,19 @@ void GameEngine::run()
                         isExit = true;
                     }
                     // reset button value
-                    phyButton = TextEngine::BT_NONE;
+                    phyButton = BT_NONE;
                 }
                 phyTrigger++;
 
                 /* change state */
-                if        (button == TextEngine::BT_SELECT)  {
+                if        (button == BT_SELECT)  {
                     s_next = EST_LEVEL_END_MENU;
                 } else if (isExit == true) {
                     s_next = EST_LEVEL_END_MENU;
                 }
     
                 /* generate the output */
-                // create string with timing information
-                {
-                    const int str_len = 128;
-                    char str[str_len];
-                    snprintf(str, str_len, "%04d", mLevel.getTimer());
-                    // display level
-                    // FIXME: use drawLevel function and pass mLevel
-                    mTxt.drawField(*mLevel.getField(), (char *)str);
-                }    
+                mTxt.drawLevel(mLevel);
                 break;
             }
 
@@ -141,9 +137,9 @@ void GameEngine::run()
             case EST_LEVEL_END_MENU:
             {
                 /* change state */
-                if        (button == TextEngine::BT_START)  {
+                if        (button == BT_START)  {
                     s_next = EST_LEVEL_START_MENU;
-                } else if (button == TextEngine::BT_SELECT) {
+                } else if (button == BT_SELECT) {
                     s_next = EST_MAIN_MENU;
                 }
                 

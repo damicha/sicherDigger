@@ -13,7 +13,6 @@
 
 #include "SDig_LevelEngine.h"
 #include "SDig_TimeEngine.h"
-#include "SDig_TextEngine.h"
 #include "SDig_PhysicsEngine.h"
 
 #include "objField.h"
@@ -56,31 +55,32 @@ void LevelEngine::setStart() {
 // FIXME: present level exit state not as a return value -> getState function of
 // an private member (mLevelExit..)
 /* Run level engine for one iteration. */
-void LevelEngine::run(TextEngine::ButtonType button)
+void LevelEngine::run(TextEngineTypes::Button button)
 {
-//    const int str_len = 128;
-//    char str[str_len];
 
+    using namespace TextEngineTypes;    // refer to button types (BT_...)
     PhysicsEngine::MovementType moveDirection = PhysicsEngine::MT_NONE;
     
+    /* determine players move direction as a function of the pushed button */
     switch (button)
     {
-        case TextEngine::BT_LEFT:
+        case BT_LEFT:
             moveDirection = PhysicsEngine::MT_LEFT; 
             break;
-        case TextEngine::BT_RIGHT:
+        case BT_RIGHT:
             moveDirection = PhysicsEngine::MT_RIGHT; 
             break;
-        case TextEngine::BT_UP:
+        case BT_UP:
             moveDirection = PhysicsEngine::MT_UP; 
             break;
-        case TextEngine::BT_DOWN:
+        case BT_DOWN:
             moveDirection = PhysicsEngine::MT_DOWN; 
             break;
         default:
             break;
     }
 
+    /* run level engine */
     switch (mState)
     {
         case ST_START:
@@ -108,21 +108,6 @@ void LevelEngine::run(TextEngine::ButtonType button)
         case ST_END:
             break;
     }
-
-    /* create string with timing information */
-    // FIXME: put time count to level data (counter)
-//    snprintf(str, str_len, "%04d", mTimeCnt);
-   
-    // FIXME: remove text output from level engine ???
-
-    /* generate the output */
-//    mTxt.drawField(*mField, str);
-    
-    /* print timing debug information */
-//    mTxt.drawDebugInfo(mTime);
-
-    /* decrease time counter */
-//    timeCnt = timeCnt - (float)mTime.getTriggerInterval()/(float)mTime.getTimeBase();
 
     return;
 }
