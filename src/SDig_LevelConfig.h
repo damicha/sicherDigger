@@ -16,8 +16,8 @@
 
 #include "SDig_BaseDOT.h"
 
-//#include <string>
-#include <string.h>
+#include <string>
+#include <string.h>     // memcpy
 
 using namespace std;
 
@@ -36,6 +36,7 @@ class LevelConfig
 private:
     string mName;   /*!< Level name */
     int mTimeLimit; /*!< Time limit of the level in seconds. */
+    int mSandReq;   /*!< Required sand to eat before the exit opens */
     int mSizeX;     /*!< X size of the level */
     int mSizeY;     /*!< Y size of the level */
     char *mData;    /*!< Character array that contains the level data. */
@@ -54,11 +55,11 @@ public:
      * \param   pData
      *  Character array with the level configuration.
      */
-    LevelConfig(const string &pName, int pTimeLimit,
+    LevelConfig(const string &pName, int pTimeLimit, int pSandReq,
                 int pSizeX, int pSizeY,
                 const char *pData) :
         /* set configuration name and time limit */
-        mName(pName), mTimeLimit(pTimeLimit),
+        mName(pName), mTimeLimit(pTimeLimit), mSandReq(pSandReq),
         /* set array dimensions */
         mSizeX(pSizeX), mSizeY(pSizeY)
     {
@@ -82,6 +83,7 @@ public:
     LevelConfig(const LevelConfig &pLevelConfig) :
         /* set configuration name and time limit */
         mName(pLevelConfig.mName), mTimeLimit(pLevelConfig.mTimeLimit),
+        mSandReq(pLevelConfig.mSandReq),
         /* set array dimensions */
         mSizeX(pLevelConfig.mSizeX), mSizeY(pLevelConfig.mSizeY)
     {
@@ -113,6 +115,11 @@ public:
         return mTimeLimit;
     }
     
+    /*! \brief   Get required amount of sand to open the exit. */
+    int getSandReq() const {
+        return mSandReq;
+    }
+    
     /*! \brief   Get the X size of the level. */
     int getSizeX() const {
         return mSizeX;
@@ -122,10 +129,6 @@ public:
     int getSizeY() const {
         return mSizeY;
     }
-#if 0
-    char *getData() const   { return mData; }   // FIXME: don't provide the data array!
-    // FIXME provide a function that copy the levelData to field Data
-#endif
 
     /*!
      * \brief   Get the type of the object that is stored as position X, Y

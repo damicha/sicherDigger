@@ -20,6 +20,7 @@
 
 
 #include "SDig_BaseDOT.h"
+#include "SDig_DOTs.h"
 #include "objFieldEntry.h"
 #include "SDig_LevelConfig.h"
 
@@ -45,6 +46,7 @@ public:
     int size_y;     /*!< size of the field dimension y */
     objFieldEntry   *entries;   /*!< reference to an array of the object field entries */
     objFieldEntry   *pl_entry;  /*!< reference to the object field entry that stores the player data */
+    objFieldEntry   *mExit;     /*!< reference to the exit object */
 
 /* ======== class init functions ======== */
 public:
@@ -54,7 +56,7 @@ public:
      * \param   size_x field size of the dimension x
      * \param   size_y field size of the dimension y
      */
-    objField(int size_x, int size_y) : entries(NULL), pl_entry(NULL)
+    objField(int size_x, int size_y) : entries(NULL), pl_entry(NULL), mExit(NULL)
     {
         /* set dimensions */
         this->size_x = size_x;
@@ -73,11 +75,14 @@ public:
         {
             for (int x = 0; x < size_x; x++)
             {
-                if (x == 1 && y == 1)
-                {
+                if        (x == 1 && y == 1) {
                     /* set player position/object */
                     entries[y*size_x + x].createDataObject(BaseDOT::player);
                     pl_entry  = &entries[y*size_x + x];
+                } else if (x == 1 && y == 0) {
+                    /* set exit position/object */
+                    entries[y*size_x + x].createDataObject(BaseDOT::exit);
+                    mExit = &entries[y*size_x + x];
                 } else if (x == 0 || x == size_x - 1 ||
                            y == 0 || y == size_y - 1)
                 {
@@ -122,11 +127,24 @@ public:
                 if (objType == BaseDOT::player) {
                     pl_entry = &entries[y*size_x + x];
                 }
+                /* store the reference of the exit object */
+                if (objType == BaseDOT::exit) {
+                    mExit = &entries[y*size_x + x];
+                }
             }
         }
 
     };
     
+    /*!
+     * \brief   Get Players state.
+     */
+    DOTPlayer::StateType getPlayerState(void)
+    {
+        SDig::DOTPlayer *player = (SDig::DOTPlayer *)pl_entry->data->getTypeObject();
+        return player->getState();
+    }
+
     /*!
      * \brief   Destructor
      */

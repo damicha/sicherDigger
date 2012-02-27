@@ -21,14 +21,15 @@
 
 using namespace SDig;
 
+    
 
 /*!
  * \brief   Do one iteration on the object field.
  * \param mField
- *          Object field with the objects to modify/move.
+ *  Object field with the objects to modify/move.
  *
  * \return
- *          Is true if a level exit condition is reached
+ *  Currently not used.
  * FIXME: add mechanism to lock source and destination field
  */
 bool PhysicsEngine::run(objField &pField, MovementType pPlayerMove)
@@ -47,14 +48,11 @@ bool PhysicsEngine::run(objField &pField, MovementType pPlayerMove)
     /* increase iteration counter */
     mIterNum++;
 
+    /* decrease time counter */
+    mTimeCnt--;
+
     /* move player first */
     {
-        /* return if player is an exiting player */
-        SDig::DOTPlayer *player = (SDig::DOTPlayer *)pField.pl_entry->data->getTypeObject();
-        if (player->getState() == DOTPlayer::ST_EXITED) {
-            return true;
-        }
-
         objFieldEntry *pl_entry_new;
         pl_entry_new = runPlayerPhysics(pField.pl_entry, pPlayerMove);
         pField.pl_entry = pl_entry_new; 
@@ -208,16 +206,20 @@ objFieldEntry *PhysicsEngine::movePlayer(objFieldEntry  *pSrc, objFieldEntry *pD
 
     /* move the player if it is not blocked */
     if (pDest && pDest->data->isDone() == false &&
-        isBlocking(pDest) == false)
+        isBlocking(pDest) == false &&
+        isClosedExit(pDest) == false)
     {
         /* eat sand */
         if (isSand(pDest)) {
             delete pDest->data;
             pDest->data = new DataObject(BaseDOT::empty);
+            mSandCnt++;
         }
 
         /* enter exit */
-        if (isExit(pDest)) {
+        // FIXME; it was already tested if it's not an exit or if it's not closed */
+        if (isExit(pDest))
+        {
             delete pDest->data;
             pDest->data = new DataObject(BaseDOT::empty);
             /* Change player state to exiting player */
@@ -264,6 +266,27 @@ bool PhysicsEngine::isExit(objFieldEntry *pEntry)
     return (pEntry->data->getType() == BaseDOT::exit) ? true : false;
 }
 
+/*!
+ * \brief   Check if the it's and closed exit..
+ */
+bool PhysicsEngine::isClosedExit(objFieldEntry *pEntry)
+{
+    if (pEntry->data->getType() != BaseDOT::exit) {
+        /* object is not an exit */
+        return false;
+    }
+
+    SDig::DOTExit   *exit  = (SDig::DOTExit *)pEntry->data->getTypeObject();
+    if (exit->getState() == DOTExit::ST_CLOSED)
+    {
+        /* exit is closed */
+        return true;
+    } else {
+        /* exit is not closed */
+        return false;
+    }
+}
+ 
 /*!
  * \brief   Check if this object is able to block others.
  * FIXME: give object type properties like blocking, moveable,...

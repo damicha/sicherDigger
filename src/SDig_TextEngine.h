@@ -160,9 +160,10 @@ public:
     void drawLevel(LevelEngine &pLevel)
     {
         /* create string with timing information */
-        const int str_len = 128;
+        const int str_len = 32;
         char str[str_len];
-        snprintf(str, str_len, "%04d", pLevel.getTimer());
+        snprintf(str, str_len, "T:%04d S:%02d",
+                 pLevel.getTimeCnt(), pLevel.getSandCnt());
         
         /* display level */
         drawField(pLevel.getField(), str);
@@ -267,7 +268,19 @@ private:
                         return 'X';
                 }
             }
-            case BaseDOT::exit:     return 'E';
+            case BaseDOT::exit:
+            {
+                SDig::DOTExit *exit = (SDig::DOTExit *)pObjType;
+                switch (exit->getState())
+                {
+                    case DOTExit::ST_CLOSED:
+                        // display the closed exit
+                        return 'e';
+                    case DOTExit::ST_OPEN:
+                        // display the opened exit
+                        return 'E';
+                }
+            }
 
             case BaseDOT::unknown:
             default:                return '?';

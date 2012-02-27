@@ -45,29 +45,55 @@ public:
 
 /* ======== class attributes ======== */    
 private:
-    int mIterNum;    /*!< The number of proceeded iterations. */
-
+    int mIterNum;   /*!< The number of proceeded iterations. */
+    int mTimeCnt;   /*!< time counter (decreasing) */
+    int mSandCnt;   /*!< eaten sand */
+    
 /* ======== functions ======== */    
 
 public:
-    /*!
-     * \brief   Constructor
-     */
+    /*! \brief  Constructor */
     PhysicsEngine() {
         resetIterNum();
     }
 
-    /*!
-     * \brief   Reset the number of iterations.
-     */
+    /*! \brief  Set the start value.
+     *FIXME: use level config */
+    void init(int pTimeCnt) {
+        resetIterNum();
+        setTimeCnt(pTimeCnt);
+        resetSandCnt();
+    }
+
+    /*! \brief  Reset the sand (eaten sand) counter value. */
+    void resetSandCnt(void) {
+        mSandCnt = 0;
+    }
+
+    /*! \brief  Get eaten sand counter value.
+     *  \return Eaten sand counter value. */
+    int getSandCnt(void) {
+        return mSandCnt;
+    }
+
+    /*! \brief  Configure time counter. */
+    void setTimeCnt(int pTimeCnt) {
+        mTimeCnt = pTimeCnt;
+    }
+
+    /*! \brief  Get current time counter value.
+     *  \return Time counter value. */
+    int getTimeCnt(void) {
+        return mTimeCnt;
+    }
+
+    /*! \brief  Reset the number of iterations. */
     void resetIterNum(void) {
         mIterNum = 0;
     }
 
-    /*!
-     * \brief   Get the number of iterations since last reset.
-     * \return  Number of done iterations.
-     */
+    /*! \brief  Get the number of iterations since last reset.
+     * \return  Number of done iterations. */
     int getIterNum(void) {
         return mIterNum;
     }
@@ -96,6 +122,9 @@ public:
     /* Check if this object has the type exit. */
     bool isExit(objFieldEntry *pEntry);
     
+    /* Check if the it's and closed exit. */
+    bool isClosedExit(objFieldEntry *pEntry);
+
     /* Check if this object is able to block others. */
     bool isBlocking(objFieldEntry *pEntry);
     

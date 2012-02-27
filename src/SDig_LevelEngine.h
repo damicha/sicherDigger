@@ -54,7 +54,7 @@ private:
 
     // FIXME: create LevelStatisticData Class/Struct
     int mTimeLimit;             //!< The level's time limit.
-    int mTimeCnt;               //!< The current time counter value.
+    int mSandReq;               //!< Required amount of sand to open the exit.
 
     /* ======== functions ======== */    
 public:
@@ -70,26 +70,30 @@ public:
     /* Run level engine for one iteration. */
     void run(TextEngineTypes::Button button);
     
-    /*!
-     * \brief   Get object field address.
-     */
+    /*! \brief  Get object field address. */
     const objField *getField(void) {
         return mField;
     }
     
-    /*!
-     * \brief   Get engine state
-     */
+
+    /*! \brief  Get eaten sand counter value.
+     *  \return Eaten sand counter value. */
+    int getSandCnt(void) {
+        return mPhy.getSandCnt();
+    }
+
+    /*! \brief  Get current time counter value.
+     *  \return Time counter value. */
+    int getTimeCnt(void) {
+        return mPhy.getTimeCnt();
+    }
+
+
+    /*! \brief  Get engine state */
     StateType getState(void) {
         return mState;
     }
     
-    /*!
-     * \brief   Get value of the level timer.
-     */
-    const int getTimer(void) {
-        return mTimeCnt;
-    }
 };
 
 

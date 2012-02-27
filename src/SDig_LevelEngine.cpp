@@ -32,7 +32,7 @@ LevelEngine::LevelEngine(void)
     mField  = new objField(*cfg);
 
     mTimeLimit = cfg->getTimeLimit();
-
+    mSandReq   = cfg->getSandReq(); 
 }
     
 /*!
@@ -49,7 +49,6 @@ LevelEngine::~LevelEngine(void)
 void LevelEngine::setStart() {
     // FIXME: reset level
     mState = ST_START;
-    mTimeCnt = mTimeLimit; 
 }
 
 // FIXME: present level exit state not as a return value -> getState function of
@@ -83,29 +82,46 @@ void LevelEngine::run(TextEngineTypes::Button button)
     /* run level engine */
     switch (mState)
     {
+        /* configure level */
         case ST_START:
+        {
+            mPhy.init(mTimeLimit);  // FIXME: initialize the whole level (use level config)
             mState = ST_RUNNING;
             break;
+        }
 
+        /* run level */
         case ST_RUNNING:
         {
-            bool levelExit = mPhy.run(*mField, moveDirection);
-            // FIXME: 
-            // - don't use levelExit flag
-            // - get players state: exiting -> ending (stop timer)
-            // - get level state (timeout)
+            /* run physics engine */
+            // FIXME: stop counter if player is exiting, but proceed player:
+            // -> implement states for the physics engine ?
+            // -> or physics engine flags ? - stopTime()/startTime() ?
+            // -> or don't control time by physics engine ?
+            mPhy.run(*mField, moveDirection);
 
-            if (levelExit == true) {
+            SDig::DOTPlayer *player = (SDig::DOTPlayer *)mField->pl_entry->data->getTypeObject();
+            SDig::DOTExit   *exit  = (SDig::DOTExit *)mField->mExit->data->getTypeObject();
+            /* stop running the level if time is up */
+            if (mPhy.getTimeCnt() == 0) {
                 mState = ST_END;
             }
+           
+            /* FIXME: change exit state from closed to open as a function of eaten sand */
+            if (mPhy.getSandCnt() >= mSandReq) {
+                exit->setState(DOTExit::ST_OPEN);
+            }
 
-            /* decrease level counter */
-            mTimeCnt--;
+            /* stop running if player has exited the level */
+            if (player->getState() == DOTPlayer::ST_EXITED) {
+                mState = ST_END;
+            }
             
             break;
         }
 
         case ST_END:
+            /* FIXME: sum up results */
             break;
     }
 

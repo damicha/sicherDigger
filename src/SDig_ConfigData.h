@@ -26,7 +26,8 @@ namespace SDig {
  * @{
  */
 #define LEVEL_NAME          "field_a"
-#define LEVEL_TIME_LIMIT    25
+#define LEVEL_TIME_LIMIT    30
+#define LEVEL_SAND_REQUIRED 5               // required sand to eat before exit opens
 #define LEVEL_SIZE_X        8
 #define LEVEL_SIZE_Y        8
 static char field_a_data[LEVEL_SIZE_X * LEVEL_SIZE_Y] =
@@ -41,12 +42,13 @@ static char field_a_data[LEVEL_SIZE_X * LEVEL_SIZE_Y] =
     '#', '#', '#', '#', '#', '#', '#', '#',
 };
 static LevelConfig field_a = LevelConfig(
-    LEVEL_NAME, LEVEL_TIME_LIMIT,
+    LEVEL_NAME, LEVEL_TIME_LIMIT, LEVEL_SAND_REQUIRED,
     LEVEL_SIZE_X, LEVEL_SIZE_Y, field_a_data
 );
 
 #undef LEVEL_NAME
 #undef LEVEL_TIME_LIMIT
+#undef LEVEL_SAND_REQ
 #undef LEVEL_SIZE_X    
 #undef LEVEL_SIZE_Y    
 

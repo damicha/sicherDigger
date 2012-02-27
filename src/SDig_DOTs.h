@@ -118,6 +118,8 @@ public:
 private:
     StateType   mState;     //!< player's state
     int         mCnt;       //!< counter value used for the exiting phases
+
+/* ======== class functions ======== */
 public:
     /*!
      * \brief   Constructor
@@ -134,7 +136,7 @@ public:
     };
 
     /*!
-     * \brief   Set players stare
+     * \brief   Set players state.
      */
     void setState(StateType pState) {
         mState = pState;
@@ -145,9 +147,7 @@ public:
         }
     }
    
-    /*!
-     * \brief   Get players current state
-     */ 
+    /*! \brief   Get players current state */ 
     StateType getState(void) {
         return mState;
     }
@@ -191,15 +191,43 @@ public:
  */
 class DOTExit : public BaseDOT
 {
+/* ======== class types ======== */
 public:
     /*!
-     * \brief   constructor
+     * States of the Exit.
+     */
+    enum StateType {
+        ST_CLOSED,      //!< exit it closed (not enterable)
+        ST_OPEN         //!< exit is open (enterable)
+    };
+
+/* ======== class members ======== */
+private:
+    StateType   mState;     //!< exit's state
+
+/* ======== class functions ======== */
+public:
+    /*!
+     * \brief   Constructor
      * \details Define constant class attributes.
      */
     DOTExit() {
         mName = string("Exit");
         setType(exit);
+    
+        setState(ST_CLOSED);
     };
+
+
+    /*! \brief  Set exit's state. */
+    void setState(StateType pState) {
+        mState = pState;
+    }
+   
+    /*! \brief  Get exit's current state */ 
+    StateType getState(void) {
+        return mState;
+    }
 };
 
 

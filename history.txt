@@ -38,6 +38,8 @@ next:
 * doxygen
   - a main page was added
 
+**** FIXME: update engine functions !!
+
 * SDig_GameEngine:
   - creates TextEngine and TimeEngine
   - controls data and engines
