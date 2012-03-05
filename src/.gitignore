@@ -4,6 +4,9 @@ sicherDigger
 # save copies of vim
 *.swp
 
+# vims session files
+.vs.*
+
 # object files
 *.o
 

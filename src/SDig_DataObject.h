@@ -17,11 +17,14 @@
 #define _SDIG_DATA_OBJECT_H_
 
 #include "SDig_BaseDOT.h"
+#include "objFieldEntry.h"
 
 #include <stdio.h> 
 
 using namespace std;
 
+// pre-declare needed class
+class objFieldEntry;
 
 namespace SDig {
 
@@ -36,65 +39,64 @@ class DataObject
 private:
     // FIXME: use class name objectType <- is a virtual class!
     BaseDOT *mType;   //!< object type FIXME: rename class baseMaterial to baseType
-    bool mDone;      /*!< true if material was already used by physics engine: 
+    bool mDone;     /*!< true if material was already used by physics engine: 
                      * FIXME: move to a physics class (maybe)
                      * FIXME: use a own data type
                      * FIXME: don't use done. use blocked by current, next, prev ..
                      */
+    /* FIXME: add reference to objFieldEntry */
+    objFieldEntry *mParentObj;  //!< back-reference to object field entry
 
 /* ======== class initialisation functions ======== */
 public:
-    /*!
-     * \brief   Constructor
-     */
-    DataObject(const BaseDOT::DOTType pObjType = BaseDOT::unknown)
+    /*!\brief   Constructor */
+    DataObject(objFieldEntry *pParentObj, const BaseDOT::DOTType pObjType = BaseDOT::unknown)
     {
         mType = BaseDOT::createDOT(pObjType);
         mDone = false;
+        mParentObj = pParentObj;
     }
     
-    /*!
-     * \brief   Destructor
-     */
+    /*!\brief   Destructor */
     ~DataObject()
     {
         BaseDOT::deleteDOT(mType);
+        // FIXME: check if the reference has to be removed from the parent object
     }
 
 
-    /*!
-     * \brief   Gets the type object
-     */
-    // FIXME: return with a reference ?
+    /*!\brief   Gets the type object */
     BaseDOT *getTypeObject(void) {
         return mType;
     }
 
-    /*!
-     * \brief   Gets the type value from type object directly
-     */
+    /*!\brief   Gets the type value from type object directly */
     BaseDOT::DOTType getType(void) {
         return mType->getType();
     }
 
-    /*!
-     * \brief   Sets the done flag of this data object.
-     */
+    /*!\brief   Gets the reference to the parent object */
+    objFieldEntry *getParentObject(void) {
+        return mParentObj;
+    }
+    
+    /*!\brief   Set a new reference to the parent object */
+    void setParentObject(objFieldEntry *pParentObj) {
+        mParentObj = pParentObj;
+    }
+    
+    /*!\brief   Sets the done flag of this data object. */
     void setDone(void) {
         mDone = true;
     }
 
-    /*!
-     * \brief   Clears the done flag of this data object.
-     */
+    /*!\brief   Clears the done flag of this data object. */
     void clearDone(void) {
         mDone = false;
     }
 
-    /*!
-     * \brief   Checks the done state.
-     * \return  Is true if the data object state is done.
-     */
+    /*!\brief   Checks the done state.
+     * \return  Is true if the data object state is done. */
     bool isDone(void) {
         return mDone;
     }

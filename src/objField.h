@@ -45,8 +45,8 @@ public:
     int size_x;     /*!< size of the field dimension x */
     int size_y;     /*!< size of the field dimension y */
     objFieldEntry   *entries;   /*!< reference to an array of the object field entries */
-    objFieldEntry   *pl_entry;  /*!< reference to the object field entry that stores the player data */
-    objFieldEntry   *mExit;     /*!< reference to the exit object */
+    DataObject      *mPlayer;   /*!< reference to the player's data object */
+    DataObject      *mExit;     /*!< reference to the exit's data object */
 
 /* ======== class init functions ======== */
 public:
@@ -56,7 +56,7 @@ public:
      * \param   size_x field size of the dimension x
      * \param   size_y field size of the dimension y
      */
-    objField(int size_x, int size_y) : entries(NULL), pl_entry(NULL), mExit(NULL)
+    objField(int size_x, int size_y) : entries(NULL), mPlayer(NULL), mExit(NULL)
     {
         /* set dimensions */
         this->size_x = size_x;
@@ -78,11 +78,11 @@ public:
                 if        (x == 1 && y == 1) {
                     /* set player position/object */
                     entries[y*size_x + x].createDataObject(BaseDOT::player);
-                    pl_entry  = &entries[y*size_x + x];
+                    mPlayer = entries[y*size_x + x].data;
                 } else if (x == 1 && y == 0) {
                     /* set exit position/object */
                     entries[y*size_x + x].createDataObject(BaseDOT::exit);
-                    mExit = &entries[y*size_x + x];
+                    mExit = entries[y*size_x + x].data;
                 } else if (x == 0 || x == size_x - 1 ||
                            y == 0 || y == size_y - 1)
                 {
@@ -125,11 +125,11 @@ public:
                 
                 /* store the reference of the players object */
                 if (objType == BaseDOT::player) {
-                    pl_entry = &entries[y*size_x + x];
+                    mPlayer = entries[y*size_x + x].data;
                 }
                 /* store the reference of the exit object */
                 if (objType == BaseDOT::exit) {
-                    mExit = &entries[y*size_x + x];
+                    mExit = entries[y*size_x + x].data;
                 }
             }
         }
@@ -141,7 +141,7 @@ public:
      */
     DOTPlayer::StateType getPlayerState(void)
     {
-        SDig::DOTPlayer *player = (SDig::DOTPlayer *)pl_entry->data->getTypeObject();
+        SDig::DOTPlayer *player = (SDig::DOTPlayer *)mPlayer->getTypeObject();
         return player->getState();
     }
 

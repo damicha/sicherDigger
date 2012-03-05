@@ -101,6 +101,7 @@ public:
 /*!
  * \class   DOTPlayer
  * \brief   Declaration of the data object type class: player.
+ * FIXME: use an own file
  */
 class DOTPlayer : public BaseDOT
 {
@@ -171,11 +172,13 @@ public:
                 break;
 
             case ST_EXITING:
+            {
                 mCnt++;
                 if (mCnt > 4) {
                     mState = ST_EXITED;
                 }
                 break;
+            }
 
             case ST_EXITED:
                 break;

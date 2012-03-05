@@ -31,6 +31,7 @@ using namespace SDig;
  * \return
  *  Currently not used.
  * FIXME: add mechanism to lock source and destination field
+ * FIXME: update data->mParentObj after an object was moved !!!
  */
 bool PhysicsEngine::run(objField &pField, MovementType pPlayerMove)
 {
@@ -54,8 +55,8 @@ bool PhysicsEngine::run(objField &pField, MovementType pPlayerMove)
     /* move player first */
     {
         objFieldEntry *pl_entry_new;
-        pl_entry_new = runPlayerPhysics(pField.pl_entry, pPlayerMove);
-        pField.pl_entry = pl_entry_new; 
+        pl_entry_new = runPlayerPhysics(pField.mPlayer->getParentObject(), pPlayerMove);
+        //pField.pl_entry = pl_entry_new; 
     }
 
     /* run physics on the other field objects */
@@ -198,46 +199,68 @@ objFieldEntry *PhysicsEngine::runPlayerPhysics(objFieldEntry  *e,
 
 };
 
-
+/*!
+ * \param   pDest   the field to which the player (pSrc) shall be moved
+ */
 objFieldEntry *PhysicsEngine::movePlayer(objFieldEntry  *pSrc, objFieldEntry *pDest)
 {
     /* set default value for the new player object field entry */
     objFieldEntry *plEntryNew = pSrc;
 
-    /* move the player if it is not blocked */
-    if (pDest && pDest->data->isDone() == false &&
-        isBlocking(pDest) == false &&
-        isClosedExit(pDest) == false)
-    {
-        /* eat sand */
-        if (isSand(pDest)) {
-            delete pDest->data;
-            pDest->data = new DataObject(BaseDOT::empty);
-            mSandCnt++;
-        }
+    
+    /* FIXME: Player destroys exit if it enter it!
+     * - remove exit reference from mField
+     * - strategy of player object ?
+     */
 
-        /* enter exit */
-        // FIXME; it was already tested if it's not an exit or if it's not closed */
-        if (isExit(pDest))
-        {
-            delete pDest->data;
-            pDest->data = new DataObject(BaseDOT::empty);
-            /* Change player state to exiting player */
-            // FIXME: don't set the state in this subfunction:
-            //  - use signal or call back or return code of this function!
-            ((SDig::DOTPlayer *)pSrc->data->getTypeObject())->setState(DOTPlayer::ST_EXITING);
-        }
 
-        /* the empty field to done */
-        pDest->data->setDone();
-
-        /* move player by switch the data objects */
-        switchDataObjects(pSrc, pDest);
-
-        /* update the address of the object field entry that contains
-         * the player data */
-        plEntryNew = pDest;
+    /* ==== check preconditions ==== */
+    /* exit if the destination object doesn't exist or was already handeld */
+    if (pDest == NULL || pDest->data->isDone()) {
+        return plEntryNew;
     }
+
+    /* exit if the destination is blocking the player */
+    if (isBlocking(pDest)) {
+        return plEntryNew;
+    }
+    
+    /* exit if the destination is an closed exit */
+    if (isClosedExit(pDest)) {
+        return plEntryNew;
+    }
+
+
+    /* ==== move the player ==== */
+    /* eat sand (replace by data object: empty) */
+    if (isSand(pDest)) {
+        delete pDest->data;
+        pDest->data = new DataObject(pDest, BaseDOT::empty);
+        mSandCnt++;
+    }
+
+    /* enter exit (replace by data object empty)
+     * FIXME: connect exit to players object as parent object */
+    // FIXME: it was already tested if it's not an exit or if it's not closed */
+    if (isExit(pDest))
+    {
+        delete pDest->data;
+        pDest->data = new DataObject(pDest, BaseDOT::empty);
+        /* Change player state to exiting player */
+        // FIXME: don't set the state in this subfunction:
+        //  - use signal or call back or return code of this function!
+        ((SDig::DOTPlayer *)pSrc->data->getTypeObject())->setState(DOTPlayer::ST_EXITING);
+    }
+
+    /* the empty field to done */
+    pDest->data->setDone();
+
+    /* move player by switch the data objects */
+    switchDataObjects(pSrc, pDest);
+
+    /* update the address of the object field entry that contains
+     * the player data */
+    plEntryNew = pDest;
 
     return plEntryNew;
 }
@@ -276,7 +299,7 @@ bool PhysicsEngine::isClosedExit(objFieldEntry *pEntry)
         return false;
     }
 
-    SDig::DOTExit   *exit  = (SDig::DOTExit *)pEntry->data->getTypeObject();
+    SDig::DOTExit *exit = (SDig::DOTExit *)pEntry->data->getTypeObject();
     if (exit->getState() == DOTExit::ST_CLOSED)
     {
         /* exit is closed */
@@ -311,7 +334,9 @@ void PhysicsEngine::switchDataObjects(objFieldEntry *pSrc, objFieldEntry *pDest)
     DataObject  *doDest    = pDest->data;
     /* switch */
     pSrc->data  = doDest;
+    pSrc->data->setParentObject(pSrc);
     pDest->data = doSrc;
+    pDest->data->setParentObject(pDest);
 }
 
 

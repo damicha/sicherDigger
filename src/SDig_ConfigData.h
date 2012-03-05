@@ -26,8 +26,8 @@ namespace SDig {
  * @{
  */
 #define LEVEL_NAME          "field_a"
-#define LEVEL_TIME_LIMIT    30
-#define LEVEL_SAND_REQUIRED 5               // required sand to eat before exit opens
+#define LEVEL_TIME_LIMIT    50
+#define LEVEL_SAND_REQUIRED 2               // required sand to eat before exit opens
 #define LEVEL_SIZE_X        8
 #define LEVEL_SIZE_Y        8
 static char field_a_data[LEVEL_SIZE_X * LEVEL_SIZE_Y] =
@@ -35,10 +35,10 @@ static char field_a_data[LEVEL_SIZE_X * LEVEL_SIZE_Y] =
     '#', '#', '#', '#', '#', '#', '#', '#',
     '#', 'O', 'O', 'O', 'O', 'O', ' ', '#',
     '#', 'O', 'O', '.', ' ', ' ', 'O', '#',
-    '#', 'O', '.', 'O', ' ', '8', '.', '#',
+    '#', 'O', '.', 'O', ' ', ' ', '.', '#',
     '#', '.', ' ', ' ', 'O', ' ', '.', '#',
     '#', '.', ' ', '.', ' ', 'O', ' ', '#',
-    'E', '.', ' ', '.', ' ', ' ', 'O', '#',
+    'E', '.', '8', '.', ' ', ' ', 'O', '#',
     '#', '#', '#', '#', '#', '#', '#', '#',
 };
 static LevelConfig field_a = LevelConfig(

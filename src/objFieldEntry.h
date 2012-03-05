@@ -42,8 +42,8 @@ public:
     /* position in field */
     int pos_y;
     int pos_x;
-#if 0
     // FIXME: add object layer: (objFieldEntry.obj: obj.m, obj...)
+#if 0
     baseMaterial *m;    /*!< the object material. A virtual class is used */
 #endif
     DataObject *data;   //!< Data field that contains properties and states
@@ -64,7 +64,7 @@ public:
     void createDataObject(BaseDOT::DOTType type)
     {
 
-        data = new DataObject(type);
+        data = new DataObject(this, type);
 #if 0
         baseMaterial *m = createMaterial(type);
         data->type = m;

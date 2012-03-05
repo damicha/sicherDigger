@@ -18,7 +18,7 @@
 
 #-------------------------------------------------------------------------------
 CC = g++
-CFLAGS = -g -O2 -Wall
+CFLAGS = -g -O0 -Wall
 OBJECTS =   sicherDigger.o \
             objFieldEntry.o objField.o \
             SDig_TimeEngine.o \
