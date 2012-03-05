@@ -106,12 +106,11 @@ public:
      */
     void runStonePhysics(objFieldEntry *e);
     
-    /*!
-     * \brief   Player physics
-     */
-    objFieldEntry *runPlayerPhysics(objFieldEntry *e, MovementType pPlayerMove);
+    /* Player physics */
+    bool runPlayerPhysics(objFieldEntry *e, MovementType pPlayerMove);
 
-    objFieldEntry *movePlayer(objFieldEntry  *pSrc, objFieldEntry *pDest);
+    /* Move player's data object */
+    bool movePlayer(objFieldEntry  *pSrc, objFieldEntry *pDest);
 
     /* Check if this object has the type empty. */
     bool isEmpty(objFieldEntry *pEntry);

@@ -53,11 +53,7 @@ bool PhysicsEngine::run(objField &pField, MovementType pPlayerMove)
     mTimeCnt--;
 
     /* move player first */
-    {
-        objFieldEntry *pl_entry_new;
-        pl_entry_new = runPlayerPhysics(pField.mPlayer->getParentObject(), pPlayerMove);
-        //pField.pl_entry = pl_entry_new; 
-    }
+    runPlayerPhysics(pField.mPlayer->getParentObject(), pPlayerMove);
 
     /* run physics on the other field objects */
     for (int y = 0; y < pField.size_y; y++)
@@ -125,9 +121,8 @@ void PhysicsEngine::runStonePhysics(objFieldEntry *e)
 
 /*!
  * \brief   Player physics
- * \param e
- *          selected object
- * \return  address of the new object field entry that carries the player
+ * \param e     Selected object that contains the player
+ * \return  True if the player was moved. 
  *
  * Players movement rules:\n
  *  - a player can move if no items block its way
@@ -135,15 +130,14 @@ void PhysicsEngine::runStonePhysics(objFieldEntry *e)
  * FIXME add player commands: move left, right, up, down, push..., pull ...
  * FIXME add usefull subfunction (check, move)
  */
-objFieldEntry *PhysicsEngine::runPlayerPhysics(objFieldEntry  *e,
-                                               MovementType   pPlayerMove)
+bool PhysicsEngine::runPlayerPhysics(objFieldEntry  *e,
+                                     MovementType   pPlayerMove)
 {
-    /* set default value for the new player object field entry */
-    objFieldEntry *pl_entry_new = e;
+    bool plMoved = false;
 
     /* return if entry was already treated */
     if (e->data->isDone()) {
-        return pl_entry_new;
+        return false;
     }
 
     /* move player as a function of the player state */
@@ -158,22 +152,22 @@ objFieldEntry *PhysicsEngine::runPlayerPhysics(objFieldEntry  *e,
                 /* move to right */
                 case MT_RIGHT:
                     // FIXME: set new player with call back function ?
-                    pl_entry_new = movePlayer(e, e->x_next);
+                    plMoved = movePlayer(e, e->x_next);
                     break;
 
                 /* move to left */
                 case MT_LEFT:
-                    pl_entry_new = movePlayer(e, e->x_prev);
+                    plMoved = movePlayer(e, e->x_prev);
                     break;
                 
                 /* move up */
                 case MT_UP:
-                    pl_entry_new = movePlayer(e, e->y_prev);
+                    plMoved = movePlayer(e, e->y_prev);
                     break;
 
                 /* move down */
                 case MT_DOWN:
-                    pl_entry_new = movePlayer(e, e->y_next);
+                    plMoved = movePlayer(e, e->y_next);
                     break;
             }
             break;
@@ -195,14 +189,16 @@ objFieldEntry *PhysicsEngine::runPlayerPhysics(objFieldEntry  *e,
     /* set player object to done */
     e->data->setDone();
 
-    return pl_entry_new; 
+    return plMoved; 
 
 };
 
 /*!
- * \param   pDest   the field to which the player (pSrc) shall be moved
+ * Move player's data object.
+ * \param   pDest   The field to which the player (pSrc) shall be moved.
+ * \return  Is true if player has been moved.
  */
-objFieldEntry *PhysicsEngine::movePlayer(objFieldEntry  *pSrc, objFieldEntry *pDest)
+bool PhysicsEngine::movePlayer(objFieldEntry  *pSrc, objFieldEntry *pDest)
 {
     /* set default value for the new player object field entry */
     objFieldEntry *plEntryNew = pSrc;
@@ -217,17 +213,17 @@ objFieldEntry *PhysicsEngine::movePlayer(objFieldEntry  *pSrc, objFieldEntry *pD
     /* ==== check preconditions ==== */
     /* exit if the destination object doesn't exist or was already handeld */
     if (pDest == NULL || pDest->data->isDone()) {
-        return plEntryNew;
+        return false;
     }
 
     /* exit if the destination is blocking the player */
     if (isBlocking(pDest)) {
-        return plEntryNew;
+        return false;
     }
     
     /* exit if the destination is an closed exit */
     if (isClosedExit(pDest)) {
-        return plEntryNew;
+        return false;
     }
 
 
@@ -258,11 +254,13 @@ objFieldEntry *PhysicsEngine::movePlayer(objFieldEntry  *pSrc, objFieldEntry *pD
     /* move player by switch the data objects */
     switchDataObjects(pSrc, pDest);
 
+#if 0
     /* update the address of the object field entry that contains
      * the player data */
     plEntryNew = pDest;
+#endif
 
-    return plEntryNew;
+    return true;
 }
 
 /*!
