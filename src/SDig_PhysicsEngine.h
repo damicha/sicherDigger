@@ -47,7 +47,8 @@ public:
 private:
     int mIterNum;   /*!< The number of proceeded iterations. */
     int mTimeCnt;   /*!< time counter (decreasing) */
-    int mSandCnt;   /*!< eaten sand */
+    // FIXME: move to player
+//    int mSandCnt;   /*!< eaten sand: FIXME: move to player */
     
 /* ======== functions ======== */    
 
@@ -62,9 +63,9 @@ public:
     void init(int pTimeCnt) {
         resetIterNum();
         setTimeCnt(pTimeCnt);
-        resetSandCnt();
+//        resetSandCnt();
     }
-
+#if 0
     /*! \brief  Reset the sand (eaten sand) counter value. */
     void resetSandCnt(void) {
         mSandCnt = 0;
@@ -75,7 +76,7 @@ public:
     int getSandCnt(void) {
         return mSandCnt;
     }
-
+#endif
     /*! \brief  Configure time counter. */
     void setTimeCnt(int pTimeCnt) {
         mTimeCnt = pTimeCnt;

@@ -200,9 +200,6 @@ bool PhysicsEngine::runPlayerPhysics(objFieldEntry  *e,
  */
 bool PhysicsEngine::movePlayer(objFieldEntry  *pSrc, objFieldEntry *pDest)
 {
-    /* set default value for the new player object field entry */
-    objFieldEntry *plEntryNew = pSrc;
-
     
     /* FIXME: Player destroys exit if it enter it!
      * - remove exit reference from mField
@@ -232,7 +229,9 @@ bool PhysicsEngine::movePlayer(objFieldEntry  *pSrc, objFieldEntry *pDest)
     if (isSand(pDest)) {
         delete pDest->data;
         pDest->data = new DataObject(pDest, BaseDOT::empty);
-        mSandCnt++;
+//        mSandCnt++;
+        DOTPlayer *player = (DOTPlayer *)pSrc->data->getTypeObject();
+        player->incrSandCnt();
     }
 
     /* enter exit (replace by data object empty)
@@ -254,12 +253,7 @@ bool PhysicsEngine::movePlayer(objFieldEntry  *pSrc, objFieldEntry *pDest)
     /* move player by switch the data objects */
     switchDataObjects(pSrc, pDest);
 
-#if 0
-    /* update the address of the object field entry that contains
-     * the player data */
-    plEntryNew = pDest;
-#endif
-
+    /* player was moved: return true */
     return true;
 }
 

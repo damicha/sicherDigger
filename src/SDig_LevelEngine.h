@@ -37,7 +37,7 @@ public:
      * \brief   States of the level
      */
     enum StateType {
-        //LST_PRE_START
+        //ST_PRE_START
         ST_START,               //!< start the level
         ST_RUNNING,             //!< level is running (normal state)
         ST_ENDING,              //!< level is within its end phase
@@ -46,11 +46,13 @@ public:
 
 /* ======== attributes ======== */    
 private:
-    objField        *mField;    //!< object field (game level data)
+    objField        *mField;        //!< object field (game level data)
 
-    PhysicsEngine   mPhy;       //!< physics engine
+    PhysicsEngine   mPhy;           //!< physics engine
 
-    StateType       mState;     //!< current state of the level
+    StateType       mState;         //!< current state of the level
+
+
 
     // FIXME: create LevelStatisticData Class/Struct
     int mTimeLimit;             //!< The level's time limit.
@@ -75,13 +77,13 @@ public:
         return mField;
     }
     
-
     /*! \brief  Get eaten sand counter value.
      *  \return Eaten sand counter value. */
     int getSandCnt(void) {
-        return mPhy.getSandCnt();
+        SDig::DOTPlayer *player = (SDig::DOTPlayer *)mField->mPlayer->getTypeObject();
+        return player->getSandCnt();
     }
-
+    
     /*! \brief  Get current time counter value.
      *  \return Time counter value. */
     int getTimeCnt(void) {

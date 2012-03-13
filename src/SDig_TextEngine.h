@@ -157,6 +157,7 @@ public:
      * \param   pHeaderString
      *  String used within the header
      */
+    // FIXME: use pinter to pLevel
     void drawLevel(LevelEngine &pLevel)
     {
         /* create string with timing information */

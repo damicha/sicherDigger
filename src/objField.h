@@ -29,7 +29,7 @@ using namespace SDig;
 
 
 class objField;
-
+//class DOTPlayer;
 
 /*!
  * \class   objField 
@@ -45,6 +45,7 @@ public:
     int size_x;     /*!< size of the field dimension x */
     int size_y;     /*!< size of the field dimension y */
     objFieldEntry   *entries;   /*!< reference to an array of the object field entries */
+    // FIXME: store reference to DOTPlayer, DOTExit objects
     DataObject      *mPlayer;   /*!< reference to the player's data object */
     DataObject      *mExit;     /*!< reference to the exit's data object */
 
@@ -126,6 +127,9 @@ public:
                 /* store the reference of the players object */
                 if (objType == BaseDOT::player) {
                     mPlayer = entries[y*size_x + x].data;
+                    // set back reference
+                    SDig::DOTPlayer *player = (DOTPlayer *)mPlayer->getTypeObject();
+                    player->setFieldReference(this);
                 }
                 /* store the reference of the exit object */
                 if (objType == BaseDOT::exit) {
@@ -139,9 +143,9 @@ public:
     /*!
      * \brief   Get Players state.
      */
-    DOTPlayer::StateType getPlayerState(void)
+    SDig::DOTPlayer::StateType getPlayerState(void)
     {
-        SDig::DOTPlayer *player = (SDig::DOTPlayer *)mPlayer->getTypeObject();
+        SDig::DOTPlayer *player = (DOTPlayer *)mPlayer->getTypeObject();
         return player->getState();
     }
 

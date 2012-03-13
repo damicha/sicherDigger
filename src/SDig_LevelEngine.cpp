@@ -19,6 +19,7 @@
 
 using namespace SDig;
 
+
 /*!
  * \brief   Constructor
  */
@@ -102,8 +103,7 @@ void LevelEngine::run(TextEngineTypes::Button button)
 
             SDig::DOTPlayer *player = (SDig::DOTPlayer *)mField->mPlayer->getTypeObject();
             SDig::DOTExit   *exit   = (SDig::DOTExit *)mField->mExit->getTypeObject();
-//            SDig::DOTPlayer *player = dynamic_cast<SDig::DOTPlayer *>(mField->pl_entry->data->getTypeObject());
-//            SDig::DOTExit   *exit  = dynamic_cast<SDig::DOTExit *>(mField->mExit->data->getTypeObject());
+            
             /* stop running the level if time is up */
             if (mPhy.getTimeCnt() == 0) {
                 mState = ST_END;
@@ -111,7 +111,7 @@ void LevelEngine::run(TextEngineTypes::Button button)
            
             /* FIXME: change exit state from closed to open as a function of eaten sand */
             /* FIXME: send a signal to a signal handler (the exit is connected to it an reacts on ReqSandEaten with an open door) */
-            if (mPhy.getSandCnt() >= mSandReq) {
+            if (getSandCnt() >= mSandReq) {
                 exit->setState(DOTExit::ST_OPEN);
             }
 

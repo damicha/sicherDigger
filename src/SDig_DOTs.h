@@ -15,9 +15,12 @@
 #define _SDIG_DOTS_H_
 
 #include "SDig_BaseDOT.h"
+//#include "objField.h"
 
 #include <string>
 
+
+class objField;
 
 using namespace std;
 
@@ -117,8 +120,12 @@ public:
     };
 
 private:
+    objField    *mObjField; /*!<- reference to the overlying object field to
+                                  get access to its members/functions */
+
     StateType   mState;     //!< player's state
     int         mCnt;       //!< counter value used for the exiting phases
+    int         mSandCnt;   //!< counter for eaten sand
 
 /* ======== class functions ======== */
 public:
@@ -128,14 +135,25 @@ public:
      */
     DOTPlayer()
     {
+        mObjField = NULL;           // has to be set later
+
         mName = string("Player");
         setType(player);
         
         /* set local class members */
         setState(ST_ALIVE);
         mCnt = 0;
+        mSandCnt = 0;
     };
 
+    /*!\brief   Set reference to the overlying object field */
+    void setFieldReference(objField *pObjField) {
+        mObjField = pObjField;
+    }
+
+
+    /* ==== player's state functions ==== */
+    
     /*!
      * \brief   Set players state.
      */
@@ -185,12 +203,32 @@ public:
         }
     }
 
+
+    /* ==== player's sand counter functions ==== */
+    // FIXME: use these functions to store/handle the amount of eaten sand
+    
+    /*! \brief   Get the number of eaten sand. */ 
+    int getSandCnt(void) {
+        return mSandCnt;
+    }
+    
+    /*! \brief   Increment the sand counter. */ 
+    void incrSandCnt(void) {
+        mSandCnt++;
+    }
+
+    /*! \brief   Clear sand counter. */ 
+    void clearSandCnt(void) {
+        mSandCnt = 0;
+    }
+
 };
 
 
 /*!
  * \class   DOTExit
  * \brief   Declaration of the data object type class: exit.
+ * FIXME: use an own file
  */
 class DOTExit : public BaseDOT
 {
@@ -207,6 +245,9 @@ public:
 /* ======== class members ======== */
 private:
     StateType   mState;     //!< exit's state
+    int         mSandReq;   //!< required sand to open it
+    // FIXME: add reference to LevelEngine or objField ??
+
 
 /* ======== class functions ======== */
 public:
@@ -222,9 +263,30 @@ public:
     };
 
 
+    /*!
+     * \brief   Do one interration of the exit's states.
+     */
+    void run(void)
+    {
+        /* get sand */
+        int sandEaten = 0;
+
+        /* check if exit can be opened */
+        if (sandEaten >= mSandReq) {
+            mState = ST_OPEN;
+        }
+
+    }
+
+
     /*! \brief  Set exit's state. */
     void setState(StateType pState) {
         mState = pState;
+    }
+    
+    /*! \brief  Set exits state to directly to open. */
+    void openIt(void) {
+        mState = ST_OPEN;
     }
    
     /*! \brief  Get exit's current state */ 
