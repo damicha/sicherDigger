@@ -18,13 +18,17 @@
 #define _SDIG_DOTS_H_
 
 #include "SDig_BaseDOT.h"
+#include "SDig_DataObject.h"
 
 #include <string>
 
-
-class objField;
-
 using namespace std;
+using namespace SDig;
+
+
+class objField;         // used for a back-reference
+class DataObject;       // used for a back-reference
+
 
 namespace SDig {
 
@@ -121,8 +125,9 @@ public:
     };
 
 private:
-    objField    *mObjField; /*!<- reference to the overlying object field to
-                                  get access to its members/functions */
+    objField    *mObjField;     /*!< reference to the overlying object field to
+                                     get access to its members/functions */
+    DataObject  *mDataObject;   /*!< reference to the overlying data object */
 
     StateType   mState;     //!< player's state
     int         mCnt;       //!< counter value used for the exiting phases
@@ -137,6 +142,7 @@ public:
     DOTPlayer()
     {
         mObjField = NULL;           // has to be set later
+        mDataObject = NULL;
 
         mName = string("Player");
         setType(player);
@@ -150,6 +156,16 @@ public:
     /*!\brief   Set reference to the overlying object field */
     void setFieldReference(objField *pObjField) {
         mObjField = pObjField;
+    }
+    
+    /*!\brief   Set reference to the overlying data object */
+    void setDataObject(DataObject *pDataObject) {
+        mDataObject = pDataObject;
+    }
+    
+    /*!\brief   Set reference to the overlying data object */
+    DataObject *getDataObject(void) {
+        return mDataObject;
     }
 
 

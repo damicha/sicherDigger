@@ -19,6 +19,108 @@
 using namespace std;
 
 
+/*!
+ * \brief   Constructor
+ * \details Set field sizes, create and initialize the object field.
+ * \param   size_x field size of the dimension x
+ * \param   size_y field size of the dimension y
+ */
+objField::objField(int size_x, int size_y) : entries(NULL), mPlayer(NULL), mExit(NULL)
+{
+    /* set dimensions */
+    this->size_x = size_x;
+    this->size_y = size_y;
+    
+    /* get memory for the field entries */
+    entries = new objFieldEntry[size_x*size_y];
+
+    /* do final field object initialization */
+    initObj();
+    
+
+    /* create materials (sand surrounded with walls)
+     * place the player into the left top corner */
+    for (int y = 0; y < size_y; y++)
+    {
+        for (int x = 0; x < size_x; x++)
+        {
+            if        (x == 1 && y == 1) {
+                /* set player position/object */
+                // FIXME: put data object creation in a function
+                entries[y*size_x + x].createDataObject(BaseDOT::player);
+                mPlayer = (DOTPlayer *)entries[y*size_x + x].data->getTypeObject();
+                // set back reference
+                mPlayer->setFieldReference(this);
+            } else if (x == 1 && y == 0) {
+                /* set exit position/object */
+                entries[y*size_x + x].createDataObject(BaseDOT::exit);
+                mExit = (DOTExit *)entries[y*size_x + x].data->getTypeObject();
+                // set back reference
+                mExit->setFieldReference(this);
+                // set properties    
+                mExit->setRequiredSand(1); 
+            } else if (x == 0 || x == size_x - 1 ||
+                       y == 0 || y == size_y - 1)
+            {
+                entries[y*size_x + x].createDataObject(BaseDOT::wall);
+            } else {
+                entries[y*size_x + x].createDataObject(BaseDOT::sand);
+            }
+        }
+    }
+}
+
+/*!
+ * \brief   Constructor
+ * \details Initializes the field with the given configuration.
+ * \param   cfg configuration
+ * FIXME: move function implementation to *.cpp
+ */
+objField::objField(const LevelConfig &pLevelConfig)
+{
+    /* set dimensions */
+    size_x = pLevelConfig.getSizeX();
+    size_y = pLevelConfig.getSizeY();
+    
+    /* get memory for the field entries */
+    entries = new objFieldEntry[size_x*size_y];
+    
+    /* do final field object initialization */
+    initObj();
+
+    /* create materials */
+    // FIXME move player info data and functions to player class dotPlayer
+    for (int y = 0; y < size_y; y++)
+    {
+        for (int x = 0; x < size_x; x++)
+        {
+            /* get object type */
+            BaseDOT::DOTType objType = pLevelConfig.getData(x, y);
+            /* create entry */
+            entries[y*size_x + x].createDataObject(objType);
+            
+            /* store the reference of the players object */
+            if (objType == BaseDOT::player) {
+                mPlayer = (DOTPlayer *)entries[y*size_x + x].data->getTypeObject();
+                // set back references
+                // FIXME: move initialization this to DOTPlayer class
+                mPlayer->setFieldReference(this);
+                mPlayer->setDataObject(entries[y*size_x + x].data);
+            }
+            /* store the reference of the exit object */
+            if (objType == BaseDOT::exit) {
+                mExit = (DOTExit *)entries[y*size_x + x].data->getTypeObject();
+                // set back reference
+                mExit->setFieldReference(this);
+                // set properties    
+                mExit->setRequiredSand(pLevelConfig.getRequiredSand()); 
+            }
+        }
+    }
+
+};
+
+
 /* initialize the field objects */
 void objField::initObj()
 {

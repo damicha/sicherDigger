@@ -79,15 +79,13 @@ public:
     /*! \brief  Get eaten sand counter value.
      *  \return Eaten sand counter value. */
     int getSandCnt(void) {
-        SDig::DOTPlayer *player = (SDig::DOTPlayer *)mField->mPlayer->getTypeObject();
-        return player->getSandCnt();
+        return mField->mPlayer->getSandCnt();
     }
     
     /*! \brief  Get required and to open the exit.
      *  \return Required sand counter value. */
     int getRequiredSand(void) {
-        SDig::DOTExit *exit = (SDig::DOTExit *)mField->mExit->getTypeObject();
-        return exit->getRequiredSand();
+        return mField->mExit->getRequiredSand();
     }
     
     /*! \brief  Get current time counter value.

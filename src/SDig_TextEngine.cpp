@@ -22,4 +22,23 @@ using namespace SDig;
 /* set default value for the instance counter */
 int TextEngine::mInstanceCounter = 0;
 
+/*!
+ * \brief   Print the content of the object field as an array to the console
+ * \param   pField
+ *  Reference to the object field to print
+ */
+void TextEngine::drawFieldData(const objField *pField)
+{
+    for (int y = 0; y < pField->size_y; y++)
+    {
+        for (int x = 0; x < pField->size_x; x++)
+        {
+            DataObject *dataObj = pField->entries[y*pField->size_x + x].data;  
+            char c = getSymbol(dataObj->getTypeObject());
+            printw("%c ", c);
+        }
+        printw("\n");
+    }
+    refresh();
+}
 

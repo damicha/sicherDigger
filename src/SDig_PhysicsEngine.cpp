@@ -53,7 +53,7 @@ bool PhysicsEngine::run(objField &pField, MovementType pPlayerMove)
     mTimeCnt--;
 
     /* move player first */
-    runPlayerPhysics(pField.mPlayer->getParentObject(), pPlayerMove);
+    runPlayerPhysics(pField.mPlayer->getDataObject()->getParentObject(), pPlayerMove);
 
     /* run physics on the other field objects */
     for (int y = 0; y < pField.size_y; y++)
@@ -169,6 +169,10 @@ bool PhysicsEngine::runPlayerPhysics(objFieldEntry  *e,
                 case MT_DOWN:
                     plMoved = movePlayer(e, e->y_next);
                     break;
+
+                /* ... */
+                default:
+                    break;
             }
             break;
         }
@@ -235,7 +239,8 @@ bool PhysicsEngine::movePlayer(objFieldEntry  *pSrc, objFieldEntry *pDest)
     }
 
     /* enter exit (replace by data object empty)
-     * FIXME: connect exit to players object as parent object */
+     * FIXME: connect exit to players object as parent object/
+     *    -> don't destroy the exit, because its data is needed */
     // FIXME: it was already tested if it's not an exit or if it's not closed */
     if (isExit(pDest))
     {

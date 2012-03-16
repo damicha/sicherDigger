@@ -24,6 +24,22 @@
 using namespace std;
 
 
+/*!
+ *\brief  create a data object
+ */
+void objFieldEntry::createDataObject(BaseDOT::DOTType type)
+{
+    data = new DataObject(this, type);
+}
+
+void objFieldEntry::deleteDataObject()
+{
+    if (data != NULL) {
+        delete data;
+    }
+    data = NULL;
+}
+
 /* get the object content as a string */
 string objFieldEntry::str()
 {

@@ -13,6 +13,7 @@
 #ifndef _OBJ_FIELD_ENTRY_H_
 #define _OBJ_FIELD_ENTRY_H_
 
+#include "SDig_BaseDOT.h"
 #include "SDig_DataObject.h"
 
 #include <stdio.h>
@@ -46,7 +47,7 @@ public:
 #if 0
     baseMaterial *m;    /*!< the object material. A virtual class is used */
 #endif
-    DataObject *data;   //!< Data field that contains properties and states
+    SDig::DataObject *data;   //!< Data field that contains properties and states
 
 public:
     /* constructor */
@@ -58,26 +59,10 @@ public:
     {};
 
 
-    /*!
-     *\brief  create a data object
-     */
-    void createDataObject(BaseDOT::DOTType type)
-    {
+    /*  create a data object */
+    void createDataObject(BaseDOT::DOTType type);
 
-        data = new DataObject(this, type);
-#if 0
-        baseMaterial *m = createMaterial(type);
-        data->type = m;
-#endif
-    }
-
-    void deleteDataObject()
-    {
-        if (data != NULL) {
-            delete data;
-        }
-        data = NULL;
-    }
+    void deleteDataObject();
 
 
 #if 0

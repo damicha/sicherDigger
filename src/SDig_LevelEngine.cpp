@@ -100,9 +100,6 @@ void LevelEngine::run(TextEngineTypes::Button button)
             // -> or don't control time by physics engine ?
             mPhy.run(*mField, moveDirection);
 
-            SDig::DOTPlayer *player = (SDig::DOTPlayer *)mField->mPlayer->getTypeObject();
-            SDig::DOTExit   *exit   = (SDig::DOTExit *)mField->mExit->getTypeObject();
-            
             /* stop running the level if time is up */
             if (mPhy.getTimeCnt() == 0) {
                 mState = ST_END;
@@ -110,18 +107,22 @@ void LevelEngine::run(TextEngineTypes::Button button)
            
             /* FIXME: change exit state from closed to open as a function of eaten sand */
             /* FIXME: send a signal to a signal handler (the exit is connected to it an reacts on ReqSandEaten with an open door) */
-            if (getSandCnt() >= exit->getRequiredSand()) {
-                exit->openIt();
+            if (getSandCnt() >= mField->mExit->getRequiredSand()) {
+                mField->mExit->openIt();
             }
 
             /* stop running if player has exited the level */
-            if (player->getState() == DOTPlayer::ST_EXITED) {
+            if (mField->mPlayer->getState() == DOTPlayer::ST_EXITED) {
                 mState = ST_END;
             }
             
             break;
         }
 
+        /* FIXME: currently not used. remove state ? */
+        case ST_ENDING:
+            break;
+        
         case ST_END:
             /* FIXME: sum up results */
             break;

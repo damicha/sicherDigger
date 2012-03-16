@@ -3,7 +3,7 @@
 #= File:    Makefile
 #=
 #= Project: sicherDigger
-#= Author:  damicha of defect, (c) 2011
+#= Author:  damicha of defect, (c) 2011-2012
 #=
 #= Description:
 #=  Build binary file and doxygen generated documentation
@@ -27,14 +27,14 @@ OBJECTS =   sicherDigger.o \
             SDig_GameEngine.o \
             SDig_LevelEngine.o \
             SDig_BaseDOT.o
-INCLUDES = $(wildcard *.h)
+INCLUDES = $(wildcard *.h) $(wildcard ObjField/*.h)
 LDFLAGS_NCURSES = -lncurses
+
 
 
 #-------------------------------------------------------------------------------
 sicherDigger: $(OBJECTS)
 	$(CC) $(CFLAGS) $(LDFLAGS_NCURSES) $(OBJECTS) -o $@
-
 
 all: sicherDigger html
     

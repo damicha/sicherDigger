@@ -17,7 +17,7 @@
 #define _SDIG_DATA_OBJECT_H_
 
 #include "SDig_BaseDOT.h"
-#include "objFieldEntry.h"
+//#include "objFieldEntry.h"
 
 #include <stdio.h> 
 
