@@ -163,8 +163,8 @@ public:
         /* create string with timing information */
         const int str_len = 32;
         char str[str_len];
-        snprintf(str, str_len, "T:%04d S:%02d",
-                 pLevel.getTimeCnt(), pLevel.getSandCnt());
+        snprintf(str, str_len, "T:%04d S:%02d/%02d",
+                 pLevel.getTimeCnt(), pLevel.getSandCnt(), pLevel.getRequiredSand());
         
         /* display level */
         drawField(pLevel.getField(), str);

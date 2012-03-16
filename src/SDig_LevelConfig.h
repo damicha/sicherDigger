@@ -116,7 +116,7 @@ public:
     }
     
     /*! \brief   Get required amount of sand to open the exit. */
-    int getSandReq() const {
+    int getRequiredSand() const {
         return mSandReq;
     }
     

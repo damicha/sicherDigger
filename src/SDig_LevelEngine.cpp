@@ -33,7 +33,6 @@ LevelEngine::LevelEngine(void)
     mField  = new objField(*cfg);
 
     mTimeLimit = cfg->getTimeLimit();
-    mSandReq   = cfg->getSandReq(); 
 }
     
 /*!
@@ -111,8 +110,8 @@ void LevelEngine::run(TextEngineTypes::Button button)
            
             /* FIXME: change exit state from closed to open as a function of eaten sand */
             /* FIXME: send a signal to a signal handler (the exit is connected to it an reacts on ReqSandEaten with an open door) */
-            if (getSandCnt() >= mSandReq) {
-                exit->setState(DOTExit::ST_OPEN);
+            if (getSandCnt() >= exit->getRequiredSand()) {
+                exit->openIt();
             }
 
             /* stop running if player has exited the level */

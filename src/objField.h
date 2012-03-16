@@ -134,19 +134,29 @@ public:
                 /* store the reference of the exit object */
                 if (objType == BaseDOT::exit) {
                     mExit = entries[y*size_x + x].data;
+                    // set back reference
+                    SDig::DOTExit *exit = (DOTExit *)mExit->getTypeObject();
+                    exit->setFieldReference(this);
+                    // set properties    
+                    exit->setRequiredSand(pLevelConfig.getRequiredSand()); 
                 }
             }
         }
 
     };
     
-    /*!
-     * \brief   Get Players state.
-     */
-    SDig::DOTPlayer::StateType getPlayerState(void)
+    /*!\brief   Get player's state. */
+    DOTPlayer::StateType getPlayerState(void)
     {
         SDig::DOTPlayer *player = (DOTPlayer *)mPlayer->getTypeObject();
         return player->getState();
+    }
+    
+    /*!\brief   Get exit's state. */
+    DOTExit::StateType getExitState(void)
+    {
+        SDig::DOTExit *exit = (DOTExit *)mExit->getTypeObject();
+        return exit->getState();
     }
 
     /*!

@@ -11,11 +11,13 @@
  *
  ******************************************************************************/
 
+// FIXME: put DOTPlayer and DOTExit into a single file
+
+
 #ifndef _SDIG_DOTS_H_
 #define _SDIG_DOTS_H_
 
 #include "SDig_BaseDOT.h"
-//#include "objField.h"
 
 #include <string>
 
@@ -42,7 +44,6 @@ public:
     DOTWall() {
         mName = string("Wall");
         setType(wall);
-//        printf("%s: %s\n", __func__, getName().c_str());
     }
 };
 
@@ -205,7 +206,6 @@ public:
 
 
     /* ==== player's sand counter functions ==== */
-    // FIXME: use these functions to store/handle the amount of eaten sand
     
     /*! \brief   Get the number of eaten sand. */ 
     int getSandCnt(void) {
@@ -244,9 +244,11 @@ public:
 
 /* ======== class members ======== */
 private:
+    objField    *mObjField; /*!<- reference to the overlying object field to
+                                  get access to its members/functions */
+
     StateType   mState;     //!< exit's state
-    int         mSandReq;   //!< required sand to open it
-    // FIXME: add reference to LevelEngine or objField ??
+    int         mSandReq;   //!< required sand to change the state to open
 
 
 /* ======== class functions ======== */
@@ -262,7 +264,35 @@ public:
         setState(ST_CLOSED);
     };
 
+    /*!\brief   Set reference to the overlying object field */
+    void setFieldReference(objField *pObjField) {
+        mObjField = pObjField;
+    }
 
+    
+    /* ==== exit's state functions ==== */
+    
+
+    /*! \brief  Set exit's state. */
+    void setState(StateType pState) {
+        mState = pState;
+    }
+    
+    /*! \brief  Set exit's state to directly to open. */
+    void openIt(void) {
+        mState = ST_OPEN;
+    }
+    
+    /*! \brief  Set exit's state to directly to close. */
+    void closeIt(void) {
+        mState = ST_CLOSED;
+    }
+   
+    /*! \brief  Get exit's current state */ 
+    StateType getState(void) {
+        return mState;
+    }
+    
     /*!
      * \brief   Do one interration of the exit's states.
      */
@@ -278,20 +308,16 @@ public:
 
     }
 
-
-    /*! \brief  Set exit's state. */
-    void setState(StateType pState) {
-        mState = pState;
+    /* ==== exits's required sand functions ==== */
+    
+    /*! \brief   Get the value of required sand. */ 
+    int getRequiredSand(void) {
+        return mSandReq;
     }
     
-    /*! \brief  Set exits state to directly to open. */
-    void openIt(void) {
-        mState = ST_OPEN;
-    }
-   
-    /*! \brief  Get exit's current state */ 
-    StateType getState(void) {
-        return mState;
+    /*! \brief   Set the amount of required sand. */ 
+    void setRequiredSand(int pSandReq) {
+        mSandReq = pSandReq;
     }
 };
 

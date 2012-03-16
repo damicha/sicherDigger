@@ -56,7 +56,6 @@ private:
 
     // FIXME: create LevelStatisticData Class/Struct
     int mTimeLimit;             //!< The level's time limit.
-    int mSandReq;               //!< Required amount of sand to open the exit.
 
     /* ======== functions ======== */    
 public:
@@ -82,6 +81,13 @@ public:
     int getSandCnt(void) {
         SDig::DOTPlayer *player = (SDig::DOTPlayer *)mField->mPlayer->getTypeObject();
         return player->getSandCnt();
+    }
+    
+    /*! \brief  Get required and to open the exit.
+     *  \return Required sand counter value. */
+    int getRequiredSand(void) {
+        SDig::DOTExit *exit = (SDig::DOTExit *)mField->mExit->getTypeObject();
+        return exit->getRequiredSand();
     }
     
     /*! \brief  Get current time counter value.
