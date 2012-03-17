@@ -18,18 +18,28 @@
 #ifndef _OBJ_FIELD_H_
 #define _OBJ_FIELD_H_
 
+namespace SDig {
+
+namespace ObjField {
+    class Field;            // pre-declaration
+}
+}
 
 #include "SDig_BaseDOT.h"
 #include "SDig_DOTs.h"
 #include "objFieldEntry.h"
 #include "SDig_LevelConfig.h"
 
-using namespace SDig;
+
+namespace SDig {
+namespace ObjField {
+
 
 /*!
- * \class   objField 
+ * \class   Field 
+ * The Field class provides a field (x,y) of entries.
  */
-class objField
+class Field
 {
 
 /* ======== class types ======== */
@@ -39,15 +49,15 @@ public:
 public:
     int size_x;     /*!< size of the field dimension x */
     int size_y;     /*!< size of the field dimension y */
-    objFieldEntry   *entries;   /*!< reference to an array of the object field entries */
+    objFieldEntry   *mEntries;  /*!< reference to an array of the field entries */
     DOTPlayer       *mPlayer;   /*!< reference to the player object */
     DOTExit         *mExit;     /*!< reference to the exit object */
 
 /* ======== class init functions ======== */
 public:
     /* Constructors */
-    objField(int size_x, int size_y);
-    objField(const LevelConfig &pLevelConfig);
+    Field(int size_x, int size_y);
+    Field(const LevelConfig &pLevelConfig);
     
     /*!\brief   Get player's state. */
     DOTPlayer::StateType getPlayerState(void) {
@@ -62,19 +72,20 @@ public:
     /*!
      * \brief   Destructor
      */
-    ~objField() {
+    ~Field() {
         // FIXME: delete mPlayer and mExit objects and their DOT objects
         // FIXME: delete entry DOT objects
-        delete [] entries;   
+        delete [] mEntries;   
     }
 
 
-    /*!
-     * \brief   Initialize the field objects.
-     * \details Set field object data (field position, neighbors).
-     */
-    void initObj();
+    /* Initialize the field entries. */
+    void initEntries();
 
 };
+
+}       // namespace ObjField
+}       // namespace SDig
+
 
 #endif

@@ -15,7 +15,7 @@
  ******************************************************************************/
 
 #include "SDig_TextEngine.h"
-
+#include "ObjField/Field.h"
 
 using namespace SDig;
 
@@ -27,13 +27,13 @@ int TextEngine::mInstanceCounter = 0;
  * \param   pField
  *  Reference to the object field to print
  */
-void TextEngine::drawFieldData(const objField *pField)
+void TextEngine::drawFieldData(const ObjField::Field *pField)
 {
     for (int y = 0; y < pField->size_y; y++)
     {
         for (int x = 0; x < pField->size_x; x++)
         {
-            DataObject *dataObj = pField->entries[y*pField->size_x + x].data;  
+            DataObject *dataObj = pField->mEntries[y*pField->size_x + x].data;  
             char c = getSymbol(dataObj->getTypeObject());
             printw("%c ", c);
         }

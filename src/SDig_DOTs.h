@@ -17,15 +17,29 @@
 #ifndef _SDIG_DOTS_H_
 #define _SDIG_DOTS_H_
 
+#if 0
+namespace SDig {
+    class DOTPlayer;
+    class DOTExit;
+}
+#endif
+
 #include "SDig_BaseDOT.h"
 #include "SDig_DataObject.h"
+//#include "ObjField/Field.h"
 
 #include <string>
+
+namespace SDig {
+
+namespace ObjField {
+    class Field;            // pre-declaration
+}
+}
 
 using namespace std;
 
 
-class objField;         // used for a back-reference
 
 
 namespace SDig {
@@ -125,7 +139,7 @@ public:
     };
 
 private:
-    objField    *mObjField;     /*!< back-reference to the overlying object field
+    ObjField::Field *mObjField; /*!< back-reference to the overlying object field
                                      to get access to its members/functions */
     DataObject  *mDataObject;   /*!< back-reference to the overlying data object */
 
@@ -161,7 +175,7 @@ public:
      *
      * This function has to be called before the player's object can be used.
      */
-    void initReferences(objField *pObjField, DataObject *pDataObject) {
+    void initReferences(ObjField::Field *pObjField, DataObject *pDataObject) {
         mObjField = pObjField;
         mDataObject = pDataObject;
     }
@@ -275,7 +289,7 @@ public:
 
 /* ======== class members ======== */
 private:
-    objField    *mObjField;     /*!<- back-reference to the overlying object field
+    ObjField::Field *mObjField; /*!<- back-reference to the overlying object field
                                       to get access to its members/functions */
     DataObject  *mDataObject;   /*!< back-reference to the overlying data object */
 
@@ -304,7 +318,7 @@ public:
      *
      * This function has to be called before the exit object can be used.
      */
-    void initReferences(objField *pObjField, DataObject *pDataObject) {
+    void initReferences(ObjField::Field *pObjField, DataObject *pDataObject) {
         mObjField = pObjField;
         mDataObject = pDataObject;
     }

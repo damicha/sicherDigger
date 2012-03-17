@@ -15,7 +15,7 @@
 #include "SDig_DOTs.h"
 #include "SDig_BaseDOT.h"
 #include "SDig_DataObject.h"
-#include "objField.h"
+#include "ObjField/Field.h"
 
 #include "stdio.h"
 
@@ -33,7 +33,7 @@ using namespace SDig;
  * FIXME: add mechanism to lock source and destination field
  * FIXME: update data->mParentObj after an object was moved !!!
  */
-bool PhysicsEngine::run(objField &pField, MovementType pPlayerMove)
+bool PhysicsEngine::run(ObjField::Field &pField, MovementType pPlayerMove)
 {
 
     /* clear dones */
@@ -42,7 +42,7 @@ bool PhysicsEngine::run(objField &pField, MovementType pPlayerMove)
         for (int x = 0; x < pField.size_x; x++)
         {
             // FIXME remove done from data
-            pField.entries[y*pField.size_x + x].data->clearDone();
+            pField.mEntries[y*pField.size_x + x].data->clearDone();
         }
     }
 
@@ -60,7 +60,7 @@ bool PhysicsEngine::run(objField &pField, MovementType pPlayerMove)
     {
         for (int x = 0; x < pField.size_x; x++)
         {
-            objFieldEntry *entry = &(pField.entries[y*pField.size_x + x]);
+            objFieldEntry *entry = &(pField.mEntries[y*pField.size_x + x]);
 
             /* call physics functions as a function of the type of the entry data */
             switch (entry->data->getType())

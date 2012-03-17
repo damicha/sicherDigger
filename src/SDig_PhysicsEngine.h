@@ -14,7 +14,7 @@
 #ifndef _SDIG_PHYSICS_ENGINE_H_
 #define _SDIG_PHYSICS_ENGINE_H_
 
-#include "objField.h"
+#include "ObjField/Field.h"
 
 #include "stdio.h"
 
@@ -86,7 +86,7 @@ public:
     }
 
     /* Do one iteration on the object field. */
-    bool run(objField &pField, MovementType pPlayerMove);
+    bool run(ObjField::Field &pField, MovementType pPlayerMove);
 
     /*!
      * \brief   Stone physics

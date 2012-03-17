@@ -21,10 +21,6 @@
 #include "SDig_LevelConfig.h"
 #include "SDig_ConfigData.h"
 
-#include "objField.h"
-
-//using namespace std;
-
 
 namespace SDig {
 

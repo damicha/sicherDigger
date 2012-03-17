@@ -15,7 +15,7 @@
 #include "SDig_TimeEngine.h"
 #include "SDig_PhysicsEngine.h"
 
-#include "objField.h"
+#include "ObjField/Field.h"
 
 using namespace SDig;
 
@@ -30,7 +30,7 @@ LevelEngine::LevelEngine(void)
     // - get configuration as an input parameter
     // - move config setting and field creation to an subfunction
     LevelConfig *cfg = &field_a;
-    mField  = new objField(*cfg);
+    mField  = new ObjField::Field(*cfg);
 
     mTimeLimit = cfg->getTimeLimit();
 }

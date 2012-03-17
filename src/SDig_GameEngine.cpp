@@ -16,7 +16,7 @@
 #include "SDig_TextEngine.h"
 #include "SDig_PhysicsEngine.h"
 
-#include "objField.h"
+#include "ObjField/Field.h"
 
 using namespace SDig;
 

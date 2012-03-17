@@ -21,7 +21,7 @@
 #include "SDig_LevelConfig.h"
 #include "SDig_ConfigData.h"
 
-#include "objField.h"
+#include "ObjField/Field.h"
 
 namespace SDig {
 
@@ -46,7 +46,7 @@ public:
 
 /* ======== attributes ======== */    
 private:
-    objField        *mField;        //!< object field (game level data)
+    ObjField::Field *mField;        //!< object field (game level data)
 
     PhysicsEngine   mPhy;           //!< physics engine
 
@@ -72,7 +72,7 @@ public:
     void run(TextEngineTypes::Button button);
     
     /*! \brief  Get object field address. */
-    const objField *getField(void) {
+    const ObjField::Field *getField(void) {
         return mField;
     }
     

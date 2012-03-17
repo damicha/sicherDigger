@@ -19,8 +19,9 @@
 #-------------------------------------------------------------------------------
 CC = g++
 CFLAGS = -g -O0 -Wall
+INCLUDE_DIRS = -I.
 OBJECTS =   sicherDigger.o \
-            objFieldEntry.o objField.o \
+            objFieldEntry.o ObjField/Field.o \
             SDig_TimeEngine.o \
             SDig_TextEngine.o \
             SDig_PhysicsEngine.o \
@@ -41,7 +42,7 @@ all: sicherDigger html
 
 #-------------------------------------------------------------------------------
 %.o: %.cpp $(INCLUDES)
-	$(CC) $(CFLAGS) -c $<
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -c $< -o $@
 
 
 #-------------------------------------------------------------------------------

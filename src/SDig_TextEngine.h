@@ -19,7 +19,7 @@
 
 
 
-#include "objField.h"
+#include "ObjField/Field.h"
 #include "SDig_BaseDOT.h"
 #include "SDig_DOTs.h"
 #include "SDig_TimeEngine.h"
@@ -178,7 +178,7 @@ private:
      * \param   pHeaderString
      *  String used within the header
      */
-    void drawField(const objField *pField,
+    void drawField(const ObjField::Field *pField,
                    const char *pHeaderString = NULL)
     {
         // move cursor position to (row, col)
@@ -192,7 +192,7 @@ private:
 
 
     /* Print the content of the object field as an array to the console. */
-    void drawFieldData(const objField *pField);
+    void drawFieldData(const ObjField::Field *pField);
 
 
     /*!
@@ -200,12 +200,12 @@ private:
      * \param   pField
      *  Reference to the object field to print
      */
-    void drawFieldList(const objField &pField)
+    void drawFieldList(const ObjField::Field &pField)
     {
         printw("Field dimensions: (x: %d, y: %d)\n",
                pField.size_x, pField.size_y);
         for (int i = 0; i < pField.size_x*pField.size_y; i++) {
-            printw("position: %2d, data: %s\n", i, pField.entries[i].str().c_str());
+            printw("position: %2d, data: %s\n", i, pField.mEntries[i].str().c_str());
         }
         refresh();
     }
