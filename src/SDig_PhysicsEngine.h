@@ -97,7 +97,7 @@ public:
     bool runPlayerPhysics(objFieldEntry *e, MovementType pPlayerMove);
 
     /* Move player's data object */
-    bool movePlayer(objFieldEntry  *pSrc, objFieldEntry *pDest);
+    bool movePlayer(objFieldEntry  *pPlayerObj, objFieldEntry *pDestObj);
 
     /* Check if this object has the type empty. */
     bool isEmpty(objFieldEntry *pEntry);

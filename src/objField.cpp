@@ -49,14 +49,14 @@ objField::objField(int size_x, int size_y) : entries(NULL), mPlayer(NULL), mExit
                 // FIXME: put data object creation in a function
                 entries[y*size_x + x].createDataObject(BaseDOT::player);
                 mPlayer = (DOTPlayer *)entries[y*size_x + x].data->getTypeObject();
-                // set back reference
-                mPlayer->setFieldReference(this);
+                // set back references
+                mPlayer->initReferences(this, entries[y*size_x + x].data);
             } else if (x == 1 && y == 0) {
                 /* set exit position/object */
                 entries[y*size_x + x].createDataObject(BaseDOT::exit);
                 mExit = (DOTExit *)entries[y*size_x + x].data->getTypeObject();
-                // set back reference
-                mExit->setFieldReference(this);
+                // set back references
+                mExit->initReferences(this, entries[y*size_x + x].data);
                 // set properties    
                 mExit->setRequiredSand(1); 
             } else if (x == 0 || x == size_x - 1 ||
@@ -73,8 +73,7 @@ objField::objField(int size_x, int size_y) : entries(NULL), mPlayer(NULL), mExit
 /*!
  * \brief   Constructor
  * \details Initializes the field with the given configuration.
- * \param   cfg configuration
- * FIXME: move function implementation to *.cpp
+ * \param cfg   configuration
  */
 objField::objField(const LevelConfig &pLevelConfig)
 {
@@ -89,7 +88,6 @@ objField::objField(const LevelConfig &pLevelConfig)
     initObj();
 
     /* create materials */
-    // FIXME move player info data and functions to player class dotPlayer
     for (int y = 0; y < size_y; y++)
     {
         for (int x = 0; x < size_x; x++)
@@ -103,15 +101,13 @@ objField::objField(const LevelConfig &pLevelConfig)
             if (objType == BaseDOT::player) {
                 mPlayer = (DOTPlayer *)entries[y*size_x + x].data->getTypeObject();
                 // set back references
-                // FIXME: move initialization this to DOTPlayer class
-                mPlayer->setFieldReference(this);
-                mPlayer->setDataObject(entries[y*size_x + x].data);
+                mPlayer->initReferences(this, entries[y*size_x + x].data);
             }
             /* store the reference of the exit object */
             if (objType == BaseDOT::exit) {
                 mExit = (DOTExit *)entries[y*size_x + x].data->getTypeObject();
                 // set back reference
-                mExit->setFieldReference(this);
+                mExit->initReferences(this, entries[y*size_x + x].data);
                 // set properties    
                 mExit->setRequiredSand(pLevelConfig.getRequiredSand()); 
             }

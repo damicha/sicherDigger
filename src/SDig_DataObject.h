@@ -4,20 +4,18 @@
  * \brief   Stores the properties and states of an data objects.
  * 
  * \author  damicha of defect
- * \date    2011 
+ * \date    2011-2012 
  *
  * \license See license file in the main directory. 
  *
  ******************************************************************************/
 
 // FIXME: add physics properties/states (create a class or add to baseType)
-// FIXME: member should be private
 
 #ifndef _SDIG_DATA_OBJECT_H_
 #define _SDIG_DATA_OBJECT_H_
 
 #include "SDig_BaseDOT.h"
-//#include "objFieldEntry.h"
 
 #include <stdio.h> 
 
@@ -38,13 +36,12 @@ class DataObject
 /* ======== class attributes ======== */
 private:
     // FIXME: use class name objectType <- is a virtual class!
-    BaseDOT *mType;   //!< object type FIXME: rename class baseMaterial to baseType
+    BaseDOT *mType; //!< object type
     bool mDone;     /*!< true if material was already used by physics engine: 
                      * FIXME: move to a physics class (maybe)
                      * FIXME: use a own data type
                      * FIXME: don't use done. use blocked by current, next, prev ..
                      */
-    /* FIXME: add reference to objFieldEntry */
     objFieldEntry *mParentObj;  //!< back-reference to object field entry
 
 /* ======== class initialisation functions ======== */

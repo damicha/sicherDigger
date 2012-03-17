@@ -23,11 +23,9 @@
 #include <string>
 
 using namespace std;
-using namespace SDig;
 
 
 class objField;         // used for a back-reference
-class DataObject;       // used for a back-reference
 
 
 namespace SDig {
@@ -110,6 +108,8 @@ public:
  * \class   DOTPlayer
  * \brief   Declaration of the data object type class: player.
  * FIXME: use an own file
+ * Don't delete the player object during the level engine is running, because its
+ * member variables are used by the level engine.
  */
 class DOTPlayer : public BaseDOT
 {
@@ -125,9 +125,9 @@ public:
     };
 
 private:
-    objField    *mObjField;     /*!< reference to the overlying object field to
-                                     get access to its members/functions */
-    DataObject  *mDataObject;   /*!< reference to the overlying data object */
+    objField    *mObjField;     /*!< back-reference to the overlying object field
+                                     to get access to its members/functions */
+    DataObject  *mDataObject;   /*!< back-reference to the overlying data object */
 
     StateType   mState;     //!< player's state
     int         mCnt;       //!< counter value used for the exiting phases
@@ -153,6 +153,19 @@ public:
         mSandCnt = 0;
     };
 
+    /*!
+     *\brief    initialize references
+     *
+     *\param pObjField      back-reference to the object field
+     *\param pDataObject    back-reference to the players data object
+     *
+     * This function has to be called before the player's object can be used.
+     */
+    void initReferences(objField *pObjField, DataObject *pDataObject) {
+        mObjField = pObjField;
+        mDataObject = pDataObject;
+    }
+#if 0    
     /*!\brief   Set reference to the overlying object field */
     void setFieldReference(objField *pObjField) {
         mObjField = pObjField;
@@ -162,7 +175,7 @@ public:
     void setDataObject(DataObject *pDataObject) {
         mDataObject = pDataObject;
     }
-    
+#endif    
     /*!\brief   Set reference to the overlying data object */
     DataObject *getDataObject(void) {
         return mDataObject;
@@ -245,6 +258,8 @@ public:
  * \class   DOTExit
  * \brief   Declaration of the data object type class: exit.
  * FIXME: use an own file
+ * Don't delete the exit object during the level engine is running, because its
+ * member variables are used by the level engine.
  */
 class DOTExit : public BaseDOT
 {
@@ -260,8 +275,9 @@ public:
 
 /* ======== class members ======== */
 private:
-    objField    *mObjField; /*!<- reference to the overlying object field to
-                                  get access to its members/functions */
+    objField    *mObjField;     /*!<- back-reference to the overlying object field
+                                      to get access to its members/functions */
+    DataObject  *mDataObject;   /*!< back-reference to the overlying data object */
 
     StateType   mState;     //!< exit's state
     int         mSandReq;   //!< required sand to change the state to open
@@ -280,11 +296,28 @@ public:
         setState(ST_CLOSED);
     };
 
+    /*!
+     *\brief    initialize references
+     *
+     *\param pObjField      back-reference to the object field
+     *\param pDataObject    back-reference to the exit's data object
+     *
+     * This function has to be called before the exit object can be used.
+     */
+    void initReferences(objField *pObjField, DataObject *pDataObject) {
+        mObjField = pObjField;
+        mDataObject = pDataObject;
+    }
+#if 0    
     /*!\brief   Set reference to the overlying object field */
     void setFieldReference(objField *pObjField) {
         mObjField = pObjField;
     }
-
+#endif
+    /*!\brief   Set reference to the overlying data object */
+    DataObject *getDataObject(void) {
+        return mDataObject;
+    }
     
     /* ==== exit's state functions ==== */
     

@@ -198,11 +198,12 @@ bool PhysicsEngine::runPlayerPhysics(objFieldEntry  *e,
 };
 
 /*!
- * Move player's data object.
- * \param   pDest   The field to which the player (pSrc) shall be moved.
+ * \brief Move player's data object.
+ * \param pPlayerObj    Players object
+ * \param pDestObj      The field object to which pPlayerObj shall be moved.
  * \return  Is true if player has been moved.
  */
-bool PhysicsEngine::movePlayer(objFieldEntry  *pSrc, objFieldEntry *pDest)
+bool PhysicsEngine::movePlayer(objFieldEntry  *pPlayerObj, objFieldEntry *pDestObj)
 {
     
     /* FIXME: Player destroys exit if it enter it!
@@ -213,50 +214,48 @@ bool PhysicsEngine::movePlayer(objFieldEntry  *pSrc, objFieldEntry *pDest)
 
     /* ==== check preconditions ==== */
     /* exit if the destination object doesn't exist or was already handeld */
-    if (pDest == NULL || pDest->data->isDone()) {
+    if (pDestObj == NULL || pDestObj->data->isDone()) {
         return false;
     }
 
     /* exit if the destination is blocking the player */
-    if (isBlocking(pDest)) {
+    if (isBlocking(pDestObj)) {
         return false;
     }
     
     /* exit if the destination is an closed exit */
-    if (isClosedExit(pDest)) {
+    if (isClosedExit(pDestObj)) {
         return false;
     }
 
 
     /* ==== move the player ==== */
     /* eat sand (replace by data object: empty) */
-    if (isSand(pDest)) {
-        delete pDest->data;
-        pDest->data = new DataObject(pDest, BaseDOT::empty);
-//        mSandCnt++;
-        DOTPlayer *player = (DOTPlayer *)pSrc->data->getTypeObject();
+    if (isSand(pDestObj)) {
+        delete pDestObj->data;
+        pDestObj->data = new DataObject(pDestObj, BaseDOT::empty);
+        DOTPlayer *player = (DOTPlayer *)pPlayerObj->data->getTypeObject();
         player->incrSandCnt();
     }
 
-    /* enter exit (replace by data object empty)
-     * FIXME: connect exit to players object as parent object/
-     *    -> don't destroy the exit, because its data is needed */
-    // FIXME: it was already tested if it's not an exit or if it's not closed */
-    if (isExit(pDest))
+    /* enter exit
+     * - Don't destroy the exit, because its members are needed. */
+    // FIXME: it was already tested if it's not an exit or if it's not closed
+    if (isExit(pDestObj))
     {
-        delete pDest->data;
-        pDest->data = new DataObject(pDest, BaseDOT::empty);
+        // replace the exit object with an empty one
+        pDestObj->data = new DataObject(pDestObj, BaseDOT::empty);
         /* Change player state to exiting player */
         // FIXME: don't set the state in this subfunction:
         //  - use signal or call back or return code of this function!
-        ((SDig::DOTPlayer *)pSrc->data->getTypeObject())->setState(DOTPlayer::ST_EXITING);
+        ((DOTPlayer *)pPlayerObj->data->getTypeObject())->setState(DOTPlayer::ST_EXITING);
     }
 
     /* the empty field to done */
-    pDest->data->setDone();
+    pDestObj->data->setDone();
 
     /* move player by switch the data objects */
-    switchDataObjects(pSrc, pDest);
+    switchDataObjects(pPlayerObj, pDestObj);
 
     /* player was moved: return true */
     return true;
@@ -329,7 +328,7 @@ void PhysicsEngine::switchDataObjects(objFieldEntry *pSrc, objFieldEntry *pDest)
 {
     DataObject  *doSrc     = pSrc->data;
     DataObject  *doDest    = pDest->data;
-    /* switch */
+    /* switch references */
     pSrc->data  = doDest;
     pSrc->data->setParentObject(pSrc);
     pDest->data = doSrc;

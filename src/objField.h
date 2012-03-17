@@ -4,7 +4,7 @@
  * \brief   handels a 2 dimensional field of class objFieldEntry objects
  * 
  * \author  damicha of defect
- * \date    2011 
+ * \date    2011-2012 
  *
  * \license See license file in the main directory. 
  *
@@ -24,10 +24,7 @@
 #include "objFieldEntry.h"
 #include "SDig_LevelConfig.h"
 
-using namespace std;
 using namespace SDig;
-
-class objField;
 
 /*!
  * \class   objField 
@@ -43,7 +40,6 @@ public:
     int size_x;     /*!< size of the field dimension x */
     int size_y;     /*!< size of the field dimension y */
     objFieldEntry   *entries;   /*!< reference to an array of the object field entries */
-    // FIXME: store reference to DOTPlayer, DOTExit objects
     DOTPlayer       *mPlayer;   /*!< reference to the player object */
     DOTExit         *mExit;     /*!< reference to the exit object */
 
@@ -67,6 +63,8 @@ public:
      * \brief   Destructor
      */
     ~objField() {
+        // FIXME: delete mPlayer and mExit objects and their DOT objects
+        // FIXME: delete entry DOT objects
         delete [] entries;   
     }
 
