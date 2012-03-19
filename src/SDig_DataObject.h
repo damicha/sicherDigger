@@ -21,8 +21,11 @@
 
 using namespace std;
 
-// pre-declare needed class
-class objFieldEntry;
+namespace SDig {
+namespace ObjField {
+    class Entry;            // pre-declaration
+}
+}
 
 namespace SDig {
 
@@ -37,17 +40,17 @@ class DataObject
 private:
     // FIXME: use class name objectType <- is a virtual class!
     BaseDOT *mType; //!< object type
-    bool mDone;     /*!< true if material was already used by physics engine: 
+    bool    mDone;  /*!< true if material was already used by physics engine: 
                      * FIXME: move to a physics class (maybe)
                      * FIXME: use a own data type
                      * FIXME: don't use done. use blocked by current, next, prev ..
                      */
-    objFieldEntry *mParentObj;  //!< back-reference to object field entry
+    ObjField::Entry *mParentObj;    //!< back-reference to object field entry
 
 /* ======== class initialisation functions ======== */
 public:
     /*!\brief   Constructor */
-    DataObject(objFieldEntry *pParentObj, const BaseDOT::DOTType pObjType = BaseDOT::unknown)
+    DataObject(ObjField::Entry *pParentObj, const BaseDOT::DOTType pObjType = BaseDOT::unknown)
     {
         mType = BaseDOT::createDOT(pObjType);
         mDone = false;
@@ -73,12 +76,12 @@ public:
     }
 
     /*!\brief   Gets the reference to the parent object */
-    objFieldEntry *getParentObject(void) {
+    ObjField::Entry *getParentObject(void) {
         return mParentObj;
     }
     
     /*!\brief   Set a new reference to the parent object */
-    void setParentObject(objFieldEntry *pParentObj) {
+    void setParentObject(ObjField::Entry *pParentObj) {
         mParentObj = pParentObj;
     }
     

@@ -15,6 +15,7 @@
 #define _SDIG_PHYSICS_ENGINE_H_
 
 #include "ObjField/Field.h"
+#include "ObjField/Entry.h"
 
 #include "stdio.h"
 
@@ -91,31 +92,31 @@ public:
     /*!
      * \brief   Stone physics
      */
-    void runStonePhysics(objFieldEntry *e);
+    void runStonePhysics(ObjField::Entry *e);
     
     /* Player physics */
-    bool runPlayerPhysics(objFieldEntry *e, MovementType pPlayerMove);
+    bool runPlayerPhysics(ObjField::Entry *e, MovementType pPlayerMove);
 
     /* Move player's data object */
-    bool movePlayer(objFieldEntry  *pPlayerObj, objFieldEntry *pDestObj);
+    bool movePlayer(ObjField::Entry  *pPlayerObj, ObjField::Entry *pDestObj);
 
     /* Check if this object has the type empty. */
-    bool isEmpty(objFieldEntry *pEntry);
+    bool isEmpty(ObjField::Entry *pEntry);
     
     /* Check if this object has the type sand. */
-    bool isSand(objFieldEntry *pEntry);
+    bool isSand(ObjField::Entry *pEntry);
     
     /* Check if this object has the type exit. */
-    bool isExit(objFieldEntry *pEntry);
+    bool isExit(ObjField::Entry *pEntry);
     
     /* Check if the it's and closed exit. */
-    bool isClosedExit(objFieldEntry *pEntry);
+    bool isClosedExit(ObjField::Entry *pEntry);
 
     /* Check if this object is able to block others. */
-    bool isBlocking(objFieldEntry *pEntry);
+    bool isBlocking(ObjField::Entry *pEntry);
     
     /* Switch data objects. */
-    void switchDataObjects(objFieldEntry *pSrc, objFieldEntry *pDest);
+    void switchDataObjects(ObjField::Entry *pSrc, ObjField::Entry *pDest);
 
 };
 

@@ -16,6 +16,7 @@
 #include "SDig_BaseDOT.h"
 #include "SDig_DataObject.h"
 #include "ObjField/Field.h"
+#include "ObjField/Entry.h"
 
 #include "stdio.h"
 
@@ -42,7 +43,7 @@ bool PhysicsEngine::run(ObjField::Field &pField, MovementType pPlayerMove)
         for (int x = 0; x < pField.size_x; x++)
         {
             // FIXME remove done from data
-            pField.mEntries[y*pField.size_x + x].data->clearDone();
+            pField.mEntries[y*pField.size_x + x].getData()->clearDone();
         }
     }
 
@@ -60,10 +61,10 @@ bool PhysicsEngine::run(ObjField::Field &pField, MovementType pPlayerMove)
     {
         for (int x = 0; x < pField.size_x; x++)
         {
-            objFieldEntry *entry = &(pField.mEntries[y*pField.size_x + x]);
+            ObjField::Entry *entry = &(pField.mEntries[y*pField.size_x + x]);
 
             /* call physics functions as a function of the type of the entry data */
-            switch (entry->data->getType())
+            switch (entry->getData()->getType())
             {
                 case BaseDOT::stone:
                     runStonePhysics(entry);
@@ -89,29 +90,29 @@ bool PhysicsEngine::run(ObjField::Field &pField, MovementType pPlayerMove)
  * Movement Rules:\n
  *  - a stone falls down if the field under it is free.
  */
-void PhysicsEngine::runStonePhysics(objFieldEntry *e)
+void PhysicsEngine::runStonePhysics(ObjField::Entry *e)
 {
     /* return if entry is already treated */
-    if (e->data->isDone()) {
+    if (e->getData()->isDone()) {
         return;
     }
 
     /* set stone object to done */
-    e->data->setDone();
+    e->getData()->setDone();
 
     /* get the entry that is under the stone */
-    objFieldEntry *e_y_next = e->y_next;
+    ObjField::Entry *eNextY = e->getNextY();
 
     /* if it's empty */
-    if (e_y_next && e_y_next->data->isDone() == false &&
-        isEmpty(e_y_next))
+    if (eNextY && eNextY->getData()->isDone() == false &&
+        isEmpty(eNextY))
     {
         /* set empty object to done */
-        e_y_next->data->setDone();
+        eNextY->getData()->setDone();
 
         /* let stone fall by switching stone and empty data of the 
            field entries */
-        switchDataObjects(e, e_y_next);
+        switchDataObjects(e, eNextY);
     }
 
 };
@@ -130,18 +131,18 @@ void PhysicsEngine::runStonePhysics(objFieldEntry *e)
  * FIXME add player commands: move left, right, up, down, push..., pull ...
  * FIXME add usefull subfunction (check, move)
  */
-bool PhysicsEngine::runPlayerPhysics(objFieldEntry  *e,
-                                     MovementType   pPlayerMove)
+bool PhysicsEngine::runPlayerPhysics(ObjField::Entry    *e,
+                                     MovementType       pPlayerMove)
 {
     bool plMoved = false;
 
     /* return if entry was already treated */
-    if (e->data->isDone()) {
+    if (e->getData()->isDone()) {
         return false;
     }
 
     /* move player as a function of the player state */
-    SDig::DOTPlayer *player = (SDig::DOTPlayer *)e->data->getTypeObject();
+    SDig::DOTPlayer *player = (SDig::DOTPlayer *)e->getData()->getTypeObject();
     switch (player->getState())
     {
         /* player is alive */
@@ -152,22 +153,22 @@ bool PhysicsEngine::runPlayerPhysics(objFieldEntry  *e,
                 /* move to right */
                 case MT_RIGHT:
                     // FIXME: set new player with call back function ?
-                    plMoved = movePlayer(e, e->x_next);
+                    plMoved = movePlayer(e, e->getNextX());
                     break;
 
                 /* move to left */
                 case MT_LEFT:
-                    plMoved = movePlayer(e, e->x_prev);
+                    plMoved = movePlayer(e, e->getPrevX());
                     break;
                 
                 /* move up */
                 case MT_UP:
-                    plMoved = movePlayer(e, e->y_prev);
+                    plMoved = movePlayer(e, e->getPrevY());
                     break;
 
                 /* move down */
                 case MT_DOWN:
-                    plMoved = movePlayer(e, e->y_next);
+                    plMoved = movePlayer(e, e->getNextY());
                     break;
 
                 /* ... */
@@ -191,7 +192,7 @@ bool PhysicsEngine::runPlayerPhysics(objFieldEntry  *e,
     
 
     /* set player object to done */
-    e->data->setDone();
+    e->getData()->setDone();
 
     return plMoved; 
 
@@ -203,7 +204,7 @@ bool PhysicsEngine::runPlayerPhysics(objFieldEntry  *e,
  * \param pDestObj      The field object to which pPlayerObj shall be moved.
  * \return  Is true if player has been moved.
  */
-bool PhysicsEngine::movePlayer(objFieldEntry  *pPlayerObj, objFieldEntry *pDestObj)
+bool PhysicsEngine::movePlayer(ObjField::Entry *pPlayerObj, ObjField::Entry *pDestObj)
 {
     
     /* FIXME: Player destroys exit if it enter it!
@@ -214,7 +215,7 @@ bool PhysicsEngine::movePlayer(objFieldEntry  *pPlayerObj, objFieldEntry *pDestO
 
     /* ==== check preconditions ==== */
     /* exit if the destination object doesn't exist or was already handeld */
-    if (pDestObj == NULL || pDestObj->data->isDone()) {
+    if (pDestObj == NULL || pDestObj->getData()->isDone()) {
         return false;
     }
 
@@ -232,9 +233,9 @@ bool PhysicsEngine::movePlayer(objFieldEntry  *pPlayerObj, objFieldEntry *pDestO
     /* ==== move the player ==== */
     /* eat sand (replace by data object: empty) */
     if (isSand(pDestObj)) {
-        delete pDestObj->data;
-        pDestObj->data = new DataObject(pDestObj, BaseDOT::empty);
-        DOTPlayer *player = (DOTPlayer *)pPlayerObj->data->getTypeObject();
+        pDestObj->deleteDataObject();
+        pDestObj->createDataObject(BaseDOT::empty);
+        DOTPlayer *player = (DOTPlayer *)pPlayerObj->getData()->getTypeObject();
         player->incrSandCnt();
     }
 
@@ -244,15 +245,15 @@ bool PhysicsEngine::movePlayer(objFieldEntry  *pPlayerObj, objFieldEntry *pDestO
     if (isExit(pDestObj))
     {
         // replace the exit object with an empty one
-        pDestObj->data = new DataObject(pDestObj, BaseDOT::empty);
+        pDestObj->createDataObject(BaseDOT::empty);
         /* Change player state to exiting player */
         // FIXME: don't set the state in this subfunction:
         //  - use signal or call back or return code of this function!
-        ((DOTPlayer *)pPlayerObj->data->getTypeObject())->setState(DOTPlayer::ST_EXITING);
+        ((DOTPlayer *)pPlayerObj->getData()->getTypeObject())->setState(DOTPlayer::ST_EXITING);
     }
 
     /* the empty field to done */
-    pDestObj->data->setDone();
+    pDestObj->getData()->setDone();
 
     /* move player by switch the data objects */
     switchDataObjects(pPlayerObj, pDestObj);
@@ -264,38 +265,38 @@ bool PhysicsEngine::movePlayer(objFieldEntry  *pPlayerObj, objFieldEntry *pDestO
 /*!
  * \brief   Check if this object has the type empty.
  */
-bool PhysicsEngine::isEmpty(objFieldEntry *pEntry)
+bool PhysicsEngine::isEmpty(ObjField::Entry *pEntry)
 {
-    return (pEntry->data->getType() == BaseDOT::empty) ? true : false;
+    return (pEntry->getData()->getType() == BaseDOT::empty) ? true : false;
 }
 
 /*!
  * \brief   Check if this object has the type sand.
  */
-bool PhysicsEngine::isSand(objFieldEntry *pEntry)
+bool PhysicsEngine::isSand(ObjField::Entry *pEntry)
 {
-    return (pEntry->data->getType() == BaseDOT::sand) ? true : false;
+    return (pEntry->getData()->getType() == BaseDOT::sand) ? true : false;
 }
 
 /*!
  * \brief   Check if this object has the type exit.
  */
-bool PhysicsEngine::isExit(objFieldEntry *pEntry)
+bool PhysicsEngine::isExit(ObjField::Entry *pEntry)
 {
-    return (pEntry->data->getType() == BaseDOT::exit) ? true : false;
+    return (pEntry->getData()->getType() == BaseDOT::exit) ? true : false;
 }
 
 /*!
  * \brief   Check if the it's and closed exit..
  */
-bool PhysicsEngine::isClosedExit(objFieldEntry *pEntry)
+bool PhysicsEngine::isClosedExit(ObjField::Entry *pEntry)
 {
-    if (pEntry->data->getType() != BaseDOT::exit) {
+    if (pEntry->getData()->getType() != BaseDOT::exit) {
         /* object is not an exit */
         return false;
     }
 
-    SDig::DOTExit *exit = (SDig::DOTExit *)pEntry->data->getTypeObject();
+    SDig::DOTExit *exit = (SDig::DOTExit *)pEntry->getData()->getTypeObject();
     if (exit->getState() == DOTExit::ST_CLOSED)
     {
         /* exit is closed */
@@ -310,10 +311,10 @@ bool PhysicsEngine::isClosedExit(objFieldEntry *pEntry)
  * \brief   Check if this object is able to block others.
  * FIXME: give object type properties like blocking, moveable,...
  */
-bool PhysicsEngine::isBlocking(objFieldEntry *pEntry)
+bool PhysicsEngine::isBlocking(ObjField::Entry *pEntry)
 {
-    if (pEntry->data->getType() == BaseDOT::wall    ||
-        pEntry->data->getType() == BaseDOT::stone)
+    if (pEntry->getData()->getType() == BaseDOT::wall    ||
+        pEntry->getData()->getType() == BaseDOT::stone)
     {
         return true;
     } else {
@@ -323,16 +324,17 @@ bool PhysicsEngine::isBlocking(objFieldEntry *pEntry)
 
 /*!
  * \brief   Switch data objects.
+ * FIXME: move to DataObject class
  */
-void PhysicsEngine::switchDataObjects(objFieldEntry *pSrc, objFieldEntry *pDest)
+void PhysicsEngine::switchDataObjects(ObjField::Entry *pSrc, ObjField::Entry *pDest)
 {
-    DataObject  *doSrc     = pSrc->data;
-    DataObject  *doDest    = pDest->data;
+    DataObject  *doSrc     = pSrc->getData();
+    DataObject  *doDest    = pDest->getData();
     /* switch references */
-    pSrc->data  = doDest;
-    pSrc->data->setParentObject(pSrc);
-    pDest->data = doSrc;
-    pDest->data->setParentObject(pDest);
+    pSrc->setData(doDest);
+    pSrc->getData()->setParentObject(pSrc);
+    pDest->setData(doSrc);
+    pDest->getData()->setParentObject(pDest);
 }
 
 

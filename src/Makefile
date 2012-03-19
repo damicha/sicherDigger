@@ -21,7 +21,7 @@ CC = g++
 CFLAGS = -g -O0 -Wall
 INCLUDE_DIRS = -I.
 OBJECTS =   sicherDigger.o \
-            objFieldEntry.o ObjField/Field.o \
+            ObjField/Field.o ObjField/Entry.o \
             SDig_TimeEngine.o \
             SDig_TextEngine.o \
             SDig_PhysicsEngine.o \

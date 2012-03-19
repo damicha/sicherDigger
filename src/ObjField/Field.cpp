@@ -1,7 +1,7 @@
 /******************************************************************************/
 /*!
  * \file    Field.cpp
- * \brief   Implementation of the class objField.
+ * \brief   Implementation of the class ObjField::Field.
  * 
  * \author  damicha of defect
  * \date    2011 
@@ -10,13 +10,8 @@
  *
  ******************************************************************************/
 
-#include "objFieldEntry.h"
-#include "Field.h"
-
-//#include <deque>
-//#include <string>
-//#include <sstream>
-//using namespace std;
+#include "ObjField/Entry.h"
+#include "ObjField/Field.h"
 
 using namespace SDig;
 using namespace SDig::ObjField;
@@ -35,7 +30,7 @@ Field::Field(int size_x, int size_y) : mEntries(NULL), mPlayer(NULL), mExit(NULL
     this->size_y = size_y;
     
     /* get memory for the field entries */
-    mEntries = new objFieldEntry[size_x*size_y];
+    mEntries = new ObjField::Entry[size_x*size_y];
 
     /* do final field object initialization */
     initEntries();
@@ -51,15 +46,15 @@ Field::Field(int size_x, int size_y) : mEntries(NULL), mPlayer(NULL), mExit(NULL
                 /* set player position/object */
                 // FIXME: put data object creation in a function
                 mEntries[y*size_x + x].createDataObject(BaseDOT::player);
-                mPlayer = (DOTPlayer *)mEntries[y*size_x + x].data->getTypeObject();
+                mPlayer = (DOTPlayer *)mEntries[y*size_x + x].getData()->getTypeObject();
                 // set back references
-                mPlayer->initReferences(this, mEntries[y*size_x + x].data);
+                mPlayer->initReferences(this, mEntries[y*size_x + x].getData());
             } else if (x == 1 && y == 0) {
                 /* set exit position/object */
                 mEntries[y*size_x + x].createDataObject(BaseDOT::exit);
-                mExit = (DOTExit *)mEntries[y*size_x + x].data->getTypeObject();
+                mExit = (DOTExit *)mEntries[y*size_x + x].getData()->getTypeObject();
                 // set back references
-                mExit->initReferences(this, mEntries[y*size_x + x].data);
+                mExit->initReferences(this, mEntries[y*size_x + x].getData());
                 // set properties    
                 mExit->setRequiredSand(1); 
             } else if (x == 0 || x == size_x - 1 ||
@@ -85,7 +80,7 @@ Field::Field(const LevelConfig &pLevelConfig)
     size_y = pLevelConfig.getSizeY();
     
     /* get memory for the field entries */
-    mEntries = new objFieldEntry[size_x*size_y];
+    mEntries = new ObjField::Entry[size_x*size_y];
     
     /* do final field object initialization */
     initEntries();
@@ -102,15 +97,15 @@ Field::Field(const LevelConfig &pLevelConfig)
             
             /* store the reference of the players object */
             if (objType == BaseDOT::player) {
-                mPlayer = (DOTPlayer *)mEntries[y*size_x + x].data->getTypeObject();
+                mPlayer = (DOTPlayer *)mEntries[y*size_x + x].getData()->getTypeObject();
                 // set back references
-                mPlayer->initReferences(this, mEntries[y*size_x + x].data);
+                mPlayer->initReferences(this, mEntries[y*size_x + x].getData());
             }
             /* store the reference of the exit object */
             if (objType == BaseDOT::exit) {
-                mExit = (DOTExit *)mEntries[y*size_x + x].data->getTypeObject();
+                mExit = (DOTExit *)mEntries[y*size_x + x].getData()->getTypeObject();
                 // set back reference
-                mExit->initReferences(this, mEntries[y*size_x + x].data);
+                mExit->initReferences(this, mEntries[y*size_x + x].getData());
                 // set properties    
                 mExit->setRequiredSand(pLevelConfig.getRequiredSand()); 
             }
@@ -132,29 +127,28 @@ void Field::initEntries()
         for (int x = 0; x < size_x; x++)
         {
             // set position information
-            mEntries[y*size_x + x].pos_x = x;
-            mEntries[y*size_x + x].pos_y = y;
+            mEntries[y*size_x + x].setPosition(x, y);
 
             // set neighbors
             if (x == 0) {
-                mEntries[y*size_x + x].x_prev = NULL;
+                mEntries[y*size_x + x].setPrevX(NULL);
             } else {
-                mEntries[y*size_x + x].x_prev = &mEntries[y*size_x + x-1];
+                mEntries[y*size_x + x].setPrevX(&mEntries[y*size_x + x-1]);
             }
             if (x == size_x-1) {
-                mEntries[y*size_x + x].x_next = NULL;
+                mEntries[y*size_x + x].setNextX(NULL);
             } else {
-                mEntries[y*size_x + x].x_next = &mEntries[y*size_x + x+1];
+                mEntries[y*size_x + x].setNextX(&mEntries[y*size_x + x+1]);
             }
             if (y == 0) {
-                mEntries[y*size_x + x].y_prev = NULL;
+                mEntries[y*size_x + x].setPrevY(NULL);
             } else {
-                mEntries[y*size_x + x].y_prev = &mEntries[(y-1)*size_x + x];
+                mEntries[y*size_x + x].setPrevY(&mEntries[(y-1)*size_x + x]);
             }
             if (y == size_y-1) {
-                mEntries[y*size_x + x].y_next = NULL;
+                mEntries[y*size_x + x].setNextY(NULL);
             } else {
-                mEntries[y*size_x + x].y_next = &mEntries[(y+1)*size_x + x];
+                mEntries[y*size_x + x].setNextY(&mEntries[(y+1)*size_x + x]);
             }
         }
     }

@@ -33,7 +33,7 @@ void TextEngine::drawFieldData(const ObjField::Field *pField)
     {
         for (int x = 0; x < pField->size_x; x++)
         {
-            DataObject *dataObj = pField->mEntries[y*pField->size_x + x].data;  
+            DataObject *dataObj = pField->mEntries[y*pField->size_x + x].getData();  
             char c = getSymbol(dataObj->getTypeObject());
             printw("%c ", c);
         }

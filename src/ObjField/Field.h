@@ -1,25 +1,21 @@
 /******************************************************************************/
 /*!
- * \file    objField.h
- * \brief   handels a 2 dimensional field of class objFieldEntry objects
+ * \file    ObjField/Field.h
+ * \brief   Handels a 2 dimensional field of class ObjField::Entry objects
  * 
  * \author  damicha of defect
  * \date    2011-2012 
  *
  * \license See license file in the main directory. 
  *
- * \todo add obj type (physic, gfx(txt output) ) as a member of objFieldEntry->obj
- * \todo add a configuration class 
- *
  ******************************************************************************/
 
 // FIXME: in general do only function declarations -> move implementation to *.cpp file
 
-#ifndef _OBJ_FIELD_H_
-#define _OBJ_FIELD_H_
+#ifndef _OBJFIELD_FIELD_H_
+#define _OBJFIELD_FIELD_H_
 
 namespace SDig {
-
 namespace ObjField {
     class Field;            // pre-declaration
 }
@@ -27,11 +23,12 @@ namespace ObjField {
 
 #include "SDig_BaseDOT.h"
 #include "SDig_DOTs.h"
-#include "objFieldEntry.h"
 #include "SDig_LevelConfig.h"
+#include "ObjField/Entry.h"
 
 
 namespace SDig {
+/*!\brief The namespace ObjField stores the object field classes. */
 namespace ObjField {
 
 
@@ -46,10 +43,11 @@ class Field
 public:
 
 /* ======== class attributes ======== */
+//FIXME: make members as private
 public:
     int size_x;     /*!< size of the field dimension x */
     int size_y;     /*!< size of the field dimension y */
-    objFieldEntry   *mEntries;  /*!< reference to an array of the field entries */
+    ObjField::Entry *mEntries;  /*!< reference to an array of the field entries */
     DOTPlayer       *mPlayer;   /*!< reference to the player object */
     DOTExit         *mExit;     /*!< reference to the exit object */
 
