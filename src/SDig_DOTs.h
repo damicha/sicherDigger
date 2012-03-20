@@ -17,13 +17,6 @@
 #ifndef _SDIG_DOTS_H_
 #define _SDIG_DOTS_H_
 
-#if 0
-namespace SDig {
-    class DOTPlayer;
-    class DOTExit;
-}
-#endif
-
 #include "SDig_BaseDOT.h"
 #include "SDig_DataObject.h"
 //#include "ObjField/Field.h"
@@ -125,7 +118,7 @@ public:
  * Don't delete the player object during the level engine is running, because its
  * member variables are used by the level engine.
  */
-class DOTPlayer : public BaseDOT
+class DOTPlayer : public Base2DOT
 {
 /* ======== class types ======== */
 public:
@@ -138,11 +131,8 @@ public:
         ST_EXITED           //!< entered the exit
     };
 
+/* ======== class members ======== */
 private:
-    ObjField::Field *mObjField; /*!< back-reference to the overlying object field
-                                     to get access to its members/functions */
-    DataObject  *mDataObject;   /*!< back-reference to the overlying data object */
-
     StateType   mState;     //!< player's state
     int         mCnt;       //!< counter value used for the exiting phases
     int         mSandCnt;   //!< counter for eaten sand
@@ -155,9 +145,6 @@ public:
      */
     DOTPlayer()
     {
-        mObjField = NULL;           // has to be set later
-        mDataObject = NULL;
-
         mName = string("Player");
         setType(player);
         
@@ -166,38 +153,6 @@ public:
         mCnt = 0;
         mSandCnt = 0;
     };
-
-    /*!
-     *\brief    initialize references
-     *
-     *\param pObjField      back-reference to the object field
-     *\param pDataObject    back-reference to the players data object
-     *
-     * This function has to be called before the player's object can be used.
-     */
-    void initReferences(ObjField::Field *pObjField, DataObject *pDataObject) {
-        mObjField = pObjField;
-        mDataObject = pDataObject;
-    }
-#if 0    
-    /*!\brief   Set reference to the overlying object field */
-    void setFieldReference(objField *pObjField) {
-        mObjField = pObjField;
-    }
-    
-    /*!\brief   Set reference to the overlying data object */
-    void setDataObject(DataObject *pDataObject) {
-        mDataObject = pDataObject;
-    }
-#endif    
-    /*!\brief   Set reference to the overlying data object */
-    DataObject *getDataObject(void) const {
-        return mDataObject;
-    }
-
-    ObjField::Entry *getFieldEntry(void) const {
-        return mDataObject->getParentObject();
-    }
 
 
     /* ==== player's state functions ==== */
@@ -279,7 +234,7 @@ public:
  * Don't delete the exit object during the level engine is running, because its
  * member variables are used by the level engine.
  */
-class DOTExit : public BaseDOT
+class DOTExit : public Base2DOT
 {
 /* ======== class types ======== */
 public:
@@ -293,10 +248,6 @@ public:
 
 /* ======== class members ======== */
 private:
-    ObjField::Field *mObjField; /*!<- back-reference to the overlying object field
-                                      to get access to its members/functions */
-    DataObject  *mDataObject;   /*!< back-reference to the overlying data object */
-
     StateType   mState;     //!< exit's state
     int         mSandReq;   //!< required sand to change the state to open
 
@@ -313,35 +264,8 @@ public:
     
         setState(ST_CLOSED);
     };
-
-    /*!
-     *\brief    initialize references
-     *
-     *\param pObjField      back-reference to the object field
-     *\param pDataObject    back-reference to the exit's data object
-     *
-     * This function has to be called before the exit object can be used.
-     */
-    void initReferences(ObjField::Field *pObjField, DataObject *pDataObject) {
-        mObjField = pObjField;
-        mDataObject = pDataObject;
-    }
-#if 0    
-    /*!\brief   Set reference to the overlying object field */
-    void setFieldReference(objField *pObjField) {
-        mObjField = pObjField;
-    }
-#endif
-    /*!\brief   Set reference to the overlying data object */
-    DataObject *getDataObject(void) const {
-        return mDataObject;
-    }
     
-    ObjField::Entry *getFieldEntry(void) const {
-        return mDataObject->getParentObject();
-    }
-
-
+    
     /* ==== exit's state functions ==== */
 
     /*! \brief  Set exit's state. */

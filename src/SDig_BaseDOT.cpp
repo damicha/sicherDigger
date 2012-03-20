@@ -49,4 +49,8 @@ void BaseDOT::deleteDOT(BaseDOT *pObj)
 };
 
 
+/*!\brief   Get the overlying field entry of the data object of this object */
+ObjField::Entry *Base2DOT::getFieldEntry(void) const {
+    return mDataObject->getParentObject();
+};
 

@@ -86,7 +86,7 @@ public:
      *\param[in] pIdx   Index of the entry to get.
      */
     ObjField::Entry *getEntry(int pIdx) const {
-        return &(mEntries[pNr]);
+        return &(mEntries[pIdx]);
     }
     /*!\brief   Get entry from array via coordinates.
      *\param[in] pX x coordinate of the entry to get.
