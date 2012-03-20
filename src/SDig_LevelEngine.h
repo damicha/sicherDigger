@@ -79,13 +79,13 @@ public:
     /*! \brief  Get eaten sand counter value.
      *  \return Eaten sand counter value. */
     int getSandCnt(void) {
-        return mField->mPlayer->getSandCnt();
+        return mField->getPlayer()->getSandCnt();
     }
     
     /*! \brief  Get required and to open the exit.
      *  \return Required sand counter value. */
     int getRequiredSand(void) {
-        return mField->mExit->getRequiredSand();
+        return mField->getExit()->getRequiredSand();
     }
     
     /*! \brief  Get current time counter value.

@@ -19,18 +19,20 @@ using namespace SDig::ObjField;
 
 /*!
  * \brief   Constructor
- * \details Set field sizes, create and initialize the object field.
- * \param   size_x field size of the dimension x
- * \param   size_y field size of the dimension y
+ * \details Set field sizes, create and initialize a default object field
+ *  surrounded by walls with one player an one exit.
+ *  
+ * \param pSizeX    field size of the dimension x
+ * \param pSizeY    field size of the dimension y
  */
-Field::Field(int size_x, int size_y) : mEntries(NULL), mPlayer(NULL), mExit(NULL)
+Field::Field(int pSizeX, int pSizeY) : mEntries(NULL), mPlayer(NULL), mExit(NULL)
 {
     /* set dimensions */
-    this->size_x = size_x;
-    this->size_y = size_y;
+    mSizeX = pSizeX;
+    mSizeY = pSizeY;
     
     /* get memory for the field entries */
-    mEntries = new ObjField::Entry[size_x*size_y];
+    mEntries = new ObjField::Entry[mSizeX*mSizeY];
 
     /* do final field object initialization */
     initEntries();
@@ -38,31 +40,31 @@ Field::Field(int size_x, int size_y) : mEntries(NULL), mPlayer(NULL), mExit(NULL
 
     /* create materials (sand surrounded with walls)
      * place the player into the left top corner */
-    for (int y = 0; y < size_y; y++)
+    for (int y = 0; y < mSizeY; y++)
     {
-        for (int x = 0; x < size_x; x++)
+        for (int x = 0; x < mSizeX; x++)
         {
             if        (x == 1 && y == 1) {
                 /* set player position/object */
                 // FIXME: put data object creation in a function
-                mEntries[y*size_x + x].createDataObject(BaseDOT::player);
-                mPlayer = (DOTPlayer *)mEntries[y*size_x + x].getData()->getTypeObject();
+                mEntries[y*mSizeX + x].createDataObject(BaseDOT::player);
+                mPlayer = (DOTPlayer *)mEntries[y*mSizeX + x].getData()->getTypeObject();
                 // set back references
-                mPlayer->initReferences(this, mEntries[y*size_x + x].getData());
+                mPlayer->initReferences(this, mEntries[y*mSizeX + x].getData());
             } else if (x == 1 && y == 0) {
                 /* set exit position/object */
-                mEntries[y*size_x + x].createDataObject(BaseDOT::exit);
-                mExit = (DOTExit *)mEntries[y*size_x + x].getData()->getTypeObject();
+                mEntries[y*mSizeX + x].createDataObject(BaseDOT::exit);
+                mExit = (DOTExit *)mEntries[y*mSizeX + x].getData()->getTypeObject();
                 // set back references
-                mExit->initReferences(this, mEntries[y*size_x + x].getData());
+                mExit->initReferences(this, mEntries[y*mSizeX + x].getData());
                 // set properties    
                 mExit->setRequiredSand(1); 
-            } else if (x == 0 || x == size_x - 1 ||
-                       y == 0 || y == size_y - 1)
+            } else if (x == 0 || x == mSizeX - 1 ||
+                       y == 0 || y == mSizeY - 1)
             {
-                mEntries[y*size_x + x].createDataObject(BaseDOT::wall);
+                mEntries[y*mSizeX + x].createDataObject(BaseDOT::wall);
             } else {
-                mEntries[y*size_x + x].createDataObject(BaseDOT::sand);
+                mEntries[y*mSizeX + x].createDataObject(BaseDOT::sand);
             }
         }
     }
@@ -76,36 +78,36 @@ Field::Field(int size_x, int size_y) : mEntries(NULL), mPlayer(NULL), mExit(NULL
 Field::Field(const LevelConfig &pLevelConfig)
 {
     /* set dimensions */
-    size_x = pLevelConfig.getSizeX();
-    size_y = pLevelConfig.getSizeY();
+    mSizeX = pLevelConfig.getSizeX();
+    mSizeY = pLevelConfig.getSizeY();
     
     /* get memory for the field entries */
-    mEntries = new ObjField::Entry[size_x*size_y];
+    mEntries = new ObjField::Entry[mSizeX*mSizeY];
     
     /* do final field object initialization */
     initEntries();
 
     /* create materials */
-    for (int y = 0; y < size_y; y++)
+    for (int y = 0; y < mSizeY; y++)
     {
-        for (int x = 0; x < size_x; x++)
+        for (int x = 0; x < mSizeX; x++)
         {
             /* get object type */
             BaseDOT::DOTType objType = pLevelConfig.getData(x, y);
             /* create entry */
-            mEntries[y*size_x + x].createDataObject(objType);
+            mEntries[y*mSizeX + x].createDataObject(objType);
             
             /* store the reference of the players object */
             if (objType == BaseDOT::player) {
-                mPlayer = (DOTPlayer *)mEntries[y*size_x + x].getData()->getTypeObject();
+                mPlayer = (DOTPlayer *)mEntries[y*mSizeX + x].getData()->getTypeObject();
                 // set back references
-                mPlayer->initReferences(this, mEntries[y*size_x + x].getData());
+                mPlayer->initReferences(this, mEntries[y*mSizeX + x].getData());
             }
             /* store the reference of the exit object */
             if (objType == BaseDOT::exit) {
-                mExit = (DOTExit *)mEntries[y*size_x + x].getData()->getTypeObject();
+                mExit = (DOTExit *)mEntries[y*mSizeX + x].getData()->getTypeObject();
                 // set back reference
-                mExit->initReferences(this, mEntries[y*size_x + x].getData());
+                mExit->initReferences(this, mEntries[y*mSizeX + x].getData());
                 // set properties    
                 mExit->setRequiredSand(pLevelConfig.getRequiredSand()); 
             }
@@ -122,33 +124,33 @@ void Field::initEntries()
 {
 
     /* initialize all field objects */
-    for (int y = 0; y < size_y; y++)
+    for (int y = 0; y < mSizeY; y++)
     {
-        for (int x = 0; x < size_x; x++)
+        for (int x = 0; x < mSizeX; x++)
         {
             // set position information
-            mEntries[y*size_x + x].setPosition(x, y);
+            mEntries[y*mSizeX + x].setPosition(x, y);
 
             // set neighbors
             if (x == 0) {
-                mEntries[y*size_x + x].setPrevX(NULL);
+                mEntries[y*mSizeX + x].setPrevX(NULL);
             } else {
-                mEntries[y*size_x + x].setPrevX(&mEntries[y*size_x + x-1]);
+                mEntries[y*mSizeX + x].setPrevX(&mEntries[y*mSizeX + x-1]);
             }
-            if (x == size_x-1) {
-                mEntries[y*size_x + x].setNextX(NULL);
+            if (x == mSizeX-1) {
+                mEntries[y*mSizeX + x].setNextX(NULL);
             } else {
-                mEntries[y*size_x + x].setNextX(&mEntries[y*size_x + x+1]);
+                mEntries[y*mSizeX + x].setNextX(&mEntries[y*mSizeX + x+1]);
             }
             if (y == 0) {
-                mEntries[y*size_x + x].setPrevY(NULL);
+                mEntries[y*mSizeX + x].setPrevY(NULL);
             } else {
-                mEntries[y*size_x + x].setPrevY(&mEntries[(y-1)*size_x + x]);
+                mEntries[y*mSizeX + x].setPrevY(&mEntries[(y-1)*mSizeX + x]);
             }
-            if (y == size_y-1) {
-                mEntries[y*size_x + x].setNextY(NULL);
+            if (y == mSizeY-1) {
+                mEntries[y*mSizeX + x].setNextY(NULL);
             } else {
-                mEntries[y*size_x + x].setNextY(&mEntries[(y+1)*size_x + x]);
+                mEntries[y*mSizeX + x].setNextY(&mEntries[(y+1)*mSizeX + x]);
             }
         }
     }

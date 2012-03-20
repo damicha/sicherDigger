@@ -34,16 +34,16 @@ using namespace SDig;
  * FIXME: add mechanism to lock source and destination field
  * FIXME: update data->mParentObj after an object was moved !!!
  */
-bool PhysicsEngine::run(ObjField::Field &pField, MovementType pPlayerMove)
+bool PhysicsEngine::run(ObjField::Field *pField, MovementType pPlayerMove)
 {
 
     /* clear dones */
-    for (int y = 0; y < pField.size_y; y++)
+    for (int y = 0; y < pField->getSizeY(); y++)
     {
-        for (int x = 0; x < pField.size_x; x++)
+        for (int x = 0; x < pField->getSizeX(); x++)
         {
             // FIXME remove done from data
-            pField.mEntries[y*pField.size_x + x].getData()->clearDone();
+            pField->getEntry(x, y)->getData()->clearDone();
         }
     }
 
@@ -54,14 +54,14 @@ bool PhysicsEngine::run(ObjField::Field &pField, MovementType pPlayerMove)
     mTimeCnt--;
 
     /* move player first */
-    runPlayerPhysics(pField.mPlayer->getDataObject()->getParentObject(), pPlayerMove);
+    runPlayerPhysics(pField->getPlayer()->getFieldEntry(), pPlayerMove);
 
     /* run physics on the other field objects */
-    for (int y = 0; y < pField.size_y; y++)
+    for (int y = 0; y < pField->getSizeY(); y++)
     {
-        for (int x = 0; x < pField.size_x; x++)
+        for (int x = 0; x < pField->getSizeX(); x++)
         {
-            ObjField::Entry *entry = &(pField.mEntries[y*pField.size_x + x]);
+            ObjField::Entry *entry = pField->getEntry(x, y);
 
             /* call physics functions as a function of the type of the entry data */
             switch (entry->getData()->getType())

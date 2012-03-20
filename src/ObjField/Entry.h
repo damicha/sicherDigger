@@ -87,19 +87,19 @@ public:
     }
     
     /*!\brief   Get pointer of the entry that lies on the left side of this entry. */
-    Entry *getPrevX(void) {
+    Entry *getPrevX(void) const {
         return mPrevX;
     }
     /*!\brief   Get pointer of the entry that lies on the right side of this entry. */
-    Entry *getNextX(void) {
+    Entry *getNextX(void) const {
         return mNextX;
     }
     /*!\brief   Get pointer of the entry that lies below this entry. */
-    Entry *getPrevY(void) {
+    Entry *getPrevY(void) const {
         return mPrevY;
     }
     /*!\brief   Get pointer of the entry that lies above this entry. */
-    Entry *getNextY(void) {
+    Entry *getNextY(void) const {
         return mNextY;
     }
 

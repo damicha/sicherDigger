@@ -200,12 +200,13 @@ private:
      * \param   pField
      *  Reference to the object field to print
      */
-    void drawFieldList(const ObjField::Field &pField)
+    void drawFieldList(const ObjField::Field *pField)
     {
         printw("Field dimensions: (x: %d, y: %d)\n",
-               pField.size_x, pField.size_y);
-        for (int i = 0; i < pField.size_x*pField.size_y; i++) {
-            printw("position: %2d, data: %s\n", i, pField.mEntries[i].str().c_str());
+               pField->getSizeX(), pField->getSizeY());
+
+        for (int i = 0; i < pField->getSizeX()*pField->getSizeY(); i++) {
+            printw("position: %2d, data: %s\n", i, pField->getEntry(i)->str().c_str());
         }
         refresh();
     }

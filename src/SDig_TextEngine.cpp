@@ -29,11 +29,11 @@ int TextEngine::mInstanceCounter = 0;
  */
 void TextEngine::drawFieldData(const ObjField::Field *pField)
 {
-    for (int y = 0; y < pField->size_y; y++)
+    for (int y = 0; y < pField->getSizeY(); y++)
     {
-        for (int x = 0; x < pField->size_x; x++)
+        for (int x = 0; x < pField->getSizeX(); x++)
         {
-            DataObject *dataObj = pField->mEntries[y*pField->size_x + x].getData();  
+            DataObject *dataObj = pField->getEntry(x, y)->getData();  
             char c = getSymbol(dataObj->getTypeObject());
             printw("%c ", c);
         }

@@ -191,8 +191,12 @@ public:
     }
 #endif    
     /*!\brief   Set reference to the overlying data object */
-    DataObject *getDataObject(void) {
+    DataObject *getDataObject(void) const {
         return mDataObject;
+    }
+
+    ObjField::Entry *getFieldEntry(void) const {
+        return mDataObject->getParentObject();
     }
 
 
@@ -329,12 +333,16 @@ public:
     }
 #endif
     /*!\brief   Set reference to the overlying data object */
-    DataObject *getDataObject(void) {
+    DataObject *getDataObject(void) const {
         return mDataObject;
     }
     
+    ObjField::Entry *getFieldEntry(void) const {
+        return mDataObject->getParentObject();
+    }
+
+
     /* ==== exit's state functions ==== */
-    
 
     /*! \brief  Set exit's state. */
     void setState(StateType pState) {

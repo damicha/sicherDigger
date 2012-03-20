@@ -98,7 +98,7 @@ void LevelEngine::run(TextEngineTypes::Button button)
             // -> implement states for the physics engine ?
             // -> or physics engine flags ? - stopTime()/startTime() ?
             // -> or don't control time by physics engine ?
-            mPhy.run(*mField, moveDirection);
+            mPhy.run(mField, moveDirection);
 
             /* stop running the level if time is up */
             if (mPhy.getTimeCnt() == 0) {
@@ -107,12 +107,12 @@ void LevelEngine::run(TextEngineTypes::Button button)
            
             /* FIXME: change exit state from closed to open as a function of eaten sand */
             /* FIXME: send a signal to a signal handler (the exit is connected to it an reacts on ReqSandEaten with an open door) */
-            if (getSandCnt() >= mField->mExit->getRequiredSand()) {
-                mField->mExit->openIt();
+            if (getSandCnt() >= mField->getExit()->getRequiredSand()) {
+                mField->getExit()->openIt();
             }
 
             /* stop running if player has exited the level */
-            if (mField->mPlayer->getState() == DOTPlayer::ST_EXITED) {
+            if (mField->getPlayer()->getState() == DOTPlayer::ST_EXITED) {
                 mState = ST_END;
             }
             

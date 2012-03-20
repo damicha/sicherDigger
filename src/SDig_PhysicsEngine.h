@@ -87,7 +87,7 @@ public:
     }
 
     /* Do one iteration on the object field. */
-    bool run(ObjField::Field &pField, MovementType pPlayerMove);
+    bool run(ObjField::Field *pField, MovementType pPlayerMove);
 
     /*!
      * \brief   Stone physics

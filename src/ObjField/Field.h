@@ -10,8 +10,6 @@
  *
  ******************************************************************************/
 
-// FIXME: in general do only function declarations -> move implementation to *.cpp file
-
 #ifndef _OBJFIELD_FIELD_H_
 #define _OBJFIELD_FIELD_H_
 
@@ -43,30 +41,19 @@ class Field
 public:
 
 /* ======== class attributes ======== */
-//FIXME: make members as private
-public:
-    int size_x;     /*!< size of the field dimension x */
-    int size_y;     /*!< size of the field dimension y */
+private:
+    int mSizeX;     /*!< size of the field dimension x */
+    int mSizeY;     /*!< size of the field dimension y */
     ObjField::Entry *mEntries;  /*!< reference to an array of the field entries */
     DOTPlayer       *mPlayer;   /*!< reference to the player object */
     DOTExit         *mExit;     /*!< reference to the exit object */
 
-/* ======== class init functions ======== */
+/* ======== class init/destroy functions ======== */
 public:
     /* Constructors */
-    Field(int size_x, int size_y);
+    Field(int pSizeX, int pSizeY);
     Field(const LevelConfig &pLevelConfig);
     
-    /*!\brief   Get player's state. */
-    DOTPlayer::StateType getPlayerState(void) {
-        return mPlayer->getState();
-    }
-    
-    /*!\brief   Get exit's state. */
-    DOTExit::StateType getExitState(void) {
-        return mExit->getState();
-    }
-
     /*!
      * \brief   Destructor
      */
@@ -76,9 +63,59 @@ public:
         delete [] mEntries;   
     }
 
-
     /* Initialize the field entries. */
     void initEntries();
+
+/* ======== class set/get functions ======== */
+public:
+    /*!\brief   Get size of field's dimension x. */
+    int getSizeX(void) const {
+        return mSizeX;
+    }
+    /*!\brief   Get size of field's dimension y. */
+    int getSizeY(void) const {
+        return mSizeY;
+    }
+#if 0    
+    /*!\brief   Get entry array. */
+    ObjField::Entry *getEntryArray(void) const {
+        return mEntries;
+    }
+#endif    
+    /*!\brief   Get entry from array via index.
+     *\param[in] pIdx   Index of the entry to get.
+     */
+    ObjField::Entry *getEntry(int pIdx) const {
+        return &(mEntries[pNr]);
+    }
+    /*!\brief   Get entry from array via coordinates.
+     *\param[in] pX x coordinate of the entry to get.
+     *\param[in] pY y coordinate of the entry to get.
+     */
+    ObjField::Entry *getEntry(int pX, int pY) const {
+        return &(mEntries[pY*mSizeX + pX]);
+    }
+
+    /*!\brief   Get player's object */
+    DOTPlayer *getPlayer(void) const {
+        return mPlayer;
+    }
+    /*!\brief   Get exits's object */
+    DOTExit *getExit(void) const {
+        return mExit;
+    }
+    
+    
+    /*!\brief   Get player's state. */
+    DOTPlayer::StateType getPlayerState(void) const {
+        return mPlayer->getState();
+    }
+    
+    /*!\brief   Get exit's state. */
+    DOTExit::StateType getExitState(void) const {
+        return mExit->getState();
+    }
+
 
 };
 
