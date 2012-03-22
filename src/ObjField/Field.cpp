@@ -47,14 +47,14 @@ Field::Field(int pSizeX, int pSizeY) : mEntries(NULL), mPlayer(NULL), mExit(NULL
             if        (x == 1 && y == 1) {
                 /* set player position/object */
                 // FIXME: put data object creation in a function
-                mEntries[y*mSizeX + x].createDataObject(BaseDOT::player);
-                mPlayer = (DOTPlayer *)mEntries[y*mSizeX + x].getData()->getTypeObject();
+                mEntries[y*mSizeX + x].createDataObject(DOT::T_PLAYER);
+                mPlayer = (DOT::Player *)mEntries[y*mSizeX + x].getData()->getTypeObject();
                 // set back references
                 mPlayer->initReferences(this, mEntries[y*mSizeX + x].getData());
             } else if (x == 1 && y == 0) {
                 /* set exit position/object */
-                mEntries[y*mSizeX + x].createDataObject(BaseDOT::exit);
-                mExit = (DOTExit *)mEntries[y*mSizeX + x].getData()->getTypeObject();
+                mEntries[y*mSizeX + x].createDataObject(DOT::T_EXIT);
+                mExit = (DOT::Exit *)mEntries[y*mSizeX + x].getData()->getTypeObject();
                 // set back references
                 mExit->initReferences(this, mEntries[y*mSizeX + x].getData());
                 // set properties    
@@ -62,9 +62,9 @@ Field::Field(int pSizeX, int pSizeY) : mEntries(NULL), mPlayer(NULL), mExit(NULL
             } else if (x == 0 || x == mSizeX - 1 ||
                        y == 0 || y == mSizeY - 1)
             {
-                mEntries[y*mSizeX + x].createDataObject(BaseDOT::wall);
+                mEntries[y*mSizeX + x].createDataObject(DOT::T_WALL);
             } else {
-                mEntries[y*mSizeX + x].createDataObject(BaseDOT::sand);
+                mEntries[y*mSizeX + x].createDataObject(DOT::T_SAND);
             }
         }
     }
@@ -93,19 +93,19 @@ Field::Field(const LevelConfig &pLevelConfig)
         for (int x = 0; x < mSizeX; x++)
         {
             /* get object type */
-            BaseDOT::DOTType objType = pLevelConfig.getData(x, y);
+            DOT::Type objType = pLevelConfig.getData(x, y);
             /* create entry */
             mEntries[y*mSizeX + x].createDataObject(objType);
             
             /* store the reference of the players object */
-            if (objType == BaseDOT::player) {
-                mPlayer = (DOTPlayer *)mEntries[y*mSizeX + x].getData()->getTypeObject();
+            if (objType == DOT::T_PLAYER) {
+                mPlayer = (DOT::Player *)mEntries[y*mSizeX + x].getData()->getTypeObject();
                 // set back references
                 mPlayer->initReferences(this, mEntries[y*mSizeX + x].getData());
             }
             /* store the reference of the exit object */
-            if (objType == BaseDOT::exit) {
-                mExit = (DOTExit *)mEntries[y*mSizeX + x].getData()->getTypeObject();
+            if (objType == DOT::T_EXIT) {
+                mExit = (DOT::Exit *)mEntries[y*mSizeX + x].getData()->getTypeObject();
                 // set back reference
                 mExit->initReferences(this, mEntries[y*mSizeX + x].getData());
                 // set properties    

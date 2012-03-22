@@ -114,9 +114,6 @@ public:
 
     /* Check if this object is able to block others. */
     bool isBlocking(ObjField::Entry *pEntry);
-    
-    /* Switch data objects. */
-    void switchDataObjects(ObjField::Entry *pSrc, ObjField::Entry *pDest);
 
 };
 

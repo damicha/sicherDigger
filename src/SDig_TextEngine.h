@@ -20,8 +20,8 @@
 
 
 #include "ObjField/Field.h"
-#include "SDig_BaseDOT.h"
-#include "SDig_DOTs.h"
+#include "DOT/Base.h"
+#include "DOT/DOTs.h"
 #include "SDig_TimeEngine.h"
 #include "SDig_LevelEngine.h"
 #include "SDig_TextEngineTypes.h"
@@ -227,48 +227,48 @@ private:
      * \param   pObjType
      *  Address of data object.
      */
-    char getSymbol(BaseDOT *pObjType)
+    char getSymbol(DOT::Base *pObjType)
     {
         switch (pObjType->getType())
         {
-            case BaseDOT::empty:    return ' '; 
-            case BaseDOT::sand:     return '.';
-            case BaseDOT::wall:     return '#';
-            case BaseDOT::stone:    return 'O';
-            case BaseDOT::player:
+            case DOT::T_EMPTY:  return ' '; 
+            case DOT::T_SAND:   return '.';
+            case DOT::T_WALL:   return '#';
+            case DOT::T_STONE:  return 'O';
+            case DOT::T_PLAYER:
             {
-                SDig::DOTPlayer *player = (SDig::DOTPlayer *)pObjType;
+                DOT::Player *player = (DOT::Player *)pObjType;
                 switch (player->getState())
                 {
-                    case DOTPlayer::ST_ALIVE:
+                    case DOT::Player::ST_ALIVE:
                         // display normal player
                         return '8';
                 
-                    case DOTPlayer::ST_EXITING:
+                    case DOT::Player::ST_EXITING:
                         // display exiting player
                         return '0' + player->getStateCnt();
                     
-                    case DOTPlayer::ST_EXITED:
+                    case DOT::Player::ST_EXITED:
                         // display the exited player
                         return 'X';
                 }
             }
-            case BaseDOT::exit:
+            case DOT::T_EXIT:
             {
-                SDig::DOTExit *exit = (SDig::DOTExit *)pObjType;
+                DOT::Exit *exit = (DOT::Exit *)pObjType;
                 switch (exit->getState())
                 {
-                    case DOTExit::ST_CLOSED:
+                    case DOT::Exit::ST_CLOSED:
                         // display the closed exit
                         return 'e';
-                    case DOTExit::ST_OPEN:
+                    case DOT::Exit::ST_OPEN:
                         // display the opened exit
                         return 'E';
                 }
             }
 
-            case BaseDOT::unknown:
-            default:                return '?';
+            case DOT::T_UNKNOWN:
+            default:            return '?';
         }
     }
 

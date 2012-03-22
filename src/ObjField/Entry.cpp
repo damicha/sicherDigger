@@ -22,13 +22,17 @@ using namespace SDig;
 using namespace SDig::ObjField;
 
 /*!
- *\brief  create a data object
+ * \brief  Create field entry's data object.
+ * \param[in] pType Object type.
  */
-void Entry::createDataObject(BaseDOT::DOTType type)
+void Entry::createDataObject(DOT::Type pType)
 {
-    mData = new DataObject(this, type);
+    mData = new DataObject(this, pType);
 }
 
+/*!
+ * \brief  Delete field entry's data object.
+ */
 void Entry::deleteDataObject()
 {
     if (mData != NULL) {
@@ -37,7 +41,9 @@ void Entry::deleteDataObject()
     mData = NULL;
 }
 
-/* get the object content as a string */
+/*!
+ * \brief   Get the object content as a string
+ */
 string Entry::str()
 {
     stringstream ss;
@@ -48,14 +54,18 @@ string Entry::str()
 }
 
 
-/* get the content of an empty object as a string*/
+/*!
+ * \brief   Get the content of an empty object as a string
+ */
 string Entry::strDataEmpty()
 {
     return stringstream("[-, -]").str();
 }
 
 
-/* get the object data as a string */
+/*!
+ * \brief   Get the object data as a string.
+ */
 string Entry::strData()
 {
     stringstream ss;
@@ -64,7 +74,9 @@ string Entry::strData()
 }
 
 
-/* get the object data of the neighbors as a string */
+/*!
+ * \brief   Get the object data of the neighbors as a string
+ */
 string Entry::strNeighbors()
 {
     stringstream ss;

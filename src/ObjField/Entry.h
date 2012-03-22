@@ -13,7 +13,7 @@
 #ifndef _OBJFIELD_ENTRY_H_
 #define _OBJFIELD_ENTRY_H_
 
-#include "SDig_BaseDOT.h"
+#include "DOT/Base.h"
 #include "SDig_DataObject.h"
 
 #include <stdio.h>
@@ -29,7 +29,6 @@ class Entry;
 /*!
  *\brief    Objects of this class are used in the entry array of ObjField::Field.
  */
-// FIXME: change to a template class for DataObject
 class Entry
 {
 /* ======== class attributes ======== */
@@ -56,14 +55,19 @@ public:
 
     /*  create a data object */
     // FIXME: move to data object?
-    // FIXME: make it static
-    void createDataObject(BaseDOT::DOTType type);
+    // FIXME: -> make it static
+    void createDataObject(DOT::Type pType);
 
     /*  delete a data object */
     void deleteDataObject();
 
 /* ======== class set/get functions ======== */
 public:
+    /*!
+     * \brief   Set entry's field position
+     * \param[in] pPosX x coordinate.
+     * \param[in] pPosY y coordinate.
+     */
     void setPosition(int pPosX, int pPosY) {
         mPosX = pPosX;
         mPosY = pPosY;

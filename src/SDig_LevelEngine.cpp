@@ -112,7 +112,7 @@ void LevelEngine::run(TextEngineTypes::Button button)
             }
 
             /* stop running if player has exited the level */
-            if (mField->getPlayer()->getState() == DOTPlayer::ST_EXITED) {
+            if (mField->getPlayer()->getState() == DOT::Player::ST_EXITED) {
                 mState = ST_END;
             }
             

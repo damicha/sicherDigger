@@ -19,8 +19,8 @@ namespace ObjField {
 }
 }
 
-#include "SDig_BaseDOT.h"
-#include "SDig_DOTs.h"
+#include "DOT/Base.h"
+#include "DOT/DOTs.h"
 #include "SDig_LevelConfig.h"
 #include "ObjField/Entry.h"
 
@@ -45,8 +45,8 @@ private:
     int mSizeX;     /*!< size of the field dimension x */
     int mSizeY;     /*!< size of the field dimension y */
     ObjField::Entry *mEntries;  /*!< reference to an array of the field entries */
-    DOTPlayer       *mPlayer;   /*!< reference to the player object */
-    DOTExit         *mExit;     /*!< reference to the exit object */
+    DOT::Player     *mPlayer;   /*!< reference to the player object */
+    DOT::Exit       *mExit;     /*!< reference to the exit object */
 
 /* ======== class init/destroy functions ======== */
 public:
@@ -97,22 +97,22 @@ public:
     }
 
     /*!\brief   Get player's object */
-    DOTPlayer *getPlayer(void) const {
+    DOT::Player *getPlayer(void) const {
         return mPlayer;
     }
     /*!\brief   Get exits's object */
-    DOTExit *getExit(void) const {
+    DOT::Exit *getExit(void) const {
         return mExit;
     }
     
     
     /*!\brief   Get player's state. */
-    DOTPlayer::StateType getPlayerState(void) const {
+    DOT::Player::StateType getPlayerState(void) const {
         return mPlayer->getState();
     }
     
     /*!\brief   Get exit's state. */
-    DOTExit::StateType getExitState(void) const {
+    DOT::Exit::StateType getExitState(void) const {
         return mExit->getState();
     }
 

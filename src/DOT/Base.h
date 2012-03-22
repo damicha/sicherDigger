@@ -1,67 +1,77 @@
 /******************************************************************************/
 /*!
- * \file    SDig_BaseDOT.h
- * \brief   Base class of the data object types (dot|DOT).
+ * \file    DOT/Base.h
+ * \brief   Declarations of the data object type (dot|DOT) base classes DOT::Base
+ *  and DOT::Base2.
  *
  * \author  damicha of defect
- * \date    2011 
+ * \date    2011-2012
  *
  * \license See license file in the main directory. 
  *
  ******************************************************************************/
 
-#ifndef _SDIG_BASE_DOT_H_
-#define _SDIG_BASE_DOT_H_
+#ifndef _SDIG_DOT_BASE_H_
+#define _SDIG_DOT_BASE_H_
 
 #include <string>
 #include <stdio.h> 
 
-//#include "SDig_DataObject.h"
 
 using namespace std;
 
 /* pre-declarations */
 namespace SDig {
+    
     class DataObject;
-namespace ObjField {
-    class Entry;
-    class Field;
+    
+    namespace ObjField {
+        class Entry;
+        class Field;
+    }
 }
-}
+
 
 namespace SDig {
 
 /*!
- * \class   BaseDOT
+ *\brief    This namespace includes data object type classes like DOT::Wall
+ *  and DOT::Player.
+ */
+namespace DOT {
+
+/*!
+ * \enum    DOT::Type
+ * \brief   Supported data object types.
+ *
+ * This enum is used to identify the derived classes.
+ */
+enum Type {
+    T_EMPTY,
+    T_SAND,
+    T_WALL,
+    T_STONE,
+    T_PLAYER,
+    T_EXIT,
+    T_UNKNOWN
+};
+
+
+/*!
  * \brief   Base class of the data object types (dot|DOT).
  * 
  * This class implements an interface and some functions to support
- * its derived classes like SDig::dotStone.
+ * its derived classes like DOT::Stone.
  */
-class BaseDOT
+class Base
 {
 /* ======== class datatypes ======== */    
 public:
-    /*!
-     * \enum    DOTType
-     * \brief   Supported data object types.
-     *
-     * This enum is used to identify the derived classes.
-     */
-    enum DOTType {
-        empty,
-        sand,
-        wall,
-        stone,
-        player,
-        exit,
-        unknown
-    };
 
 
 /* ======== class attributes ======== */
 protected:
-    DOTType mType;  //!< data type
+    Type    mType;  //!< data type
     string  mName;  //!< data type name (FIXME: remove)
 
 public:
@@ -69,7 +79,7 @@ public:
      * \brief   Default constructor
      * \details Set default values to the attributes of this base class.
      */
-    BaseDOT() : mType(unknown), mName("unknown") {}
+    Base() : mType(T_UNKNOWN), mName("unknown") {}
     
 
     /* A destructor is not necessary, because there is nothing to
@@ -77,10 +87,10 @@ public:
 
 
     /* Create a new DOT object as a function of its type. */
-    static BaseDOT *createDOT(DOTType pType);
+    static Base *createDOT(DOT::Type pType);
 
     /* Delete a DOT object */
-    static void deleteDOT(BaseDOT *pObj);
+    static void deleteDOT(Base *pObj);
 
 
 
@@ -89,17 +99,16 @@ public:
 
     /*!
      * \brief   Set the data object type.
-     * \param pType
-     *          Type of the data object.
+     * \param[in] pType     Type of the data object.
      */
-    void setType(DOTType pType) {
+    void setType(Type pType) {
         mType = pType;
     }
     /*!
      * \brief   Get the type of an DOT object.
      * \return  Data object type of the class.
      */
-    DOTType getType() {
+    Type getType() const {
         return mType;
     }
     
@@ -108,20 +117,19 @@ public:
      * \brief   Get the objects name.
      * \return  Name as a string object.
      */
-    string getName() {
+    string getName() const {
         return mName;
     }
     
 };
 
 /*!
- * \class   Base2DOT
  * \brief   Base class type 2 of enhanced data object types (dot|DOT).
  * 
  * This class implements an additional interface and functions to support
- * its derived classes like SDig::dotPlayer.
+ * its derived classes like DOT::Player.
  */
-class Base2DOT : public BaseDOT
+class Base2 : public Base
 {
 /* ======== class members ======== */
 private:
@@ -134,7 +142,7 @@ public:
      * \brief   Default constructor
      * \details Set default values to the attributes of this base class.
      */
-    Base2DOT() {
+    Base2() {
         mObjField = NULL;           // has to be set later
         mDataObject = NULL;
     }
@@ -144,10 +152,10 @@ public:
        destroy in this base class */
 
     /*!
-     *\brief    initialize references
+     * \brief    initialize references
      *
-     *\param pObjField      back-reference to the object field
-     *\param pDataObject    back-reference to the players data object
+     * \param[in] pObjField     back-reference to the object field
+     * \param[in] pDataObject   back-reference to the players data object
      *
      * This function has to be called before the player's object can be used.
      */
@@ -156,12 +164,15 @@ public:
         mDataObject = pDataObject;
     }
     
-    /*!\brief   Set reference to the overlying data object */
+    /*!
+     * \brief   Get the reference of the overlying data object
+     * \return  The overlying data object.
+     */
     DataObject *getDataObject(void) const {
         return mDataObject;
     }
 
-    /* Get the overlying field entry of the data object of this object */
+    /* Get the overlying field entry of the data object of this DOT object. */
     ObjField::Entry *getFieldEntry(void) const;
     
     /*!\brief   run function to proceed with internal states. */
@@ -169,6 +180,7 @@ public:
 
 };
 
-}       // namespace
+}       // namespace DOT
+}       // namespace SDig
 
 #endif

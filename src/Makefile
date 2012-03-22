@@ -22,13 +22,14 @@ CFLAGS = -g -O0 -Wall
 INCLUDE_DIRS = -I.
 OBJECTS =   sicherDigger.o \
             ObjField/Field.o ObjField/Entry.o \
+            DOT/Base.o DOT/Exit.o DOT/Player.o\
+            SDig_DataObject.o \
             SDig_TimeEngine.o \
             SDig_TextEngine.o \
             SDig_PhysicsEngine.o \
             SDig_GameEngine.o \
-            SDig_LevelEngine.o \
-            SDig_BaseDOT.o
-INCLUDES = $(wildcard *.h) $(wildcard ObjField/*.h)
+            SDig_LevelEngine.o
+INCLUDES = $(wildcard *.h) $(wildcard ObjField/*.h) $(wildcard DOT/*.h)
 LDFLAGS_NCURSES = -lncurses
 
 
@@ -49,11 +50,15 @@ all: sicherDigger html
 html:
 	doxygen
 
+ctags:
+	ctags -R *.cpp *.h
+
 #-------------------------------------------------------------------------------
 clean:
 	rm -f $(OBJECTS)
 	rm -f sicherDigger
 	rm -rf html/ latex/
+	rm -rf tags
 
 .PHONY: html clean
 

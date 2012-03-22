@@ -12,11 +12,11 @@
 
 #include "SDig_PhysicsEngine.h"
 
-#include "SDig_DOTs.h"
-#include "SDig_BaseDOT.h"
-#include "SDig_DataObject.h"
+#include "DOT/DOTs.h"
+#include "DOT/Base.h"
 #include "ObjField/Field.h"
 #include "ObjField/Entry.h"
+#include "SDig_DataObject.h"
 
 #include "stdio.h"
 
@@ -66,10 +66,10 @@ bool PhysicsEngine::run(ObjField::Field *pField, MovementType pPlayerMove)
             /* call physics functions as a function of the type of the entry data */
             switch (entry->getData()->getType())
             {
-                case BaseDOT::stone:
+                case DOT::T_STONE:
                     runStonePhysics(entry);
                     break;
-                case BaseDOT::player:
+                case DOT::T_PLAYER:
                     // do nothing, because the player should already be moved
                     break;
                 default:
@@ -112,7 +112,7 @@ void PhysicsEngine::runStonePhysics(ObjField::Entry *e)
 
         /* let stone fall by switching stone and empty data of the 
            field entries */
-        switchDataObjects(e, eNextY);
+        DataObject::swapDataObjects(e, eNextY);
     }
 
 };
@@ -142,11 +142,11 @@ bool PhysicsEngine::runPlayerPhysics(ObjField::Entry    *e,
     }
 
     /* move player as a function of the player state */
-    SDig::DOTPlayer *player = (SDig::DOTPlayer *)e->getData()->getTypeObject();
+    DOT::Player *player = (DOT::Player *)e->getData()->getTypeObject();
     switch (player->getState())
     {
         /* player is alive */
-        case DOTPlayer::ST_ALIVE:
+        case DOT::Player::ST_ALIVE:
         {
             switch (pPlayerMove)
             {
@@ -179,11 +179,11 @@ bool PhysicsEngine::runPlayerPhysics(ObjField::Entry    *e,
         }
 
         /* player is exiting the level */
-        case DOTPlayer::ST_EXITING:
+        case DOT::Player::ST_EXITING:
             break;
         
         /* player has the level exited */
-        case DOTPlayer::ST_EXITED:
+        case DOT::Player::ST_EXITED:
             break;
     };
 
@@ -234,8 +234,8 @@ bool PhysicsEngine::movePlayer(ObjField::Entry *pPlayerObj, ObjField::Entry *pDe
     /* eat sand (replace by data object: empty) */
     if (isSand(pDestObj)) {
         pDestObj->deleteDataObject();
-        pDestObj->createDataObject(BaseDOT::empty);
-        DOTPlayer *player = (DOTPlayer *)pPlayerObj->getData()->getTypeObject();
+        pDestObj->createDataObject(DOT::T_EMPTY);
+        DOT::Player *player = (DOT::Player *)pPlayerObj->getData()->getTypeObject();
         player->incrSandCnt();
     }
 
@@ -245,18 +245,18 @@ bool PhysicsEngine::movePlayer(ObjField::Entry *pPlayerObj, ObjField::Entry *pDe
     if (isExit(pDestObj))
     {
         // replace the exit object with an empty one
-        pDestObj->createDataObject(BaseDOT::empty);
+        pDestObj->createDataObject(DOT::T_EMPTY);
         /* Change player state to exiting player */
         // FIXME: don't set the state in this subfunction:
         //  - use signal or call back or return code of this function!
-        ((DOTPlayer *)pPlayerObj->getData()->getTypeObject())->setState(DOTPlayer::ST_EXITING);
+        ((DOT::Player *)pPlayerObj->getData()->getTypeObject())->setState(DOT::Player::ST_EXITING);
     }
 
     /* the empty field to done */
     pDestObj->getData()->setDone();
 
     /* move player by switch the data objects */
-    switchDataObjects(pPlayerObj, pDestObj);
+    DataObject::swapDataObjects(pPlayerObj, pDestObj);
 
     /* player was moved: return true */
     return true;
@@ -267,7 +267,7 @@ bool PhysicsEngine::movePlayer(ObjField::Entry *pPlayerObj, ObjField::Entry *pDe
  */
 bool PhysicsEngine::isEmpty(ObjField::Entry *pEntry)
 {
-    return (pEntry->getData()->getType() == BaseDOT::empty) ? true : false;
+    return (pEntry->getData()->getType() == DOT::T_EMPTY) ? true : false;
 }
 
 /*!
@@ -275,7 +275,7 @@ bool PhysicsEngine::isEmpty(ObjField::Entry *pEntry)
  */
 bool PhysicsEngine::isSand(ObjField::Entry *pEntry)
 {
-    return (pEntry->getData()->getType() == BaseDOT::sand) ? true : false;
+    return (pEntry->getData()->getType() == DOT::T_SAND) ? true : false;
 }
 
 /*!
@@ -283,7 +283,7 @@ bool PhysicsEngine::isSand(ObjField::Entry *pEntry)
  */
 bool PhysicsEngine::isExit(ObjField::Entry *pEntry)
 {
-    return (pEntry->getData()->getType() == BaseDOT::exit) ? true : false;
+    return (pEntry->getData()->getType() == DOT::T_EXIT) ? true : false;
 }
 
 /*!
@@ -291,13 +291,13 @@ bool PhysicsEngine::isExit(ObjField::Entry *pEntry)
  */
 bool PhysicsEngine::isClosedExit(ObjField::Entry *pEntry)
 {
-    if (pEntry->getData()->getType() != BaseDOT::exit) {
+    if (pEntry->getData()->getType() != DOT::T_EXIT) {
         /* object is not an exit */
         return false;
     }
 
-    SDig::DOTExit *exit = (SDig::DOTExit *)pEntry->getData()->getTypeObject();
-    if (exit->getState() == DOTExit::ST_CLOSED)
+    DOT::Exit *exit = (DOT::Exit *)pEntry->getData()->getTypeObject();
+    if (exit->getState() == DOT::Exit::ST_CLOSED)
     {
         /* exit is closed */
         return true;
@@ -313,28 +313,13 @@ bool PhysicsEngine::isClosedExit(ObjField::Entry *pEntry)
  */
 bool PhysicsEngine::isBlocking(ObjField::Entry *pEntry)
 {
-    if (pEntry->getData()->getType() == BaseDOT::wall    ||
-        pEntry->getData()->getType() == BaseDOT::stone)
+    if (pEntry->getData()->getType() == DOT::T_WALL ||
+        pEntry->getData()->getType() == DOT::T_STONE)
     {
         return true;
     } else {
         return false;
     }
-}
-
-/*!
- * \brief   Switch data objects.
- * FIXME: move to DataObject class
- */
-void PhysicsEngine::switchDataObjects(ObjField::Entry *pSrc, ObjField::Entry *pDest)
-{
-    DataObject  *doSrc     = pSrc->getData();
-    DataObject  *doDest    = pDest->getData();
-    /* switch references */
-    pSrc->setData(doDest);
-    pSrc->getData()->setParentObject(pSrc);
-    pDest->setData(doSrc);
-    pDest->getData()->setParentObject(pDest);
 }
 
 

@@ -14,7 +14,7 @@
 #ifndef _SDIG_LEVEL_CONFIG_H_
 #define _SDIG_LEVEL_CONFIG_H_
 
-#include "SDig_BaseDOT.h"
+#include "DOT/Base.h"
 
 #include <string>
 #include <string.h>     // memcpy
@@ -136,25 +136,25 @@ public:
      * \param   pX, pY
      *  Positions.
      */
-    BaseDOT::DOTType getData(int pX, int pY) const
+    DOT::Type getData(int pX, int pY) const
     {
         switch (mData[pY*mSizeX + pX])
         {
             case '#':
-                return BaseDOT::wall;
+                return DOT::T_WALL;
             case '.':
-                return BaseDOT::sand;
+                return DOT::T_SAND;
             case ' ':
-                return BaseDOT::empty;
+                return DOT::T_EMPTY;
             case 'O':
-                return BaseDOT::stone;
+                return DOT::T_STONE;
             case '8':
                 /* set player position/object */
-                return BaseDOT::player;
+                return DOT::T_PLAYER;
             case 'E':
-                return BaseDOT::exit;
+                return DOT::T_EXIT;
             default:
-                return BaseDOT::unknown;
+                return DOT::T_UNKNOWN;
         }
      }
 

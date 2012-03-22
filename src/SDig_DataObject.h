@@ -15,17 +15,21 @@
 #ifndef _SDIG_DATA_OBJECT_H_
 #define _SDIG_DATA_OBJECT_H_
 
-#include "SDig_BaseDOT.h"
+#include "DOT/Base.h"
 
 #include <stdio.h> 
 
 using namespace std;
 
+// pre-declarations
 namespace SDig {
+    class DataObject;
 namespace ObjField {
-    class Entry;            // pre-declaration
+    class Entry;
 }
 }
+
+
 
 namespace SDig {
 
@@ -39,20 +43,21 @@ class DataObject
 /* ======== class attributes ======== */
 private:
     // FIXME: use class name objectType <- is a virtual class!
-    BaseDOT *mType; //!< object type
-    bool    mDone;  /*!< true if material was already used by physics engine: 
-                     * FIXME: move to a physics class (maybe)
-                     * FIXME: use a own data type
-                     * FIXME: don't use done. use blocked by current, next, prev ..
-                     */
+    DOT::Base   *mType; //!< object type
+    bool        mDone;  /*!< true if material was already used by physics engine: 
+                         * FIXME: move to a physics class (maybe)
+                         * FIXME: use a own data type
+                         * FIXME: don't use done. use blocked by current, next, prev ..
+                         */
     ObjField::Entry *mParentObj;    //!< back-reference to object field entry
 
 /* ======== class initialisation functions ======== */
 public:
     /*!\brief   Constructor */
-    DataObject(ObjField::Entry *pParentObj, const BaseDOT::DOTType pObjType = BaseDOT::unknown)
+    DataObject(ObjField::Entry *pParentObj,
+               const DOT::Type pObjType = DOT::T_UNKNOWN)
     {
-        mType = BaseDOT::createDOT(pObjType);
+        mType = DOT::Base::createDOT(pObjType);
         mDone = false;
         mParentObj = pParentObj;
     }
@@ -60,18 +65,18 @@ public:
     /*!\brief   Destructor */
     ~DataObject()
     {
-        BaseDOT::deleteDOT(mType);
+        DOT::Base::deleteDOT(mType);
         // FIXME: check if the reference has to be removed from the parent object
     }
 
 
     /*!\brief   Gets the type object */
-    BaseDOT *getTypeObject(void) {
+    DOT::Base *getTypeObject(void) {
         return mType;
     }
 
     /*!\brief   Gets the type value from type object directly */
-    BaseDOT::DOTType getType(void) {
+    DOT::Type getType(void) {
         return mType->getType();
     }
 
@@ -101,6 +106,8 @@ public:
         return mDone;
     }
 
+    /* Swap data objects. */
+    static void swapDataObjects(ObjField::Entry *pSrc, ObjField::Entry *pDest);
 };
 
 
