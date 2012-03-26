@@ -23,7 +23,7 @@
 #include "DOT/Base.h"
 #include "DOT/DOTs.h"
 #include "SDig_TimeEngine.h"
-#include "SDig_LevelEngine.h"
+#include "LevelEngine.h"
 #include "SDig_TextEngineTypes.h"
 
 #include <stdio.h>

@@ -2,7 +2,6 @@
 /*!
  * \file    SDig_ConfigData.h
  * \brief   Field configuration data
- *          FIXME: Include only once!
  *
  * \author  damicha of defect
  * \date    2011
@@ -15,7 +14,7 @@
 #define _SDIG_CONFIG_DATA_H_
 
 
-#include "SDig_LevelConfig.h"
+#include "LevelConfig.h"
 
 namespace SDig {
 

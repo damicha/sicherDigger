@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*!
- * \file    SDig_LevelEngine.cpp
+ * \file    LevelEngine.cpp
  * \brief   Initializes and controls the engines and data structures of the
  *          level.
  *
@@ -11,9 +11,14 @@
  *
  ******************************************************************************/
 
-#include "SDig_LevelEngine.h"
+// FIXME:
+// - level creation 
+// - new states
+
+#include "LevelEngine.h"
 #include "SDig_TimeEngine.h"
 #include "SDig_PhysicsEngine.h"
+#include "SDig_TextEngine.h"
 
 #include "ObjField/Field.h"
 
@@ -25,18 +30,12 @@ using namespace SDig;
  */
 LevelEngine::LevelEngine(void)
 {
-    /* select config and create object field */
-    // FIXME:
-    // - get configuration as an input parameter
-    // - move config setting and field creation to an subfunction
-    LevelConfig *cfg = &field_a;
-    mField  = new ObjField::Field(*cfg);
-
-    mTimeLimit = cfg->getTimeLimit();
+    mField = NULL;
+    mTimeLimit = 0;
 }
     
 /*!
- * \brief   Destructur
+ * \brief   Destructor
  */
 LevelEngine::~LevelEngine(void)
 {
@@ -51,17 +50,46 @@ void LevelEngine::setStart() {
     mState = ST_START;
 }
 
+/*!
+ * \brief   Initialize the level data.
+ * \param[in] pCfg  Pointer of the configuration structure to use.
+ */
+void LevelEngine::initLevel(LevelConfig *pCfg)
+{
+    /* create game field */
+    mField  = new ObjField::Field(pCfg);
+    
+    /* set levels time limit */
+    mTimeLimit = pCfg->getTimeLimit();
+    
+    /* set internal level engine state to "level info" */
+    mState = ST_INFO;
+}
+
+/*!
+ * \brief   Free level data.
+ */
+void LevelEngine::freeLevel(void)
+{
+    delete mField;
+}
+
+
+
 // FIXME: present level exit state not as a return value -> getState function of
 // an private member (mLevelExit..)
-/* Run level engine for one iteration. */
-void LevelEngine::run(TextEngineTypes::Button button)
+/*!
+ * \brief   Run level engine for one iteration.
+ * \param[in] pButton   Pressed button, to control a level menu or the player.
+ */
+void LevelEngine::run(TextEngineTypes::Button pButton, TextEngine *pTxt)
 {
 
     using namespace TextEngineTypes;    // refer to button types (BT_...)
     PhysicsEngine::MovementType moveDirection = PhysicsEngine::MT_NONE;
     
     /* determine players move direction as a function of the pushed button */
-    switch (button)
+    switch (pButton)
     {
         case BT_LEFT:
             moveDirection = PhysicsEngine::MT_LEFT; 
@@ -82,11 +110,21 @@ void LevelEngine::run(TextEngineTypes::Button button)
     /* run level engine */
     switch (mState)
     {
+        /* display level information */
+        case ST_INFO:
+        {
+            // FIXME: show level start screen
+
+            mState = ST_START;
+            break;
+        }
+        
         /* configure level */
         case ST_START:
         {
             mPhy.init(mTimeLimit);  // FIXME: initialize the whole level (use level config)
             mState = ST_RUNNING;
+            pTxt->drawLevel(*this);
             break;
         }
 
@@ -115,11 +153,13 @@ void LevelEngine::run(TextEngineTypes::Button button)
             if (mField->getPlayer()->getState() == DOT::Player::ST_EXITED) {
                 mState = ST_END;
             }
-            
+    
+            pTxt->drawLevel(*this);
+
             break;
         }
 
-        /* FIXME: currently not used. remove state ? */
+        /* FIXME: currently not used. Remove this state ? */
         case ST_ENDING:
             break;
         

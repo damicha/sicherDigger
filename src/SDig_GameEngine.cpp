@@ -18,21 +18,25 @@
 
 #include "ObjField/Field.h"
 
+#include "LevelConfig.h"
+
 using namespace SDig;
 
 
 /*!
  * \brief   run game engine until it quits.
+ *
+ * FIXME: Implemented sequences:
+ * 
+ * main menu  -> level selection                    - go to select level menu
+ *           <-  level selection                    - go back to menu
+ *               level selection +-> level engine   - run level engine (has its own menus)
+ *                               \__ level number   - select the level to play
+ *
+ *               level selection <-+ level engine   - return to level selection
+ *                                 \__ level result - inform about the level result
+ *
  */
-/* Implemented sequences:
-   menu  -> start                       - go to level start
-        <-  start                       - go back to menu
-            start  -> level             - run level
-                      level  -> end     - conclusion
-                  <-----------  end     - restart level
-        <---------------------  end     - go back to menu
-
-*/
 void GameEngine::run()
 {
     EngineStateType s_curr;     // current state
@@ -84,13 +88,14 @@ void GameEngine::run()
             }
             
             /* ==== Level Start Menu ==== */
+            // FIXME: change it to level selection menu
             case EST_LEVEL_START_MENU:
             {
                 /* change state */
                 if        (button == BT_START)  {
                     s_next = EST_LEVEL_EXEC;
-                    /* init level state */
-                    mLevel.setStart(); 
+                    /* init level */
+                    mLevel.initLevel(&field_a);
                 } else if (button == BT_SELECT) {
                     s_next = EST_MAIN_MENU;
                 }
@@ -110,9 +115,10 @@ void GameEngine::run()
                     phyButton = button;
                 }
 
+
                 bool isExit = false;
                 if (phyTrigger % 15 == 0) {  
-                    mLevel.run(phyButton);
+                    mLevel.run(phyButton, &mTxt);
                     if (mLevel.getState() == LevelEngine::ST_END) {
                         isExit = true;
                     }
@@ -122,6 +128,7 @@ void GameEngine::run()
                 phyTrigger++;
 
                 /* change state */
+                // FIXME: move level cancel decision to LevelEngine
                 if        (button == BT_SELECT)  {
                     s_next = EST_LEVEL_END_MENU;
                 } else if (isExit == true) {
@@ -129,7 +136,7 @@ void GameEngine::run()
                 }
     
                 /* generate the output */
-                mTxt.drawLevel(mLevel);
+          //      mTxt.drawLevel(mLevel);
                 break;
             }
 

@@ -13,15 +13,16 @@
 #ifndef _OBJFIELD_FIELD_H_
 #define _OBJFIELD_FIELD_H_
 
+// pre-declarations
 namespace SDig {
 namespace ObjField {
-    class Field;            // pre-declaration
+    class Field;
 }
 }
 
 #include "DOT/Base.h"
 #include "DOT/DOTs.h"
-#include "SDig_LevelConfig.h"
+#include "LevelConfig.h"
 #include "ObjField/Entry.h"
 
 
@@ -52,7 +53,7 @@ private:
 public:
     /* Constructors */
     Field(int pSizeX, int pSizeY);
-    Field(const LevelConfig &pLevelConfig);
+    Field(const LevelConfig *pLevelConfig);
     
     /*!
      * \brief   Destructor

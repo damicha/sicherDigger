@@ -15,10 +15,10 @@
 
 #include "SDig_TimeEngine.h"
 #include "SDig_TextEngine.h"
-#include "SDig_LevelEngine.h"
+#include "LevelEngine.h"
 #include "SDig_PhysicsEngine.h"
 
-#include "SDig_LevelConfig.h"
+#include "LevelConfig.h"
 #include "SDig_ConfigData.h"
 
 

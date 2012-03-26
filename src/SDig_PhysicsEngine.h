@@ -71,7 +71,7 @@ public:
 
     /*! \brief  Get current time counter value.
      *  \return Time counter value. */
-    int getTimeCnt(void) {
+    int getTimeCnt(void) const {
         return mTimeCnt;
     }
 

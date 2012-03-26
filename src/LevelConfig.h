@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*!
- * \file    SDig_LevelConfig.h
+ * \file    LevelConfig.h
  * \brief   Stores the configuration of a single game level as an array of
  *          characters
  * 
@@ -32,7 +32,6 @@ namespace SDig {
 class LevelConfig
 {
 /* ======== class attributes ======== */    
-// FIXME: make attr. to private members 
 private:
     string mName;   /*!< Level name */
     int mTimeLimit; /*!< Time limit of the level in seconds. */
@@ -46,14 +45,10 @@ public:
     /*!
      * \brief   Constructor
      * \details Set level sizes, create and initialize the level data.
-     * \param   pName
-     *  The name of the level.
-     * \param   pSizeX
-     *  Level size of the dimension x.
-     * \param   pSizeY
-     *  Level size of the dimension y.
-     * \param   pData
-     *  Character array with the level configuration.
+     * \param[in] pName     The name of the level.
+     * \param[in] pSizeX    Level size of the dimension x.
+     * \param[in] pSizeY    Level size of the dimension y.
+     * \param[in] pData     Character array with the level configuration.
      */
     LevelConfig(const string &pName, int pTimeLimit, int pSandReq,
                 int pSizeX, int pSizeY,
@@ -131,10 +126,9 @@ public:
     }
 
     /*!
-     * \brief   Get the type of the object that is stored as position X, Y
+     * \brief   Get the type of the object that is stored on position X, Y
      *  in the level configuration array.
-     * \param   pX, pY
-     *  Positions.
+     * \param[in]   pX, pY  x,y coordinates
      */
     DOT::Type getData(int pX, int pY) const
     {
