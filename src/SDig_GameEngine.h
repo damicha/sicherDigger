@@ -40,11 +40,10 @@ private:
      * \brief   State of the game engine to switch between possible menus
      */
     enum EngineStateType {
-        EST_MAIN_MENU,          //!< main menu
-        EST_LEVEL_START_MENU,   //!< start of a level
-        EST_LEVEL_EXEC,         //!< level execution
-        EST_LEVEL_END_MENU,     //!< end of a level
-        EST_QUIT,               //!< leave game engine
+        EST_MAIN_MENU,              //!< main menu
+        EST_LEVEL_SELECT_MENU,      //!< select the level
+        EST_LEVEL_EXEC,             //!< level execution
+        EST_QUIT,                   //!< leave game engine
     };
 
 /* ======== attributes ======== */    

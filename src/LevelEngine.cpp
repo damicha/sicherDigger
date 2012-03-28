@@ -113,9 +113,11 @@ void LevelEngine::run(TextEngineTypes::Button pButton, TextEngine *pTxt)
         /* display level information */
         case ST_INFO:
         {
-            // FIXME: show level start screen
+            pTxt->drawLevelStartScreen(1, getRequiredSand(), mTimeLimit);
 
-            mState = ST_START;
+            if (pButton == BT_START)  {
+                mState = ST_START;
+            }
             break;
         }
         
@@ -140,18 +142,19 @@ void LevelEngine::run(TextEngineTypes::Button pButton, TextEngine *pTxt)
 
             /* stop running the level if time is up */
             if (mPhy.getTimeCnt() == 0) {
-                mState = ST_END;
+                mEndReason = LER_TIME_UP;
+                mState = ST_CONCLUSION;
             }
            
-            /* FIXME: change exit state from closed to open as a function of eaten sand */
-            /* FIXME: send a signal to a signal handler (the exit is connected to it an reacts on ReqSandEaten with an open door) */
+            /* change exit's state to open as a function of eaten sand */
             if (getSandCnt() >= mField->getExit()->getRequiredSand()) {
                 mField->getExit()->openIt();
             }
 
             /* stop running if player has exited the level */
             if (mField->getPlayer()->getState() == DOT::Player::ST_EXITED) {
-                mState = ST_END;
+                mEndReason = LER_SUCCESS;  
+                mState = ST_CONCLUSION;
             }
     
             pTxt->drawLevel(*this);
@@ -159,12 +162,25 @@ void LevelEngine::run(TextEngineTypes::Button pButton, TextEngine *pTxt)
             break;
         }
 
-        /* FIXME: currently not used. Remove this state ? */
-        case ST_ENDING:
+        /* level conclusion */
+        case ST_CONCLUSION:
+            pTxt->drawLevelEndScreen(1,
+                                     mField->getPlayer()->getSandCnt(),
+                                     mField->getExit()->getRequiredSand(),
+                                     mPhy.getTimeCnt());
+            
+            if        (pButton == BT_START) {
+                mState = ST_INFO;
+            } else if (pButton == BT_SELECT) {
+                mState = ST_END;
+            }
             break;
         
+        /* level engine ends */
         case ST_END:
-            /* FIXME: sum up results */
+            /* This state is used to indicates higher level functions that
+               the level engine has end */
+            // FIXME: provide isEnd(), getEndReason() functions
             break;
     }
 

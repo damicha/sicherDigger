@@ -61,7 +61,7 @@ void GameEngine::run()
         s_curr = s_next;
 
         /* sync on tigger event to display content */
-        mTime.wait4TriggerEvent();
+       mTime.wait4TriggerEvent();
 
         /* get last pushed button */
         // FIXME: detection of only the last and only one pressed
@@ -76,7 +76,7 @@ void GameEngine::run()
             {
                 /* change state */
                 if        (button == BT_START)  {
-                    s_next = EST_LEVEL_START_MENU;
+                    s_next = EST_LEVEL_SELECT_MENU;
                 } else if (button == BT_SELECT) {
                     s_next = EST_QUIT;
                 }
@@ -87,9 +87,8 @@ void GameEngine::run()
                 break;
             }
             
-            /* ==== Level Start Menu ==== */
-            // FIXME: change it to level selection menu
-            case EST_LEVEL_START_MENU:
+            /* ==== Level Select Menu ==== */
+            case EST_LEVEL_SELECT_MENU:
             {
                 /* change state */
                 if        (button == BT_START)  {
@@ -101,7 +100,8 @@ void GameEngine::run()
                 }
 
                 /* print menu */
-                mTxt.drawLevelStart();
+                // FIXME: use level nr
+                mTxt.drawLevelSelectMenu(1);
                 
                 break;
             }
@@ -128,31 +128,10 @@ void GameEngine::run()
                 phyTrigger++;
 
                 /* change state */
-                // FIXME: move level cancel decision to LevelEngine
-                if        (button == BT_SELECT)  {
-                    s_next = EST_LEVEL_END_MENU;
-                } else if (isExit == true) {
-                    s_next = EST_LEVEL_END_MENU;
+                // FIXME: use function isEnd()
+                if (isExit == true) {
+                    s_next = EST_LEVEL_SELECT_MENU;
                 }
-    
-                /* generate the output */
-          //      mTxt.drawLevel(mLevel);
-                break;
-            }
-
-            /* ==== Level End Menu ==== */
-            case EST_LEVEL_END_MENU:
-            {
-                /* change state */
-                if        (button == BT_START)  {
-                    s_next = EST_LEVEL_START_MENU;
-                } else if (button == BT_SELECT) {
-                    s_next = EST_MAIN_MENU;
-                }
-                
-                /* print menu */
-                mTxt.drawLevelEnd();
-                
                 break;
             }
 

@@ -42,6 +42,7 @@ public:
      * \brief   States of the level
      */
     enum StateType {
+        // FIXME: re-order somehow
         /* general states */
         ST_INFO,                //!< display level info before the level starts
         ST_CONCLUSION,          //!< display a conclusion after the level ends
@@ -53,6 +54,17 @@ public:
         ST_END                  //!< level end - FIXME: replace by ST_CONCLUSION
     };
 
+    /*!
+     * \brief   Reason of level ending
+     */
+    enum LevelEndReason {
+        LER_SUCCESS,
+        LER_TIME_UP,
+        //LER_DEAD,
+        //LER_CANCELD
+    };
+
+
 /* ======== attributes ======== */    
 private:
     ObjField::Field *mField;        //!< object field (game level data)
@@ -60,7 +72,8 @@ private:
     PhysicsEngine   mPhy;           //!< physics engine
 
     StateType       mState;         //!< current state of the level
-
+    LevelEndReason  mEndReason;     /*!< reason for level end.
+                                     *   Has to be set if the level ends. */
 
 
     // FIXME: create LevelStatisticData Class/Struct

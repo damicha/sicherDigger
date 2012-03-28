@@ -4,10 +4,10 @@
  * \brief   Displays the field objects as text on the console
  * 
  * \author  damicha of defect
- * \date    2011 
+ * \date    2011-2012 
  *
  * \details
- *  The TextEngine class is implemented that provices functions to get the
+ *  The TextEngine class is implemented that provides functions to get the
  *  user input and to do a ASCII text output of the game field.
  *
  * \license See license file in the main directory. 
@@ -48,7 +48,7 @@ namespace SDig {
 /*!
  * \class   TextEngine 
  * \brief
- *  Provices functions to get the user input and to do a ASCII text output
+ *  Provides functions to get the user input and to do a ASCII text output
  *  of the game field.
  */
 class TextEngine
@@ -56,99 +56,37 @@ class TextEngine
 
 /* ======== attributes ======== */    
 private:
-    /*! counts the number of intances. It's used to init the ncurses library
-     *  if the first TextEngine instance is created. The ncurses library is
-     *  closed if the last TextEngine instance will be deleted. */
+    /*! Counts the number of instances of this class. It's used to init the
+     *  ncurses library if the first TextEngine instance is created.
+     *  The ncurses library will be closed if the last TextEngine instance
+     *  is deleted. */
     static int mInstanceCounter;
 
-/* ======== functions ======== */
 public:
 
-    /*!
-     * \brief   constructor
-     *
-     * Initialize ncurses if the first instance of this class will be created
-     */
-    TextEngine() {
-        if (mInstanceCounter == 0) {
-            /* init ncurses */
-            initNCurses();
-            /* increment instance counter */
-            mInstanceCounter++;
-        } 
-    }
+/* ======== init functions ======== */
     
-    /*!
-     * \brief   destructor
-     *
-     * Stop ncurses if the last instance of this class will be destroyed
-     */
-    ~TextEngine() {
-        /* decrement instance counter */
-        mInstanceCounter--;
-        if (mInstanceCounter == 0) {
-            /* release ncurses */
-            stopNCurses();
-        } 
-    }
+    /* Constructor */
+    TextEngine();
+    
+    /* Destructor */
+    ~TextEngine();
 
     
-    /*!
-     * \brief   initialize ncurses
-     */
-    void initNCurses(void) {
-        /* start curses mode */
-        initscr();
-
-        /* configure the behavior of the getchar() function */
-        noecho();               // getchar() doesn't echo the get character
-        nodelay(stdscr, true);  // getchar()'s non blocking mode
-        cbreak();               // disable line buffering
-        keypad(stdscr, true);   // enable the keypad to get its keys
-    }
-
+    /* Initialize ncurses */
+    void initNCurses(void);
     
-    /*!
-     * \brief   stop ncurses
-     */
-    void stopNCurses(void) {
-        /* End curses mode */
-        endwin();
-    }
-    
-    /*!
-     * \brief   Get key from input buffer and map it to the internal butten
-     *  representation.
-     * \return  Recognized button.
-     */
-    TextEngineTypes::Button getButton(void)
-    {
-        using namespace TextEngineTypes;    // refer to button types (BT_...)
-        TextEngineTypes::Button button = BT_NONE;
+    /* Stop ncurses */
+    void stopNCurses(void);
+   
 
-        int c = getch();    // get first entry (key) of the input buffer    
-        flushinp();         // flush all other keys from input buffer
-    
-        if (c != ERR)
-        {
-            /* keyboard button mapping */
-            switch(c)
-            {
-                case (int)'q'   : button = BT_SELECT;   break;
-                case (int)'s'   : button = BT_START;    break;
-                case (int)'o'   : button = BT_A;        break;
-                case (int)'p'   : button = BT_B;        break;
-                case KEY_DOWN   : button = BT_DOWN;     break;
-                case KEY_UP     : button = BT_UP;       break;
-                case KEY_LEFT   : button = BT_LEFT;     break;
-                case KEY_RIGHT  : button = BT_RIGHT;    break;
-            }
-        }
+/* ======== input functions ======== */
 
-        return button;
-    }
+    /* Get key from input buffer and map it to the internal button representation. */
+    TextEngineTypes::Button getButton(void);
 
 
+/* ======== output/draw functions ======== */
     /*!
      * FIXME: header
      * \brief   Print the content of the object field to the console
@@ -273,73 +211,26 @@ private:
     }
 
 
-    /*!
-     * \brief   Print the header
-     * \param   pStr
-     *  Additional info string inserted in the header
-     */
-    void drawHeader(const char *pStr = NULL) {
-        printw("==== Header (%s) ====\n", (pStr != NULL) ? pStr : "-");
-        refresh();
-    }
+/* ==== draw screen an menu functions ==== */
+private:
+    /* Draw the level header */
+    void drawHeader(const char *pStr = NULL);
 
-    /*!
-     * \brief   Print the footer
-     */
-    void drawFooter() {
-        printw("==== Footer ====\n");
-        refresh();
-    }
+    /* Draw the level footer */
+    void drawFooter();
 
 public:
-    /*!
-     * \brief   Print main menu
-     */
-    void drawMainMenu()
-    {
-        // move cursor position to (row, col)
-        move(0, 0);
-        printw("\n");
-        printw("==== Main Menu ====\n");
-        printw("\n");
-        printw("  s       - Start\n");
-        printw("  q       - Exit\n");
-        refresh();
-    }
+    /* Draw the main menu */
+    void drawMainMenu();
     
+    /* Draw the level select menu. */
+    void drawLevelSelectMenu(int pLevelNr);
     
-    /*!
-     * \brief   Print level start.
-     */
-    void drawLevelStart()
-    {
-        // move cursor position to (row, col)
-        move(0, 0);
-        printw("\n");
-        // FIXME: add level number
-        printw("==== Level x ====\n");
-        printw("\n");
-        printw("  s       - Start\n");
-        printw("  q       - Got back to main menu\n");
-        refresh();
-    }
+    /* Draw the level start Screen. */
+    void drawLevelStartScreen(int pLevelNr, int pReqSand, int pTimeLimit);
     
-    /*!
-     * \brief   Print a conclusion after a level ends.
-     */
-    void drawLevelEnd()
-    {
-        // move cursor position to (row, col)
-        move(0, 0);
-        printw("\n");
-        // FIXME: add level number
-        printw("==== End of Level x ====\n");
-        printw("\n");
-        printw("  s       - Restart level\n");
-        printw("  q       - Got back to main menu\n");
-        refresh();
-    }
-
+    /* Print a conclusion after a level ends. */
+    void drawLevelEndScreen(int pLevelNr, int pEatenSand, int pReqSand, int pTimeLeft);
 
     /*!
      * \brief   Clear the screen
