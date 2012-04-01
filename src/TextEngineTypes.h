@@ -1,14 +1,25 @@
+/*! ****************************************************************************
+ *
+ * \file    TextEngineTypes.h
+ * \brief   Type definitions used by the TextEngine class
+ * 
+ * \author  damicha of defect
+ * \date    2012 
+ *
+ * \details
+ *  This definitions are used to prevent circlary dependencies. This could be
+ *  happen if the defines are made within a class.
+ *
+ * \license See license file in the main directory. 
+ *
+ ******************************************************************************/
+
 #ifndef _SDIG_TEXT_ENGINE_TYPES_H_
 #define _SDIG_TEXT_ENGINE_TYPES_H_
 
-/*
- * This definitions are used to prevent circlary dependencies. This could be
- * happen if the defines are made within a class.
- */
-
 
 namespace SDig {
-
+// FIXME: move to namespace TextEngine ?
 namespace TextEngineTypes {
 
     /*!

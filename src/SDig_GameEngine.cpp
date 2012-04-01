@@ -12,8 +12,8 @@
 
 #include "SDig_GameEngine.h"
 #include "SDig_TimeEngine.h"
-#include "SDig_TextEngineTypes.h"
-#include "SDig_TextEngine.h"
+#include "TextEngineTypes.h"
+#include "TextEngine.h"
 #include "SDig_PhysicsEngine.h"
 
 #include "ObjField/Field.h"

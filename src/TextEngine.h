@@ -1,6 +1,6 @@
 /*! ****************************************************************************
  *
- * \file    SDig_TextEngine.h
+ * \file    TextEngine.h
  * \brief   Displays the field objects as text on the console
  * 
  * \author  damicha of defect
@@ -24,7 +24,7 @@
 #include "DOT/DOTs.h"
 #include "SDig_TimeEngine.h"
 #include "LevelEngine.h"
-#include "SDig_TextEngineTypes.h"
+#include "TextEngineTypes.h"
 
 #include <stdio.h>
 #include <ncurses.h>

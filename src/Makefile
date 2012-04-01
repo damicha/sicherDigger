@@ -7,8 +7,9 @@
 #=
 #= Description:
 #=  Build binary file and doxygen generated documentation
-#=  $ make              - builds binary
-#=  $ make doxygen      - builds documentation
+#=  $ make              - build binary
+#=  $ make ctags        - build ctags
+#=  $ make doxygen      - build documentation
 #=  $ make clean        - cleans up the source directory
 #=
 #= License: See license file in the main directory.
@@ -25,7 +26,7 @@ OBJECTS =   sicherDigger.o \
             DOT/Base.o DOT/Exit.o DOT/Player.o\
             SDig_DataObject.o \
             SDig_TimeEngine.o \
-            SDig_TextEngine.o \
+            TextEngine.o \
             SDig_PhysicsEngine.o \
             SDig_GameEngine.o \
             LevelEngine.o

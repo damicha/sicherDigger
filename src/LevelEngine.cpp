@@ -18,7 +18,7 @@
 #include "LevelEngine.h"
 #include "SDig_TimeEngine.h"
 #include "SDig_PhysicsEngine.h"
-#include "SDig_TextEngine.h"
+#include "TextEngine.h"
 
 #include "ObjField/Field.h"
 

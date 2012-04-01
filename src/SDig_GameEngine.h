@@ -4,7 +4,7 @@
  * \brief   Initializes and controls the game data and engines.
  *
  * \author  damicha of defect
- * \date    2011
+ * \date    2011-2012
  *
  * \license See license file in the main directory. 
  *
@@ -14,7 +14,7 @@
 #define _SDIG_GAME_ENGINE_H_
 
 #include "SDig_TimeEngine.h"
-#include "SDig_TextEngine.h"
+#include "TextEngine.h"
 #include "LevelEngine.h"
 #include "SDig_PhysicsEngine.h"
 

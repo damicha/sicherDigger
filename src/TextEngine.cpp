@@ -1,6 +1,6 @@
 /*! ****************************************************************************
  *
- * \file    SDig_TextEngine.cpp
+ * \file    TextEngine.cpp
  * \brief   Displays the field objects as text on the console
  * 
  * \author  damicha of defect
@@ -14,7 +14,7 @@
  *
  ******************************************************************************/
 
-#include "SDig_TextEngine.h"
+#include "TextEngine.h"
 #include "ObjField/Field.h"
 
 using namespace SDig;

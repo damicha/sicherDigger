@@ -15,7 +15,7 @@
 #define _SDIG_LEVEL_ENGINE_H_
 
 #include "SDig_TimeEngine.h"
-#include "SDig_TextEngineTypes.h"
+#include "TextEngineTypes.h"
 #include "SDig_PhysicsEngine.h"
 
 #include "LevelConfig.h"
