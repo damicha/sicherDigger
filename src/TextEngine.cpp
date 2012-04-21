@@ -16,6 +16,7 @@
 
 #include "TextEngine.h"
 #include "ObjField/Field.h"
+#include "LevelEngine.h"
 
 using namespace SDig;
 
@@ -233,12 +234,28 @@ void TextEngine::drawLevelStartScreen(int pLevelNr, int pReqSand, int pTimeLimit
 /*!
  * \brief   Print the conclusion after the level ends.
  */
-void TextEngine::drawLevelEndScreen(int pLevelNr, int pEatenSand, int pReqSand, int pTimeLeft)
+void TextEngine::drawLevelEndScreen(int pLevelNr, LevelEngine::LevelEndReason pLevEndReason,
+                                    int pEatenSand, int pReqSand, int pTimeLeft)
 {
     // move cursor position to (row, col)
     move(0, 0);
     printw("\n");
     printw("==== End of Level %02d ====\n", pLevelNr);
+    printw("\n");
+
+    /* evaluate level end reason and draw text message */
+    switch (pLevEndReason)
+    {
+        case LevelEngine::LER_SUCCESS:
+            printw("  - SUCCESS! -\n");
+            printw("  - You entered the exit -\n");
+            break;
+        case LevelEngine::LER_TIME_UP:
+            printw("  - Failed! -\n");
+            printw("  - Time is up -\n");
+            break;
+    }
+
     printw("\n");
     printw(" Eaten Sand: %d/%d\n", pEatenSand, pReqSand);
     printw(" Time Left:  %d\n", pTimeLeft);

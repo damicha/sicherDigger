@@ -31,10 +31,10 @@ using namespace SDig;
  * main menu  -> level selection                    - go to select level menu
  *           <-  level selection                    - go back to menu
  *               level selection +-> level engine   - run level engine (has its own menus)
- *                               \__ level number   - select the level to play
+ *                                   - level number - select the level to play
  *
  *               level selection <-+ level engine   - return to level selection
- *                                 \__ level result - inform about the level result
+ *                                   - level result - inform about the level result
  *
  */
 void GameEngine::run()
@@ -64,8 +64,8 @@ void GameEngine::run()
        mTime.wait4TriggerEvent();
 
         /* get last pushed button */
-        // FIXME: detection of only the last and only one pressed
-        //        button is currently possible
+        // FIXME: detection of only the last and only a single pressed
+        //  button is currently possible
         // -> change to pressed, released behavior/events
         button = mTxt.getButton();
         
@@ -115,21 +115,17 @@ void GameEngine::run()
                     phyButton = button;
                 }
 
-
-                bool isExit = false;
+                /* run level engine on physics trigger */
                 if (phyTrigger % 15 == 0) {  
                     mLevel.run(phyButton, &mTxt);
-                    if (mLevel.getState() == LevelEngine::ST_END) {
-                        isExit = true;
-                    }
                     // reset button value
                     phyButton = BT_NONE;
                 }
                 phyTrigger++;
 
-                /* change state */
-                // FIXME: use function isEnd()
-                if (isExit == true) {
+                /* change state if level has ended */
+                // FIXME: get level result
+                if (mLevel.isEnd() == true) {
                     s_next = EST_LEVEL_SELECT_MENU;
                 }
                 break;

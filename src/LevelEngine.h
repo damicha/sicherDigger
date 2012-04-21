@@ -127,10 +127,11 @@ public:
         return mPhy.getTimeCnt();
     }
 
-    /*!\brief   Get engine state */
-    StateType getState(void) const {
-        return mState;
-    }
+    /* Check if the level has ended. */
+    bool isEnd(void) const;
+    
+    /* Get the reason of level end. */
+    LevelEndReason getLevelEndReason(void) const;
     
 };
 

@@ -164,7 +164,7 @@ void LevelEngine::run(TextEngineTypes::Button pButton, TextEngine *pTxt)
 
         /* level conclusion */
         case ST_CONCLUSION:
-            pTxt->drawLevelEndScreen(1,
+            pTxt->drawLevelEndScreen(1, mEndReason,
                                      mField->getPlayer()->getSandCnt(),
                                      mField->getExit()->getRequiredSand(),
                                      mPhy.getTimeCnt());
@@ -188,4 +188,23 @@ void LevelEngine::run(TextEngineTypes::Button pButton, TextEngine *pTxt)
 }
 
 
+/*!
+ * \brief   Check if the level has ended.
+ */
+bool LevelEngine::isEnd(void) const
+{
+    if (mState == ST_END) {
+        return true;
+    } else {
+        return false;
+    }
+}
+    
+/*!
+ * \brief   Get the reason of level end.
+ */
+LevelEngine::LevelEndReason LevelEngine::getLevelEndReason(void) const
+{
+    return mEndReason;
+}
 

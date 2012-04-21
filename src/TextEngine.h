@@ -230,7 +230,8 @@ public:
     void drawLevelStartScreen(int pLevelNr, int pReqSand, int pTimeLimit);
     
     /* Print a conclusion after a level ends. */
-    void drawLevelEndScreen(int pLevelNr, int pEatenSand, int pReqSand, int pTimeLeft);
+    void drawLevelEndScreen(int pLevelNr, LevelEngine::LevelEndReason pLevEndReason,
+                            int pEatenSand, int pReqSand, int pTimeLeft);
 
     /*!
      * \brief   Clear the screen
