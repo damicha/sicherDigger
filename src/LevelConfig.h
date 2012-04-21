@@ -5,7 +5,7 @@
  *          characters
  * 
  * \author  damicha of defect
- * \date    2011 
+ * \date    2012
  *
  * \license See license file in the main directory. 
  *
@@ -103,7 +103,7 @@ public:
     /*! \brief   Get the name of the level. */
     string getName() const {
         return mName;
-    }   // FIXME return a reference (&) ???
+    }
     
     /*! \brief   Get the time limit of the level. */
     int getTimeLimit() const {

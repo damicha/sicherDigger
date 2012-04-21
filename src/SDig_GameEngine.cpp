@@ -4,7 +4,7 @@
  * \brief   Initializes and controls the game data and engines.
  *
  * \author  damicha of defect
- * \date    2011
+ * \date    2012
  *
  * \license See license file in the main directory. 
  *
@@ -26,15 +26,20 @@ using namespace SDig;
 /*!
  * \brief   run game engine until it quits.
  *
- * FIXME: Implemented sequences:
- * 
- * main menu  -> level selection                    - go to select level menu
- *           <-  level selection                    - go back to menu
- *               level selection +-> level engine   - run level engine (has its own menus)
- *                                   - level number - select the level to play
+ * The folloing description shows the menu structure of the game engine.
+ * <pre>
+ *  MM  --> LS                      - go to select level menu
+ *     <--  LS                      - go back to menu
+ *          LS  --> LE              - run level engine (has its own menus)
+ *                  -- level number - DATA: select the level to play
  *
- *               level selection <-+ level engine   - return to level selection
- *                                   - level result - inform about the level result
+ *          LS <--  LE              - returni to level selection
+ *                  -- level result - DATA: inform about the level result
+ *
+ * MM - main menu
+ * LS - level selection menu
+ * LE - level engine (sub engine called by game engine)
+ * </pre>
  *
  */
 void GameEngine::run()
@@ -61,7 +66,7 @@ void GameEngine::run()
         s_curr = s_next;
 
         /* sync on tigger event to display content */
-       mTime.wait4TriggerEvent();
+        mTime.wait4TriggerEvent();
 
         /* get last pushed button */
         // FIXME: detection of only the last and only a single pressed
@@ -93,8 +98,10 @@ void GameEngine::run()
                 /* change state */
                 if        (button == BT_START)  {
                     s_next = EST_LEVEL_EXEC;
-                    /* init level */
-                    mLevel.initLevel(&field_a);
+                    /* init level configuration */
+                    mLevel.initLevelEngine(&field_a);
+                    // FIXME: move to one of the level class states
+                    // mLevel.initLevel();
                 } else if (button == BT_SELECT) {
                     s_next = EST_MAIN_MENU;
                 }

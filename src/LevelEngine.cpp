@@ -15,6 +15,8 @@
 // - level creation 
 // - new states
 
+//#include <exception>
+
 #include "LevelEngine.h"
 #include "SDig_TimeEngine.h"
 #include "SDig_PhysicsEngine.h"
@@ -30,8 +32,10 @@ using namespace SDig;
  */
 LevelEngine::LevelEngine(void)
 {
-    mField = NULL;
-    mTimeLimit = 0;
+    mLevelCfg   = NULL;
+    mField      = NULL;
+    mTimeLimit  = 0;
+    mState      = ST_INFO;
 }
     
 /*!
@@ -42,28 +46,46 @@ LevelEngine::~LevelEngine(void)
     delete mField;
 }
 
+
 /*!
- * \brief   Set start state
+ * \brief   Initialize the level engine members.
+ *
+ * This function has to be called before the level can be initialized by the
+ * initLevel() function.
+ * \param[in] pCfg  Pointer of the configuration structure to use.
  */
-void LevelEngine::setStart() {
-    // FIXME: reset level
-    mState = ST_START;
+void LevelEngine::initLevelEngine(const LevelConfig *pCfg)
+{
+    /* get level configuration data */
+    mLevelCfg = pCfg;
+    
+    /* set internal level engine state to "level info" */
+    mState = ST_INFO;
 }
 
 /*!
  * \brief   Initialize the level data.
- * \param[in] pCfg  Pointer of the configuration structure to use.
+ *
+ * The level engine initialization has to be done before by initLevelEngine().
  */
-void LevelEngine::initLevel(LevelConfig *pCfg)
+void LevelEngine::initLevel(void)
 {
-    /* create game field */
-    mField  = new ObjField::Field(pCfg);
+    /* check if level configuration is set */
+    /* FIXME:
+     * - use own exception, derived from exception
+     * - catch exception in the a top class
+     */
+    if (mLevelCfg == NULL) {
+        throw "mLevelCfg wasn't set before usage.";
+    }
+
+    /* create game field from level configuration */
+    mField  = new ObjField::Field(mLevelCfg);
     
     /* set levels time limit */
-    mTimeLimit = pCfg->getTimeLimit();
-    
-    /* set internal level engine state to "level info" */
-    mState = ST_INFO;
+    mTimeLimit = mLevelCfg->getTimeLimit();
+            
+    mPhy.init(mTimeLimit);
 }
 
 /*!
@@ -73,7 +95,6 @@ void LevelEngine::freeLevel(void)
 {
     delete mField;
 }
-
 
 
 // FIXME: present level exit state not as a return value -> getState function of
@@ -113,7 +134,10 @@ void LevelEngine::run(TextEngineTypes::Button pButton, TextEngine *pTxt)
         /* display level information */
         case ST_INFO:
         {
-            pTxt->drawLevelStartScreen(1, getRequiredSand(), mTimeLimit);
+            /* Get level imformation from level configuration, because the
+             * level data wasn't initialized yet */
+            pTxt->drawLevelStartScreen(1, mLevelCfg->getRequiredSand(),
+                                          mLevelCfg->getTimeLimit());
 
             if (pButton == BT_START)  {
                 mState = ST_START;
@@ -124,7 +148,9 @@ void LevelEngine::run(TextEngineTypes::Button pButton, TextEngine *pTxt)
         /* configure level */
         case ST_START:
         {
-            mPhy.init(mTimeLimit);  // FIXME: initialize the whole level (use level config)
+            /* (re)initialize level data */
+            initLevel();
+
             mState = ST_RUNNING;
             pTxt->drawLevel(*this);
             break;
@@ -147,7 +173,7 @@ void LevelEngine::run(TextEngineTypes::Button pButton, TextEngine *pTxt)
             }
            
             /* change exit's state to open as a function of eaten sand */
-            if (getSandCnt() >= mField->getExit()->getRequiredSand()) {
+            if (getSandCnt() >= getRequiredSand()) {
                 mField->getExit()->openIt();
             }
 
@@ -165,8 +191,7 @@ void LevelEngine::run(TextEngineTypes::Button pButton, TextEngine *pTxt)
         /* level conclusion */
         case ST_CONCLUSION:
             pTxt->drawLevelEndScreen(1, mEndReason,
-                                     mField->getPlayer()->getSandCnt(),
-                                     mField->getExit()->getRequiredSand(),
+                                     getSandCnt(), getRequiredSand(),
                                      mPhy.getTimeCnt());
             
             if        (pButton == BT_START) {

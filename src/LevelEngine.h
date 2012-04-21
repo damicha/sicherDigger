@@ -49,8 +49,7 @@ public:
         /* level states */
         ST_START,               //!< start the level
         ST_RUNNING,             //!< level is running (normal state)
-        ST_ENDING,              //!< level is within its end phase
-        ST_PAUSE,               //!< pause
+//        ST_PAUSE,               //!< pause
         ST_END                  //!< level end - FIXME: replace by ST_CONCLUSION
     };
 
@@ -67,6 +66,8 @@ public:
 
 /* ======== attributes ======== */    
 private:
+    const LevelConfig *mLevelCfg;   /*!< Reference to the level configuration. 
+                                         It has to be set by the setLevelConfig() function */
     ObjField::Field *mField;        //!< object field (game level data)
 
     PhysicsEngine   mPhy;           //!< physics engine
@@ -88,15 +89,15 @@ public:
     /* Destructor */
     ~LevelEngine(void);
 
-    /* Set start state */
-    void setStart();
+    /* Initialize the level engine members */
+    void initLevelEngine(const LevelConfig *pCfg);
 
     /* Initialize the level data */
-    void initLevel(LevelConfig *pCfg);
+    void initLevel(void);
 
     /* Free level data */
     void freeLevel(void);
-
+    
     /* ======== run functions ======== */
 
     /* Run level engine for one iteration. */
