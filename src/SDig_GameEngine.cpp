@@ -33,7 +33,7 @@ using namespace SDig;
  *          LS  --> LE              - run level engine (has its own menus)
  *                  -- level number - DATA: select the level to play
  *
- *          LS <--  LE              - returni to level selection
+ *          LS <--  LE              - return to level selection
  *                  -- level result - DATA: inform about the level result
  *
  * MM - main menu
@@ -98,10 +98,8 @@ void GameEngine::run()
                 /* change state */
                 if        (button == BT_START)  {
                     s_next = EST_LEVEL_EXEC;
-                    /* init level configuration */
+                    /* init level engine and set level configuration to use */
                     mLevel.initLevelEngine(&field_a);
-                    // FIXME: move to one of the level class states
-                    // mLevel.initLevel();
                 } else if (button == BT_SELECT) {
                     s_next = EST_MAIN_MENU;
                 }

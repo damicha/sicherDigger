@@ -91,13 +91,13 @@ public:
 
     /* Initialize the level engine members */
     void initLevelEngine(const LevelConfig *pCfg);
-
+private:
     /* Initialize the level data */
     void initLevel(void);
 
     /* Free level data */
     void freeLevel(void);
-    
+public:    
     /* ======== run functions ======== */
 
     /* Run level engine for one iteration. */
@@ -125,7 +125,7 @@ public:
     /*!\brief   Get current time counter value.
      * \return  Time counter value. */
     int getTimeCnt(void) const {
-        return mPhy.getTimeCnt();
+        return mPhy.getTimerCnt();
     }
 
     /* Check if the level has ended. */

@@ -70,14 +70,18 @@ void LevelEngine::initLevelEngine(const LevelConfig *pCfg)
  */
 void LevelEngine::initLevel(void)
 {
+
+
     /* check if level configuration is set */
     /* FIXME:
      * - use own exception, derived from exception
-     * - catch exception in the a top class
+     * - catch exception in a top class
      */
     if (mLevelCfg == NULL) {
         throw "mLevelCfg wasn't set before usage.";
     }
+
+    // FIXME: free level if necessary
 
     /* create game field from level configuration */
     mField  = new ObjField::Field(mLevelCfg);
@@ -108,7 +112,9 @@ void LevelEngine::run(TextEngineTypes::Button pButton, TextEngine *pTxt)
 
     using namespace TextEngineTypes;    // refer to button types (BT_...)
     PhysicsEngine::MovementType moveDirection = PhysicsEngine::MT_NONE;
-    
+    StateType nextState = mState;
+
+
     /* determine players move direction as a function of the pushed button */
     switch (pButton)
     {
@@ -134,14 +140,14 @@ void LevelEngine::run(TextEngineTypes::Button pButton, TextEngine *pTxt)
         /* display level information */
         case ST_INFO:
         {
-            /* Get level imformation from level configuration, because the
-             * level data wasn't initialized yet */
+            if (pButton == BT_START)  {
+                nextState = ST_START;
+            }
+
+            /* Get level information from level configuration, because the
+             * level data isn't initialized yet */
             pTxt->drawLevelStartScreen(1, mLevelCfg->getRequiredSand(),
                                           mLevelCfg->getTimeLimit());
-
-            if (pButton == BT_START)  {
-                mState = ST_START;
-            }
             break;
         }
         
@@ -151,7 +157,8 @@ void LevelEngine::run(TextEngineTypes::Button pButton, TextEngine *pTxt)
             /* (re)initialize level data */
             initLevel();
 
-            mState = ST_RUNNING;
+            nextState = ST_RUNNING;
+            
             pTxt->drawLevel(*this);
             break;
         }
@@ -160,18 +167,20 @@ void LevelEngine::run(TextEngineTypes::Button pButton, TextEngine *pTxt)
         case ST_RUNNING:
         {
             /* run physics engine */
-            // FIXME: stop counter if player is exiting, but proceed player:
-            // -> implement states for the physics engine ?
-            // -> or physics engine flags ? - stopTime()/startTime() ?
-            // -> or don't control time by physics engine ?
             mPhy.run(mField, moveDirection);
 
             /* stop running the level if time is up */
-            if (mPhy.getTimeCnt() == 0) {
+            if (mPhy.getTimerCnt() == 0) {
                 mEndReason = LER_TIME_UP;
-                mState = ST_CONCLUSION;
+                nextState = ST_CONCLUSION;
             }
-           
+          
+            /* Stop timer if player is entering the exit.
+             * - This prevents a time up if the player has already entered the exit. */
+            if (mField->getPlayer()->getState() == DOT::Player::ST_EXITING) {
+                mPhy.disableTimer();
+            }
+
             /* change exit's state to open as a function of eaten sand */
             if (getSandCnt() >= getRequiredSand()) {
                 mField->getExit()->openIt();
@@ -180,27 +189,28 @@ void LevelEngine::run(TextEngineTypes::Button pButton, TextEngine *pTxt)
             /* stop running if player has exited the level */
             if (mField->getPlayer()->getState() == DOT::Player::ST_EXITED) {
                 mEndReason = LER_SUCCESS;  
-                mState = ST_CONCLUSION;
+                nextState = ST_CONCLUSION;
             }
     
             pTxt->drawLevel(*this);
-
             break;
         }
 
         /* level conclusion */
         case ST_CONCLUSION:
+        {    
+            if        (pButton == BT_START) {
+                nextState = ST_INFO;
+            } else if (pButton == BT_SELECT) {
+                nextState = ST_END;
+            }
+            
             pTxt->drawLevelEndScreen(1, mEndReason,
                                      getSandCnt(), getRequiredSand(),
-                                     mPhy.getTimeCnt());
-            
-            if        (pButton == BT_START) {
-                mState = ST_INFO;
-            } else if (pButton == BT_SELECT) {
-                mState = ST_END;
-            }
+                                     mPhy.getTimerCnt());
             break;
-        
+        }
+
         /* level engine ends */
         case ST_END:
             /* This state is used to indicates higher level functions that
@@ -208,6 +218,14 @@ void LevelEngine::run(TextEngineTypes::Button pButton, TextEngine *pTxt)
             // FIXME: provide isEnd(), getEndReason() functions
             break;
     }
+
+    /* Clear screen if state has changed, because a new screen/menu will be drawn */
+    if (mState != nextState) {
+        pTxt->clearScreen();
+    }
+
+    /* set new state value */
+    mState = nextState;
 
     return;
 }

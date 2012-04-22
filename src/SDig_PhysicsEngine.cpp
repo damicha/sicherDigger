@@ -50,8 +50,10 @@ bool PhysicsEngine::run(ObjField::Field *pField, MovementType pPlayerMove)
     /* increase iteration counter */
     mIterNum++;
 
-    /* decrease time counter */
-    mTimeCnt--;
+    /* decrease timer counter if timer is enabled */
+    if (mTimerEnable == true) {
+        mTimerCnt--;
+    }
 
     /* move player first */
     runPlayerPhysics(pField->getPlayer()->getFieldEntry(), pPlayerMove);
