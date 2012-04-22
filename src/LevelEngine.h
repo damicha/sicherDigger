@@ -18,9 +18,6 @@
 #include "TextEngineTypes.h"
 #include "PhysicsEngine.h"
 
-#include "LevelConfig.h"
-#include "SDig_ConfigData.h"
-
 #include "ObjField/Field.h"
 
 /* pre-declarations */

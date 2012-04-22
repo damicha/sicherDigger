@@ -19,7 +19,7 @@
 #include "PhysicsEngine.h"
 
 #include "LevelConfig.h"
-#include "SDig_ConfigData.h"
+#include "LevelData.h"
 
 
 namespace SDig {
