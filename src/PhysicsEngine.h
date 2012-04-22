@@ -1,10 +1,10 @@
 /*! ****************************************************************************
  *
- * \file    SDig_PhysicsEngine.h
+ * \file    PhysicsEngine.h
  * \brief   Class definition of the physics engine
  *
  * \author  damicha of defect
- * \date    2011
+ * \date    2011-2012
  *
  * \license See license file in the main directory. 
  *

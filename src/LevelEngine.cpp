@@ -19,7 +19,7 @@
 
 #include "LevelEngine.h"
 #include "SDig_TimeEngine.h"
-#include "SDig_PhysicsEngine.h"
+#include "PhysicsEngine.h"
 #include "TextEngine.h"
 
 #include "ObjField/Field.h"

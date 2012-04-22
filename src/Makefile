@@ -27,7 +27,7 @@ OBJECTS =   sicherDigger.o \
             SDig_DataObject.o \
             SDig_TimeEngine.o \
             TextEngine.o \
-            SDig_PhysicsEngine.o \
+            PhysicsEngine.o \
             GameEngine.o \
             LevelEngine.o
 INCLUDES = $(wildcard *.h) $(wildcard ObjField/*.h) $(wildcard DOT/*.h)

@@ -16,7 +16,7 @@
 
 #include "SDig_TimeEngine.h"
 #include "TextEngineTypes.h"
-#include "SDig_PhysicsEngine.h"
+#include "PhysicsEngine.h"
 
 #include "LevelConfig.h"
 #include "SDig_ConfigData.h"

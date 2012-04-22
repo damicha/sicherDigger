@@ -1,16 +1,16 @@
 /******************************************************************************/
 /*!
- * \file    SDig_PhysicsEngine.cpp
+ * \file    PhysicsEngine.cpp
  * \brief   Implements the physics of the world.
  *
  * \author  damicha of defect
- * \date    2011
+ * \date    2011-2012
  *
  * \license See license file in the main directory. 
  *
  ******************************************************************************/
 
-#include "SDig_PhysicsEngine.h"
+#include "PhysicsEngine.h"
 
 #include "DOT/DOTs.h"
 #include "DOT/Base.h"
