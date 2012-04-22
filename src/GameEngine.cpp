@@ -1,16 +1,16 @@
 /******************************************************************************/
 /*!
- * \file    SDig_GameEngine.cpp
+ * \file    GameEngine.cpp
  * \brief   Initializes and controls the game data and engines.
  *
  * \author  damicha of defect
- * \date    2012
+ * \date    2011-2012
  *
  * \license See license file in the main directory. 
  *
  ******************************************************************************/
 
-#include "SDig_GameEngine.h"
+#include "GameEngine.h"
 #include "SDig_TimeEngine.h"
 #include "TextEngineTypes.h"
 #include "TextEngine.h"

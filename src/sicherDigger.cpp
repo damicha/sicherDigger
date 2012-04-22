@@ -4,19 +4,17 @@
  * \brief   Main program of the project sicherDigger
  *
  * \author  damicha of defect
- * \date    2011
+ * \date    2011-2012
  *
  * \license See license file in the main directory.
  *
  ******************************************************************************/
 
 #include "sicherDigger.h"
-#include "SDig_GameEngine.h"
+#include "GameEngine.h"
 
 #include <stdio.h>
 #include <stdlib.h>
-
-using namespace std;
 
 /*!
  * \brief   main
