@@ -29,7 +29,7 @@ OBJECTS =   sicherDigger.o \
             TextEngine.o \
             PhysicsEngine.o \
             GameEngine.o \
-            LevelEngine.o
+            LevelEngine.o LevelConfig.o
 INCLUDES = $(wildcard *.h) $(wildcard ObjField/*.h) $(wildcard DOT/*.h)
 LDFLAGS_NCURSES = -lncurses
 
