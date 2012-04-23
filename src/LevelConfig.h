@@ -34,7 +34,8 @@ class LevelConfig
 /* ======== class attributes ======== */    
 private:
     string mName;   /*!< Level name */
-    int mTimeLimit; /*!< Time limit of the level in seconds. */
+    string mInfo;   /*!< Level information string */
+    int mTimeLimit; /*!< Time limit of the level. */
     int mSandReq;   /*!< Required sand to eat before the exit opens */
     int mSizeX;     /*!< X size of the level */
     int mSizeY;     /*!< Y size of the level */
@@ -45,16 +46,20 @@ public:
     /*!
      * \brief   Constructor
      * \details Set level sizes, create and initialize the level data.
-     * \param[in] pName     The name of the level.
-     * \param[in] pSizeX    Level size of the dimension x.
-     * \param[in] pSizeY    Level size of the dimension y.
-     * \param[in] pData     Character array with the level configuration.
+     * \param[in] pName       The name of the level.
+     * \param[in] pInfo       Level information string.
+     * \param[in] pTimeLimit  Time limit of the level.
+     * \param[in] pSandReq    Required amount of eaten sand to open the exit.
+     * \param[in] pSizeX      Level size of the dimension x.
+     * \param[in] pSizeY      Level size of the dimension y.
+     * \param[in] pData       Character array with the level configuration.
      */
-    LevelConfig(const string &pName, int pTimeLimit, int pSandReq,
+    LevelConfig(const string &pName, const string &pInfo,
+                int pTimeLimit, int pSandReq,
                 int pSizeX, int pSizeY,
                 const char *pData) :
-        /* set configuration name and time limit */
-        mName(pName), mTimeLimit(pTimeLimit), mSandReq(pSandReq),
+        /* set configuration names and limits */
+        mName(pName), mInfo(pInfo), mTimeLimit(pTimeLimit), mSandReq(pSandReq),
         /* set array dimensions */
         mSizeX(pSizeX), mSizeY(pSizeY)
     {
@@ -76,9 +81,9 @@ public:
      * \brief   Copy Constructor
      */
     LevelConfig(const LevelConfig &pLevelConfig) :
-        /* set configuration name and time limit */
-        mName(pLevelConfig.mName), mTimeLimit(pLevelConfig.mTimeLimit),
-        mSandReq(pLevelConfig.mSandReq),
+        /* set configuration names and limits */
+        mName(pLevelConfig.mName), mInfo(pLevelConfig.mInfo),
+        mTimeLimit(pLevelConfig.mTimeLimit), mSandReq(pLevelConfig.mSandReq),
         /* set array dimensions */
         mSizeX(pLevelConfig.mSizeX), mSizeY(pLevelConfig.mSizeY)
     {
@@ -100,9 +105,15 @@ public:
 
 public:
 /* ======== functions to get private member values ======== */
+    
     /*! \brief   Get the name of the level. */
     string getName() const {
         return mName;
+    }
+    
+    /*! \brief   Get level information. */
+    string getInfo() const {
+        return mInfo;
     }
     
     /*! \brief   Get the time limit of the level. */

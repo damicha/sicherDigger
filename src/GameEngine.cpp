@@ -99,13 +99,13 @@ void GameEngine::run()
                 if        (button == BT_START)  {
                     s_next = EST_LEVEL_EXEC;
                     /* init level engine and set level configuration to use */
-                    mLevel.initLevelEngine(&field_a);
+                    mLevel.initLevelEngine(&LevelSetA[1]);
                 } else if (button == BT_SELECT) {
                     s_next = EST_MAIN_MENU;
                 }
 
                 /* print menu */
-                // FIXME: use level nr
+                // FIXME: use level nr ? or level name
                 mTxt.drawLevelSelectMenu(1);
                 
                 break;
