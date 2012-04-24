@@ -11,8 +11,9 @@
  ******************************************************************************/
 
 #include "GameEngine.h"
+#include "GameEngineTypes.h"
+
 #include "SDig_TimeEngine.h"
-#include "TextEngineTypes.h"
 #include "TextEngine.h"
 #include "PhysicsEngine.h"
 
@@ -102,9 +103,9 @@ void GameEngine::run()
     // FIXME: move phyEngine triggering to TimeEngine
     int phyTrigger = 0;
     
-    using namespace TextEngineTypes;    // refer to button types (BT_...)
-    TextEngineTypes::Button  button     = BT_NONE;
-    TextEngineTypes::Button  phyButton  = BT_NONE;
+    using namespace GameEngineTypes;    // refer to button types (BT_...)
+    GameEngineTypes::Button  button     = BT_NONE;
+    GameEngineTypes::Button  phyButton  = BT_NONE;
  
     bool stop = false;
     while(stop == false) 

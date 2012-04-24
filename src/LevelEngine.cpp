@@ -109,10 +109,10 @@ void LevelEngine::freeLevel(void)
  * \brief   Run level engine for one iteration.
  * \param[in] pButton   Pressed button, to control a level menu or the player.
  */
-void LevelEngine::run(TextEngineTypes::Button pButton, TextEngine *pTxt)
+void LevelEngine::run(GameEngineTypes::Button pButton, TextEngine *pTxt)
 {
 
-    using namespace TextEngineTypes;    // refer to button types (BT_...)
+    using namespace GameEngineTypes;    // refer to button types (BT_...)
     PhysicsEngine::MovementType moveDirection = PhysicsEngine::MT_NONE;
     StateType nextState = mState;
 

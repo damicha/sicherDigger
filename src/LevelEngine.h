@@ -15,7 +15,7 @@
 #define _SDIG_LEVEL_ENGINE_H_
 
 #include "SDig_TimeEngine.h"
-#include "TextEngineTypes.h"
+#include "GameEngineTypes.h"
 #include "PhysicsEngine.h"
 
 #include "ObjField/Field.h"
@@ -98,7 +98,7 @@ public:
     /* ======== run functions ======== */
 
     /* Run level engine for one iteration. */
-    void run(TextEngineTypes::Button pButton, TextEngine *pTxt);
+    void run(GameEngineTypes::Button pButton, TextEngine *pTxt);
     
     /* ======== getting member functions ======== */
     

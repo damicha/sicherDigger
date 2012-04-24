@@ -24,7 +24,7 @@
 #include "DOT/DOTs.h"
 #include "SDig_TimeEngine.h"
 #include "LevelEngine.h"
-#include "TextEngineTypes.h"
+#include "GameEngineTypes.h"
 
 #include <stdio.h>
 #include <ncurses.h>
@@ -83,7 +83,7 @@ public:
 /* ======== input functions ======== */
 
     /* Get key from input buffer and map it to the internal button representation. */
-    TextEngineTypes::Button getButton(void);
+    GameEngineTypes::Button getButton(void);
 
 
 /* ======== output/draw functions ======== */

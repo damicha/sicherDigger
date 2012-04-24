@@ -17,6 +17,7 @@
 #include "TextEngine.h"
 #include "ObjField/Field.h"
 #include "LevelEngine.h"
+#include "GameEngineTypes.h"
 
 using namespace SDig;
 
@@ -96,10 +97,10 @@ void TextEngine::stopNCurses(void)
  *  representation.
  * \return  Recognized button.
  */
-TextEngineTypes::Button TextEngine::getButton(void)
+GameEngineTypes::Button TextEngine::getButton(void)
 {
-    using namespace TextEngineTypes;    // refer to button types (BT_...)
-    TextEngineTypes::Button button = BT_NONE;
+    using namespace GameEngineTypes;    // refer to button types (BT_...)
+    GameEngineTypes::Button button = BT_NONE;
 
     int c = getch();    // get first entry (key) of the input buffer    
     flushinp();         // flush all other keys from input buffer
