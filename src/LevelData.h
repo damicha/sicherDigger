@@ -95,8 +95,8 @@ static LevelConfig level_02 = LevelConfig(
 #define ARRAYSIZE(a) (sizeof(a)/sizeof(*a))
 
 /* level sets */
-static LevelConfig LevelSetA[] = {level_01, level_02};
-static int LevelSetA_size = ARRAYSIZE(LevelSetA);
+//static LevelConfig LevelSetA[] = {level_01, level_02};
+//static int LevelSetA_size = ARRAYSIZE(LevelSetA);
 
 
 

@@ -29,7 +29,7 @@ class LevelConfigSet
 {
 /* ======== class attributes ======== */    
 private:
-    vector<LevelConfig>     *mConfigs;  //!< stored level configurations
+    vector<LevelConfig *>    *mConfigs;  //!< stores references to level configurations
 
 /* ======== class init functions ======== */
 public:

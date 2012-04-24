@@ -18,8 +18,7 @@
 #include "LevelEngine.h"
 #include "PhysicsEngine.h"
 
-#include "LevelConfig.h"
-#include "LevelData.h"
+#include "LevelConfigSet.h"
 
 
 namespace SDig {
@@ -51,30 +50,22 @@ private:
     TextEngine      mTxt;       //!< test engine
     TimeEngine      mTime;      //!< time engine
     LevelEngine     mLevel;     //!< level engine FIXME: dynamically?
+    LevelConfigSet  *mLevelSet; //!< set of level configurations
 
-/* ======== functions ======== */    
+/* ======== init functions ======== */    
 public:
 
-    /*!
-     * \brief   constructor
-     */
-    GameEngine(void)
-    {
-        /* set duration of one turn (1/60 sec) */
-        mTime.setTriggerInterval(16667);    // in us
-    }
+    /* Constructor */
+    GameEngine(void);
         
-    /*!
-     * \brief   destructur
-     */
-    ~GameEngine(void) {}
+    /* Destructur */
+    ~GameEngine(void);
 
-#if 0
-    /*!
-     * \brief   initialize game engine
-     */
-    void init() {}
-#endif
+    /* Initialize level configuration set */
+    void initLevelConfig();
+    
+/* ======== run functions ======== */    
+public:
     /* Run game engine until it quits. */
     void run();
 

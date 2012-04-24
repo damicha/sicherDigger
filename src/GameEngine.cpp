@@ -19,9 +19,52 @@
 #include "ObjField/Field.h"
 
 #include "LevelConfig.h"
+#include "LevelConfigSet.h"
+#include "LevelData.h"
 
 using namespace SDig;
 
+
+/* ==========================================================================
+ * init functions
+ * ========================================================================== */
+    
+/*!
+ * \brief   constructor
+ */
+GameEngine::GameEngine(void)
+{
+    /* set duration of one turn (1/60 sec) */
+    mTime.setTriggerInterval(16667);    // in us
+
+    /* create level configuration set */
+    mLevelSet = new LevelConfigSet;
+}
+    
+/*!
+ * \brief   destructur
+ */
+GameEngine::~GameEngine(void)
+{
+    /* destroy level configuration set */
+    delete mLevelSet;
+}
+
+/*!
+ * \brief   Initialize level configuration set
+ */
+void GameEngine::initLevelConfig()
+{
+    /* create Set A */
+    mLevelSet->addConfig(&level_01);
+    mLevelSet->addConfig(&level_02);
+}
+
+
+
+/* ==========================================================================
+ * engines run functions
+ * ========================================================================== */
 
 /*!
  * \brief   run game engine until it quits.
@@ -51,7 +94,11 @@ void GameEngine::run()
     s_next = EST_MAIN_MENU;
 
     mTxt.clearScreen();
-    
+
+    // FIXME: move to higher layer, init() and run() has the same level
+    /* init level set */
+    initLevelConfig();
+
     // FIXME: move phyEngine triggering to TimeEngine
     int phyTrigger = 0;
     
@@ -95,18 +142,34 @@ void GameEngine::run()
             /* ==== Level Select Menu ==== */
             case EST_LEVEL_SELECT_MENU:
             {
+                static int selLevel = 0;                // selected level
+                int levelNum = mLevelSet->getNumber();  // number of provided levels
+
+                /* level selection by setting the level number */
+                if        (button == BT_RIGHT) {
+                    selLevel++;
+                    if (selLevel >= levelNum) {
+                        selLevel = 0;
+                    }
+                } else if (button == BT_LEFT) {
+                    selLevel--;
+                    if (selLevel < 0) {
+                        selLevel = levelNum-1;
+                    }
+                }
+
                 /* change state */
                 if        (button == BT_START)  {
                     s_next = EST_LEVEL_EXEC;
                     /* init level engine and set level configuration to use */
-                    mLevel.initLevelEngine(&LevelSetA[1]);
+                    mLevel.initLevelEngine(mLevelSet->getConfig(selLevel));
                 } else if (button == BT_SELECT) {
                     s_next = EST_MAIN_MENU;
                 }
 
                 /* print menu */
                 // FIXME: use level nr ? or level name
-                mTxt.drawLevelSelectMenu(1);
+                mTxt.drawLevelSelectMenu(selLevel + 1);
                 
                 break;
             }

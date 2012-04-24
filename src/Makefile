@@ -29,7 +29,7 @@ SRC =   sicherDigger.cpp \
         TextEngine.cpp \
         PhysicsEngine.cpp \
         GameEngine.cpp \
-        LevelEngine.cpp LevelConfig.cpp
+        LevelEngine.cpp LevelConfig.cpp LevelConfigSet.cpp
 OBJECTS = $(SRC:.cpp=.o)
 
 LDFLAGS_NCURSES = -lncurses
