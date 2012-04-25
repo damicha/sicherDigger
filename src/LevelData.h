@@ -131,12 +131,6 @@ static LevelConfig level_03 = LevelConfig(
 /* FIXME: move to common header */
 #define ARRAYSIZE(a) (sizeof(a)/sizeof(*a))
 
-/* level sets */
-//static LevelConfig LevelSetA[] = {level_01, level_02};
-//static int LevelSetA_size = ARRAYSIZE(LevelSetA);
-
-
-
 
 }       // namespace
 

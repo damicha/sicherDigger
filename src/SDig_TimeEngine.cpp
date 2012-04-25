@@ -21,12 +21,12 @@
 
 
 using namespace std;
-
+using namespace SDig;
 
 /*!
  * \brief  Waits until the next trigger event occures.
  */
-void SDig::TimeEngine::wait4TriggerEvent() const
+void TimeEngine::wait4TriggerEvent() const
 {
     /* get current time */
     uint64_t    currentTime = getTime();
@@ -46,14 +46,14 @@ void SDig::TimeEngine::wait4TriggerEvent() const
  * \brief   Get time from system.
  * \return  Return with a class internal representation.
  */
-uint64_t SDig::TimeEngine::getSystemTime(void) const
+uint64_t TimeEngine::getSystemTime(void) const
 {
     /* get time from system */
     timeval t_val;
     gettimeofday(&t_val, NULL);
 
     /* convert into class internal representation */
-    uint64_t t = timeval2us(t_val);
+    uint64_t t = timeval2us(&t_val);
 
     return t;
 }
@@ -65,9 +65,10 @@ uint64_t SDig::TimeEngine::getSystemTime(void) const
  *  The timeval structure.
  * \return  64 bit time value in micro seconds. 
  */
-uint64_t SDig::TimeEngine::timeval2us(const timeval &t) const
+uint64_t TimeEngine::timeval2us(const timeval *pTimeVal) const
 {
-    return ((uint64_t)t.tv_sec*1000000 + (uint64_t)t.tv_usec);
+    return ((uint64_t)pTimeVal->tv_sec*1000000 +
+            (uint64_t)pTimeVal->tv_usec);
 }
 
 
@@ -92,3 +93,5 @@ string SDig::TimeEngine::getDebugInfo(int *pLineNum) const
 
 /* set time base value */
 const uint64_t SDig::TimeEngine::mTimeBase = 1000000;      /*!< time base = 1s (1000000 us) */
+
+

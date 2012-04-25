@@ -40,7 +40,7 @@ using namespace std;
  * \namespace   SDig
  * \brief   Namespace of the sicherDigger project.
  *
- * FIXME: move SDig namespace description to a central header file
+ * FIXME: move SDig namespace description to a central header file: SDig.h
  */
 namespace SDig {
 
@@ -87,25 +87,22 @@ public:
 
 
 /* ======== output/draw functions ======== */
+    
     /*!
-     * FIXME: header
-     * \brief   Print the content of the object field to the console
-     * \param   pField
-     *  Reference to the object field to print.
-     * \param   pHeaderString
-     *  String used within the header
+     * \brief   Prints the current statistics and content of a level engine
+     *  to the console
+     * \param[in] *pLevel   Reference to the level engine and its data
      */
-    // FIXME: use pinter to pLevel
-    void drawLevel(LevelEngine &pLevel)
+    void drawLevel(const LevelEngine *pLevel)
     {
         /* create string with timing information */
         const int str_len = 32;
         char str[str_len];
         snprintf(str, str_len, "T:%04d S:%02d/%02d",
-                 pLevel.getTimeCnt(), pLevel.getSandCnt(), pLevel.getRequiredSand());
+                 pLevel->getTimeCnt(), pLevel->getSandCnt(), pLevel->getRequiredSand());
         
         /* display level */
-        drawField(pLevel.getField(), str);
+        drawField(pLevel->getField(), str);
     }
 
 private:
@@ -153,9 +150,9 @@ private:
     /*!
      * \brief   Draw debug infos of the time engine
      */
-    void drawDebugInfo(SDig::TimeEngine &te)
+    void drawDebugInfo(SDig::TimeEngine *pTimeEngine)
     {
-        printw("%s", te.getDebugInfo().c_str());
+        printw("%s", pTimeEngine->getDebugInfo().c_str());
         refresh();
     }
 
@@ -227,10 +224,13 @@ public:
     void drawLevelSelectMenu(int pLevelNr);
     
     /* Draw the level start Screen. */
-    void drawLevelStartScreen(int pLevelNr, int pReqSand, int pTimeLimit);
+    // FIXME: check how to use string class (normal, as * or as &)
+    void drawLevelStartScreen(string pLevelName, string pLevelInfo,
+                              int pReqSand, int pTimeLimit);
     
     /* Print a conclusion after a level ends. */
-    void drawLevelEndScreen(int pLevelNr, LevelEngine::LevelEndReason pLevEndReason,
+    void drawLevelEndScreen(string pLevelName,
+                            LevelEngine::LevelEndReason pLevEndReason,
                             int pEatenSand, int pReqSand, int pTimeLeft);
 
     /*!

@@ -211,17 +211,21 @@ void TextEngine::drawLevelSelectMenu(int pLevelNr)
 
 /*!
  * \brief   Draw the level start Screen with level information.
- * \param[in] pLevelNr      Level number.
- * \param[in] pReqSand      Required amount of sand.
+ * \param[in] pLevelName    Level name.
+ * \param[in] pLevelInfo    Additional level information.
+ * \param[in] pReqSand      Required amount of sand to eat.
  * \param[in] pTimeLimit    Level's time limit.
  */
-void TextEngine::drawLevelStartScreen(int pLevelNr, int pReqSand, int pTimeLimit)
+void TextEngine::drawLevelStartScreen(string pLevelName, string pLevelInfo,
+                                      int pReqSand, int pTimeLimit)
 {
     // FIXME: add level information as a string copied from level config
     // move cursor position to (row, col)
     move(0, 0);
     printw("\n");
-    printw("==== Level %02d ====\n", pLevelNr);
+    printw("==== %s ====\n", pLevelName.c_str());
+    printw("\n");
+    printw(" %s \n", pLevelInfo.c_str());
     printw("\n");
     printw(" Required Sand: %d\n", pReqSand);
     printw(" Time Limit:    %d\n", pTimeLimit);
@@ -235,13 +239,14 @@ void TextEngine::drawLevelStartScreen(int pLevelNr, int pReqSand, int pTimeLimit
 /*!
  * \brief   Print the conclusion after the level ends.
  */
-void TextEngine::drawLevelEndScreen(int pLevelNr, LevelEngine::LevelEndReason pLevEndReason,
+void TextEngine::drawLevelEndScreen(string pLevelName,
+                                    LevelEngine::LevelEndReason pLevEndReason,
                                     int pEatenSand, int pReqSand, int pTimeLeft)
 {
     // move cursor position to (row, col)
     move(0, 0);
     printw("\n");
-    printw("==== End of Level %02d ====\n", pLevelNr);
+    printw("==== End of \"%s\" ====\n", pLevelName.c_str());
     printw("\n");
 
     /* evaluate level end reason and draw text message */

@@ -35,11 +35,19 @@ using namespace SDig;
  */
 GameEngine::GameEngine(void)
 {
-    /* set duration of one turn (1/60 sec) */
-    mTime.setTriggerInterval(16667);    // in us
-
+    /* create objects for used engines */
+    mTxt    = new TextEngine;
+    mTime   = new TimeEngine;
+    mLevel  = new LevelEngine;
+    
     /* create level configuration set */
     mLevelSet = new LevelConfigSet;
+    
+    /* set duration of one turn (1/60 sec) */
+    // FIXME use: an define or config value
+    mTime->setTriggerInterval(16667);    // in us
+
+
 }
     
 /*!
@@ -49,6 +57,11 @@ GameEngine::~GameEngine(void)
 {
     /* destroy level configuration set */
     delete mLevelSet;
+
+    /* destroy used engines */
+    delete mLevel;
+    delete mTime;
+    delete mTxt;
 }
 
 /*!
@@ -95,7 +108,7 @@ void GameEngine::run()
     s_curr = EST_MAIN_MENU;
     s_next = EST_MAIN_MENU;
 
-    mTxt.clearScreen();
+    mTxt->clearScreen();
 
     // FIXME: move to higher layer, init() and run() has the same level
     /* init level set */
@@ -115,13 +128,13 @@ void GameEngine::run()
         s_curr = s_next;
 
         /* sync on tigger event to display content */
-        mTime.wait4TriggerEvent();
+        mTime->wait4TriggerEvent();
 
         /* get last pushed button */
         // FIXME: detection of only the last and only a single pressed
         //  button is currently possible
         // -> change to pressed, released behavior/events
-        button = mTxt.getButton();
+        button = mTxt->getButton();
         
         switch (s_curr)
         {
@@ -136,7 +149,7 @@ void GameEngine::run()
                 }
                 
                 /* print menu */
-                mTxt.drawMainMenu();
+                mTxt->drawMainMenu();
 
                 break;
             }
@@ -158,14 +171,13 @@ void GameEngine::run()
                 if        (button == BT_START)  {
                     s_next = EST_LEVEL_EXEC;
                     /* init level engine and set level configuration to use */
-                    mLevel.initLevelEngine(mLevelSet->getConfig(selLevel));
+                    mLevel->initLevelEngine(mLevelSet->getConfig(selLevel));
                 } else if (button == BT_SELECT) {
                     s_next = EST_MAIN_MENU;
                 }
 
                 /* print menu */
-                // FIXME: use level nr ? or level name
-                mTxt.drawLevelSelectMenu(selLevel + 1);
+                mTxt->drawLevelSelectMenu(selLevel + 1);
                 
                 break;
             }
@@ -181,7 +193,7 @@ void GameEngine::run()
 
                 /* run level engine on physics trigger */
                 if (phyTrigger % 15 == 0) {  
-                    mLevel.run(phyButton, &mTxt);
+                    mLevel->run(phyButton, mTxt);
                     // reset button value
                     phyButton = BT_NONE;
                 }
@@ -189,7 +201,7 @@ void GameEngine::run()
 
                 /* change state if level has ended */
                 // FIXME: get level result
-                if (mLevel.isEnd() == true) {
+                if (mLevel->isEnd() == true) {
                     s_next = EST_LEVEL_SELECT_MENU;
                 }
                 break;
@@ -202,7 +214,7 @@ void GameEngine::run()
 
         /* clear screen if menu will change */
         if (s_curr != s_next) {
-            mTxt.clearScreen();
+            mTxt->clearScreen();
         }
 
 

@@ -148,8 +148,9 @@ void LevelEngine::run(GameEngineTypes::Button pButton, TextEngine *pTxt)
 
             /* Get level information from level configuration, because the
              * level data isn't initialized yet */
-            pTxt->drawLevelStartScreen(1, mLevelCfg->getRequiredSand(),
-                                          mLevelCfg->getTimeLimit());
+            pTxt->drawLevelStartScreen(mLevelCfg->getName(), mLevelCfg->getInfo(),
+                                       mLevelCfg->getRequiredSand(),
+                                       mLevelCfg->getTimeLimit());
             break;
         }
         
@@ -161,7 +162,7 @@ void LevelEngine::run(GameEngineTypes::Button pButton, TextEngine *pTxt)
 
             nextState = ST_RUNNING;
             
-            pTxt->drawLevel(*this);
+            pTxt->drawLevel(this);
             break;
         }
 
@@ -194,7 +195,7 @@ void LevelEngine::run(GameEngineTypes::Button pButton, TextEngine *pTxt)
                 nextState = ST_CONCLUSION;
             }
     
-            pTxt->drawLevel(*this);
+            pTxt->drawLevel(this);
             break;
         }
 
@@ -207,7 +208,7 @@ void LevelEngine::run(GameEngineTypes::Button pButton, TextEngine *pTxt)
                 nextState = ST_END;
             }
             
-            pTxt->drawLevelEndScreen(1, mEndReason,
+            pTxt->drawLevelEndScreen(mLevelCfg->getName(), mEndReason,
                                      getSandCnt(), getRequiredSand(),
                                      mPhy.getTimerCnt());
             break;

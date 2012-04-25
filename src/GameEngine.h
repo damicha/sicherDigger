@@ -48,9 +48,9 @@ private:
 
 /* ======== attributes ======== */    
 private:
-    TextEngine      mTxt;       //!< test engine
-    TimeEngine      mTime;      //!< time engine
-    LevelEngine     mLevel;     //!< level engine FIXME: dynamically?
+    TextEngine      *mTxt;      //!< text engine
+    TimeEngine      *mTime;     //!< time engine
+    LevelEngine     *mLevel;    //!< level engine
     LevelConfigSet  *mLevelSet; //!< set of level configurations
 
 /* ======== init functions ======== */    

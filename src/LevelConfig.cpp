@@ -26,18 +26,18 @@ using namespace SDig;
 /*!
  * \brief   Constructor
  * \details Set level sizes, create and initialize the level data.
- * \param[in] pName       The name of the level.
- * \param[in] pInfo       Level information string.
+ * \param[in] pName      The name of the level.
+ * \param[in] pInfo      Level information string.
  * \param[in] pTimeLimit  Time limit of the level.
  * \param[in] pSandReq    Required amount of eaten sand to open the exit.
  * \param[in] pSizeX      Level size of the dimension x.
  * \param[in] pSizeY      Level size of the dimension y.
- * \param[in] pData       Character array with the level configuration.
+ * \param[in] *pData      Character array with the level configuration.
  */
 LevelConfig::LevelConfig(const string &pName, const string &pInfo,
-            int pTimeLimit, int pSandReq,
-            int pSizeX, int pSizeY,
-            const char *pData) :
+                         int pTimeLimit, int pSandReq,
+                         int pSizeX, int pSizeY,
+                         const char *pData) :
     /* set configuration names and limits */
     mName(pName), mInfo(pInfo), mTimeLimit(pTimeLimit), mSandReq(pSandReq),
     /* set array dimensions */
