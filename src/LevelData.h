@@ -24,6 +24,7 @@ namespace SDig {
  * FIXME: correct doxygen tags
  * @{
  */
+// FIXME use some kind of struct of for the configuration
 #define LEVEL_NAME          "Level 01"
 #define LEVEL_INFO          "Simple, simple."
 #define LEVEL_TIME_LIMIT    50
@@ -80,6 +81,42 @@ static char level_02_data[LEVEL_SIZE_X * LEVEL_SIZE_Y] =
 static LevelConfig level_02 = LevelConfig(
     LEVEL_NAME, LEVEL_INFO, LEVEL_TIME_LIMIT, LEVEL_SAND_REQUIRED,
     LEVEL_SIZE_X, LEVEL_SIZE_Y, level_02_data
+);
+
+#undef LEVEL_NAME
+#undef LEVEL_INFO
+#undef LEVEL_TIME_LIMIT
+#undef LEVEL_SAND_REQUIRED
+#undef LEVEL_SIZE_X    
+#undef LEVEL_SIZE_Y    
+
+/*! @} */
+
+
+/*!
+ * \name level_03 configuration data
+ *
+ * FIXME: correct doxygen tags
+ * @{
+ */
+#define LEVEL_NAME          "Level 03"
+#define LEVEL_INFO          "Mini"
+#define LEVEL_TIME_LIMIT    30
+#define LEVEL_SAND_REQUIRED 5               // required sand to eat before exit opens
+#define LEVEL_SIZE_X        6
+#define LEVEL_SIZE_Y        6
+static char level_03_data[LEVEL_SIZE_X * LEVEL_SIZE_Y] =
+{
+    '#', '#', '#', '#', '#', '#',
+    '#', '8', 'O', 'O', 'O', '#',
+    '#', '.', 'O', ' ', '.', '#',
+    '#', ' ', 'O', ' ', '.', '#',
+    '#', ' ', ' ', '.', '.', 'E',
+    '#', '#', '#', '#', '#', '#',
+};
+static LevelConfig level_03 = LevelConfig(
+    LEVEL_NAME, LEVEL_INFO, LEVEL_TIME_LIMIT, LEVEL_SAND_REQUIRED,
+    LEVEL_SIZE_X, LEVEL_SIZE_Y, level_03_data
 );
 
 #undef LEVEL_NAME

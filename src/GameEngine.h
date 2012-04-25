@@ -26,7 +26,7 @@ namespace SDig {
 
 /*!
  * \class   GameEngine
- * \brief   Implementes the game data, controlling and engines.
+ * \brief   Implements the game data, controlling and engines.
  * FIXME: move level stuff to level engine
  * \details 
  *  - runs physics engine
@@ -69,6 +69,14 @@ public:
 public:
     /* Run game engine until it quits. */
     void run();
+
+/* ======== level select functions ======== */
+public:
+    /* select next level */
+    bool getNextLevelNr(int *pLevelNr, int pLevelNum, bool pAllowWrap) const; 
+    
+    /* select previous level */
+    bool getPrevLevelNr(int *pLevelNr, int pLevelNum, bool pAllowWrap) const; 
 
 };
 

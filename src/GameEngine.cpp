@@ -59,6 +59,7 @@ void GameEngine::initLevelConfig()
     /* create Set A */
     mLevelSet->addConfig(&level_01);
     mLevelSet->addConfig(&level_02);
+    mLevelSet->addConfig(&level_03);
 }
 
 
@@ -148,15 +149,9 @@ void GameEngine::run()
 
                 /* level selection by setting the level number */
                 if        (button == BT_RIGHT) {
-                    selLevel++;
-                    if (selLevel >= levelNum) {
-                        selLevel = 0;
-                    }
+                    getNextLevelNr(&selLevel, levelNum, true);
                 } else if (button == BT_LEFT) {
-                    selLevel--;
-                    if (selLevel < 0) {
-                        selLevel = levelNum-1;
-                    }
+                    getPrevLevelNr(&selLevel, levelNum, true);
                 }
 
                 /* change state */
@@ -217,4 +212,59 @@ void GameEngine::run()
     return;
 }
 
+/* ==========================================================================
+ * level select functions
+ * ========================================================================== */
+
+/*!
+ * \brief   Select next level
+ * \detail  This functions selects the next possible level number as a function
+ *  of if the wrap around of the numbering is allow or not.
+ * \param[inout]  *pLevelNr     Level number to increase.
+ * \param[in]     pLevelNum     Maximum level count value.
+ * \param[in]     pAllowWrap    Flags that allows wrap around.
+ * \return  True if there was a wrap around or the upper boarder of level
+ *  numbers is reached if a wrap around is not allowed.
+ */
+bool GameEngine::getNextLevelNr(int *pLevelNr, int pLevelNum, bool pAllowWrap) const 
+{
+    if (*pLevelNr >= pLevelNum-1)
+    {
+        if (pAllowWrap == true) {
+            *pLevelNr = 0;
+        }
+        return true;
+    }
+    else
+    {
+        (*pLevelNr)++;
+        return false;
+    }
+}
+
+/*!
+ * \brief   Select previous level
+ * \detail  This functions selects the previous level number as a function
+ *  of if the wrap around of the numbering is allow or not.
+ * \param[inout]  *pLevelNr     Level number to decrease.
+ * \param[in]     pLevelNum     Maximum level count value.
+ * \param[in]     pAllowWrap    Flags that allows wrap around.
+ * \return  True if there was a wrap around or the lower boarder (0) of level
+ *  numbers is reached if a wrap around is not allowed.
+ */
+bool GameEngine::getPrevLevelNr(int *pLevelNr, int pLevelNum, bool pAllowWrap) const 
+{
+    if (*pLevelNr <= 0)
+    {
+        if (pAllowWrap == true) {
+            *pLevelNr = pLevelNum-1;
+        }
+        return true;
+    }
+    else
+    {
+        (*pLevelNr)--;
+        return false;
+    }
+}
 
