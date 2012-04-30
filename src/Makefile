@@ -25,7 +25,7 @@ SRC =   sicherDigger.cpp \
         ObjField/Field.cpp ObjField/Entry.cpp \
         DOT/Base.cpp DOT/Exit.cpp DOT/Player.cpp \
         SDig_DataObject.cpp \
-        SDig_TimeEngine.cpp \
+        TimeEngine.cpp \
         TextEngine.cpp \
         PhysicsEngine.cpp \
         GameEngine.cpp \

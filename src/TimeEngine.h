@@ -1,10 +1,10 @@
 /*! ****************************************************************************
  *
- * \file    SDig_TimeEngine.h
+ * \file    TimeEngine.h
  * \brief   Declarations of TimeEngine class
  *
  * \author  damicha of defect
- * \date    2011
+ * \date    2011-2012
  *
  * \license See license file in the main directory. 
  *

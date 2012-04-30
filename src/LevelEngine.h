@@ -14,7 +14,6 @@
 #ifndef _SDIG_LEVEL_ENGINE_H_
 #define _SDIG_LEVEL_ENGINE_H_
 
-#include "SDig_TimeEngine.h"
 #include "GameEngineTypes.h"
 #include "PhysicsEngine.h"
 

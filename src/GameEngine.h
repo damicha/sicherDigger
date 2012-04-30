@@ -14,7 +14,7 @@
 #define _SDIG_GAME_ENGINE_H_
 
 #include "GameEngineTypes.h"
-#include "SDig_TimeEngine.h"
+#include "TimeEngine.h"
 #include "TextEngine.h"
 #include "LevelEngine.h"
 #include "PhysicsEngine.h"

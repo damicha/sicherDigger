@@ -13,7 +13,7 @@
 #include "GameEngine.h"
 #include "GameEngineTypes.h"
 
-#include "SDig_TimeEngine.h"
+#include "TimeEngine.h"
 #include "TextEngine.h"
 #include "PhysicsEngine.h"
 

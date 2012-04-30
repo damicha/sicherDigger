@@ -1,10 +1,10 @@
 /*! ****************************************************************************
  *
- * \file    SDig_TimeEngine.cpp
+ * \file    TimeEngine.cpp
  * \brief   Implementation of the TimeEngine class
  *
  * \author  damicha of defect
- * \date    2011
+ * \date    2011-2012
  *
  * \license See license file in the main directory. 
  *
@@ -17,7 +17,7 @@
 
 #include <string>
 
-#include "SDig_TimeEngine.h"
+#include "TimeEngine.h"
 
 
 using namespace std;

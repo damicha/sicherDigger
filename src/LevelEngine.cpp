@@ -20,7 +20,6 @@
 #include "LevelConfigSet.h"     // FIXME: only for testing included
 
 #include "LevelEngine.h"
-#include "SDig_TimeEngine.h"
 #include "PhysicsEngine.h"
 #include "TextEngine.h"
 
