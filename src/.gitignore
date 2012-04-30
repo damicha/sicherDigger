@@ -10,9 +10,11 @@ sicherDigger
 # object files
 *.o
 
-# generated ctags file
+# generated files
 tags
+depend
 
 # generated documentation
 html/
 latex/
+

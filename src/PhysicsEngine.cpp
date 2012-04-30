@@ -1,16 +1,16 @@
 /******************************************************************************/
 /*!
- * \file    SDig_PhysicsEngine.cpp
+ * \file    PhysicsEngine.cpp
  * \brief   Implements the physics of the world.
  *
  * \author  damicha of defect
- * \date    2011
+ * \date    2011-2012
  *
  * \license See license file in the main directory. 
  *
  ******************************************************************************/
 
-#include "SDig_PhysicsEngine.h"
+#include "PhysicsEngine.h"
 
 #include "DOT/DOTs.h"
 #include "DOT/Base.h"
@@ -50,8 +50,10 @@ bool PhysicsEngine::run(ObjField::Field *pField, MovementType pPlayerMove)
     /* increase iteration counter */
     mIterNum++;
 
-    /* decrease time counter */
-    mTimeCnt--;
+    /* decrease timer counter if timer is enabled */
+    if (mTimerEnable == true) {
+        mTimerCnt--;
+    }
 
     /* move player first */
     runPlayerPhysics(pField->getPlayer()->getFieldEntry(), pPlayerMove);

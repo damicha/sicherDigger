@@ -3,7 +3,7 @@
 = file:     history.txt
 =
 = project:  sicherDigger
-= author:   damicha of defect, 2011
+= author:   damicha of defect, 2011-2012
 =
 = description:
 =  The development history of the project sicherDigger
@@ -18,6 +18,8 @@ next:
   - run level
   - exit level
   - set game info (point, lives, level results)
+
+- define engine 1.0 (simple-stone, sand, wall, player, exit)
 
 
   0.1pre - text output

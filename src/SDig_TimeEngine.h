@@ -99,7 +99,7 @@ private:
     uint64_t getSystemTime(void) const;
 
     /* Converts the values of a timeval structure into a 64 bit value in micro seconds */
-    uint64_t timeval2us(const timeval &t) const;
+    uint64_t timeval2us(const timeval *pTimeVale) const;
 
 public:
     /* Waits until the next trigger event occures. */

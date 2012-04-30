@@ -1,10 +1,10 @@
 /*! ****************************************************************************
  *
- * \file    SDig_PhysicsEngine.h
+ * \file    PhysicsEngine.h
  * \brief   Class definition of the physics engine
  *
  * \author  damicha of defect
- * \date    2011
+ * \date    2011-2012
  *
  * \license See license file in the main directory. 
  *
@@ -46,41 +46,55 @@ public:
 
 /* ======== class attributes ======== */    
 private:
-    int mIterNum;   /*!< The number of proceeded iterations. */
-    int mTimeCnt;   /*!< time counter (decreasing) */
-    
+    int     mIterNum;       //!< The number of proceeded iterations.
+    int     mTimerCnt;      //!< timer's counter value (decreasing)
+    bool    mTimerEnable;   //!< Enables or disables the timer.
+
 /* ======== functions ======== */    
 
 public:
-    /*! \brief  Constructor */
+    /*!\brief  Constructor */
     PhysicsEngine() {
         resetIterNum();
+        mTimerCnt       = 0;
+        mTimerEnable    = false;
     }
 
-    /*! \brief  Set the start value.
-     *FIXME: use level config */
-    void init(int pTimeCnt) {
+    /*!\brief  Set the start value.
+     * \param[in]   pTimerCnt   Timer value to set. 
+     * FIXME: use level config */
+    void init(int pTimerCnt) {
         resetIterNum();
-        setTimeCnt(pTimeCnt);
+        setTimerCnt(pTimerCnt);
+        enableTimer();
     }
     
-    /*! \brief  Configure time counter. */
-    void setTimeCnt(int pTimeCnt) {
-        mTimeCnt = pTimeCnt;
+    /*!\brief  Configure time counter. */
+    void setTimerCnt(int pTimerCnt) {
+        mTimerCnt = pTimerCnt;
     }
 
-    /*! \brief  Get current time counter value.
-     *  \return Time counter value. */
-    int getTimeCnt(void) {
-        return mTimeCnt;
+    /*!\brief  Get current time counter value.
+     * \return Time counter value. */
+    int getTimerCnt(void) const {
+        return mTimerCnt;
+    }
+    
+    /*!\brief  Enable time counter. */
+    void enableTimer(void) {
+        mTimerEnable = true;
+    }
+    /*!\brief  Disable time counter. */
+    void disableTimer(void) {
+        mTimerEnable = false;
     }
 
-    /*! \brief  Reset the number of iterations. */
+    /*!\brief  Reset the number of iterations. */
     void resetIterNum(void) {
         mIterNum = 0;
     }
 
-    /*! \brief  Get the number of iterations since last reset.
+    /*!\brief  Get the number of iterations since last reset.
      * \return  Number of done iterations. */
     int getIterNum(void) {
         return mIterNum;
@@ -89,9 +103,7 @@ public:
     /* Do one iteration on the object field. */
     bool run(ObjField::Field *pField, MovementType pPlayerMove);
 
-    /*!
-     * \brief   Stone physics
-     */
+    /* Stone physics */
     void runStonePhysics(ObjField::Entry *e);
     
     /* Player physics */

@@ -73,13 +73,13 @@ Field::Field(int pSizeX, int pSizeY) : mEntries(NULL), mPlayer(NULL), mExit(NULL
 /*!
  * \brief   Constructor
  * \details Initializes the field with the given configuration.
- * \param pLevelConfig   configuration
+ * \param[in] pLevelConfig  Level configuration.
  */
-Field::Field(const LevelConfig &pLevelConfig)
+Field::Field(const LevelConfig *pLevelConfig)
 {
     /* set dimensions */
-    mSizeX = pLevelConfig.getSizeX();
-    mSizeY = pLevelConfig.getSizeY();
+    mSizeX = pLevelConfig->getSizeX();
+    mSizeY = pLevelConfig->getSizeY();
     
     /* get memory for the field entries */
     mEntries = new ObjField::Entry[mSizeX*mSizeY];
@@ -93,7 +93,7 @@ Field::Field(const LevelConfig &pLevelConfig)
         for (int x = 0; x < mSizeX; x++)
         {
             /* get object type */
-            DOT::Type objType = pLevelConfig.getData(x, y);
+            DOT::Type objType = pLevelConfig->getData(x, y);
             /* create entry */
             mEntries[y*mSizeX + x].createDataObject(objType);
             
@@ -109,7 +109,7 @@ Field::Field(const LevelConfig &pLevelConfig)
                 // set back reference
                 mExit->initReferences(this, mEntries[y*mSizeX + x].getData());
                 // set properties    
-                mExit->setRequiredSand(pLevelConfig.getRequiredSand()); 
+                mExit->setRequiredSand(pLevelConfig->getRequiredSand()); 
             }
         }
     }

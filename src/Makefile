@@ -7,8 +7,9 @@
 #=
 #= Description:
 #=  Build binary file and doxygen generated documentation
-#=  $ make              - builds binary
-#=  $ make doxygen      - builds documentation
+#=  $ make              - build binary
+#=  $ make ctags        - build ctags
+#=  $ make doxygen      - build documentation
 #=  $ make clean        - cleans up the source directory
 #=
 #= License: See license file in the main directory.
@@ -20,16 +21,17 @@
 CC = g++
 CFLAGS = -g -O0 -Wall
 INCLUDE_DIRS = -I.
-OBJECTS =   sicherDigger.o \
-            ObjField/Field.o ObjField/Entry.o \
-            DOT/Base.o DOT/Exit.o DOT/Player.o\
-            SDig_DataObject.o \
-            SDig_TimeEngine.o \
-            SDig_TextEngine.o \
-            SDig_PhysicsEngine.o \
-            SDig_GameEngine.o \
-            SDig_LevelEngine.o
-INCLUDES = $(wildcard *.h) $(wildcard ObjField/*.h) $(wildcard DOT/*.h)
+SRC =   sicherDigger.cpp \
+        ObjField/Field.cpp ObjField/Entry.cpp \
+        DOT/Base.cpp DOT/Exit.cpp DOT/Player.cpp \
+        SDig_DataObject.cpp \
+        SDig_TimeEngine.cpp \
+        TextEngine.cpp \
+        PhysicsEngine.cpp \
+        GameEngine.cpp \
+        LevelEngine.cpp LevelConfig.cpp LevelConfigSet.cpp
+OBJECTS = $(SRC:.cpp=.o)
+
 LDFLAGS_NCURSES = -lncurses
 
 
@@ -42,7 +44,14 @@ all: sicherDigger html
     
 
 #-------------------------------------------------------------------------------
-%.o: %.cpp $(INCLUDES)
+# create dependencies
+depend:
+	gcc -M $(INCLUDE_DIRS) $(SRC) > depend
+
+-include depend
+
+#-------------------------------------------------------------------------------
+%.o: %.cpp
 	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -c $< -o $@
 
 
@@ -59,6 +68,7 @@ clean:
 	rm -f sicherDigger
 	rm -rf html/ latex/
 	rm -rf tags
+	rm -rf depend
 
 .PHONY: html clean
 
